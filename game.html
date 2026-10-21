@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GAME KODIL TANGKAP KOIN</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:sans-serif}
+body{background:#3aa0ff;min-height:100vh;display:flex;justify-content:center;align-items:center}
+.phone{width:360px;background:#3aa0ff;border-radius:30px;padding:15px;text-align:center}
+h1{color:white;font-size:32px;line-height:0.9;-webkit-text-stroke:3px white;text-shadow:0 4px 0 #1a5ca8}
+.score{background:#ffe27a;border-radius:15px;padding:8px 20px;display:inline-block;margin:15px;font-weight:bold;color:#1a3a8a;font-size:20px}
+#game{width:100%;height:480px;background:white;border-radius:25px;position:relative;overflow:hidden;box-shadow:0 10px 20px rgba(0,0,0,0.2)}
+#kodil{position:absolute;bottom:15px;left:140px;font-size:70px;transition:left 0.1s}
+#koin{position:absolute;top:-50px;font-size:50px}
+.controls{display:flex;gap:15px;margin-top:15px}
+.controls button{flex:1;background:#1e6bff;color:white;border:none;padding:15px;border-radius:15px;font-size:20px;font-weight:bold;box-shadow:0 4px 0 #0a3a9e}
+.controls button:active{transform:translateY(3px);box-shadow:none}
+</style>
+</head>
+<body>
+<div class="phone">
+<h1>GAME KODIL<br>TANGKAP KOIN</h1>
+<div class="score">💰 SCORE: <span id="skor">0</span></div>
+<div id="game">
+<div id="koin">🪙</div>
+<div id="kodil">🐱</div>
+</div>
+<div class="controls">
+<button onclick="geser(-40)">KIRI</button>
+<button onclick="geser(40)">KANAN</button>
+</div>
+<p style="color:white;margin-top:10px;font-size:12px;">Tap layar putih untuk teleport random!</p>
+</div>
+<script>
+let skor=0, xKoin=150, yKoin=-50, xKodil=140;
+let gameEl=document.getElementById('game');
+gameEl.onclick=(e)=>{
+  if(e.target.tagName==='BUTTON')return;
+  xKodil=Math.random()*280; 
+  document.getElementById('kodil').style.left=xKodil+'px';
+}
+function loop(){
+  yKoin+=6;
+  if(yKoin>500){ yKoin=-50; xKoin=Math.random()*280; }
+  // cek tangkap
+  if(yKoin>380 && Math.abs(xKoin-xKodil)<50){
+    skor++; document.getElementById('skor').innerText=skor;
+    yKoin=-50; xKoin=Math.random()*280;
+    navigator.vibrate && navigator.vibrate(50);
+  }
+  document.getElementById('koin').style.top=yKoin+'px';
+  document.getElementById('koin').style.left=xKoin+'px';
+  requestAnimationFrame(loop);
+}
+function geser(j){
+  xKodil+=j;
+  if(xKodil<0)xKodil=0; if(xKodil>280)xKodil=280;
+  document.getElementById('kodil').style.left=xKodil+'px';
+}
+loop();
+</script>
+</div>
+</body>
+</html>￼Enter
