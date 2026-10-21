@@ -2,64 +2,71 @@
 <html lang="id">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>GAME KODIL TANGKAP KOIN</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>GAME KODIL TANGKAP KOIN - MERIAH!</title>
 <style>
-*{margin:0;padding:0;box-sizing:border-box;font-family:sans-serif}
-body{background:#3aa0ff;min-height:100vh;display:flex;justify-content:center;align-items:center}
-.phone{width:360px;background:#3aa0ff;border-radius:30px;padding:15px;text-align:center}
-h1{color:white;font-size:32px;line-height:0.9;-webkit-text-stroke:3px white;text-shadow:0 4px 0 #1a5ca8}
-.score{background:#ffe27a;border-radius:15px;padding:8px 20px;display:inline-block;margin:15px;font-weight:bold;color:#1a3a8a;font-size:20px}
-#game{width:100%;height:480px;background:white;border-radius:25px;position:relative;overflow:hidden;box-shadow:0 10px 20px rgba(0,0,0,0.2)}
-#kodil{position:absolute;bottom:15px;left:140px;font-size:70px;transition:left 0.1s}
-#koin{position:absolute;top:-50px;font-size:50px}
-.controls{display:flex;gap:15px;margin-top:15px}
-.controls button{flex:1;background:#1e6bff;color:white;border:none;padding:15px;border-radius:15px;font-size:20px;font-weight:bold;box-shadow:0 4px 0 #0a3a9e}
-.controls button:active{transform:translateY(3px);box-shadow:none}
+*{margin:0;padding:0;box-sizing:border-box;font-family:'Fredoka',sans-serif}
+body{background:linear-gradient(180deg,#3aa0ff 0%,#1a6bff 100%);height:100vh;height:100dvh;overflow:hidden;touch-action:none}
+.top{padding:10px 15px;text-align:center}
+h1{color:white;font-size:28px;line-height:0.9;text-shadow:0 3px 0 #0a3a9e,0 6px 10px rgba(0,0,0,0.3);letter-spacing:1px}
+.score-box{background:linear-gradient(180deg,#ffe27a,#ffbe2e);border-radius:20px;padding:10px 25px;display:inline-block;margin-top:10px;font-weight:900;color:#1a3a8a;font-size:22px;box-shadow:0 5px 0 #c78e00,0 10px 15px rgba(0,0,0,0.2)}
+#game{width:92%;max-width:400px;height:68vh;height:68dvh;background:white;border-radius:30px;position:relative;overflow:hidden;margin:10px auto;box-shadow:0 20px 40px rgba(0,0,0,0.3),inset 0 0 0 4px #e0f0ff}
+#kodil{position:absolute;bottom:10px;left:150px;font-size:75px;filter:drop-shadow(0 5px 5px rgba(0,0,0,0.2));transition:transform 0.1s;z-index:10}
+#koin{position:absolute;top:-60px;font-size:60px;filter:drop-shadow(0 5px 5px rgba(0,0,0,0.2))}
+.confetti{position:absolute;font-size:20px;animation:fall linear forwards;pointer-events:none}
+@keyframes fall{to{transform:translateY(100vh) rotate(720deg);opacity:0}}
+.controls{position:fixed;bottom:0;left:0;right:0;display:flex;gap:12px;padding:12px 15px 25px;background:linear-gradient(0deg,rgba(26,107,255,0.9),transparent);z-index:20}
+.controls button{flex:1;background:linear-gradient(180deg,#3a8bff,#1e5eff);color:white;border:none;padding:18px;border-radius:18px;font-size:22px;font-weight:900;box-shadow:0 6px 0 #0a3a9e,0 10px 20px rgba(0,0,0,0.3);text-shadow:0 2px 0 rgba(0,0,0,0.3)}
+.controls button:active{transform:translateY(5px);box-shadow:0 1px 0 #0a3a9e}
+#fullscreenBtn{position:absolute;top:15px;right:15px;background:rgba(255,255,255,0.9);border:none;border-radius:50%;width:45px;height:45px;font-size:22px;box-shadow:0 3px 10px rgba(0,0,0,0.2);z-index:30}
+.particle{position:absolute;pointer-events:none;font-size:30px;animation:pop 0.6s ease-out forwards}
+@keyframes pop{0%{transform:translate(0,0) scale(0)} 100%{transform:translate(var(--x),var(--y)) scale(1.5);opacity:0}}
 </style>
 </head>
 <body>
-<div class="phone">
+<button id="fullscreenBtn" onclick="goFull()">⛶</button>
+<div class="top">
 <h1>GAME KODIL<br>TANGKAP KOIN</h1>
-<div class="score">💰 SCORE: <span id="skor">0</span></div>
+<div class="score-box">💰 SCORE: <span id="skor">0</span> | BEST: <span id="best">0</span></div>
+</div>
 <div id="game">
 <div id="koin">🪙</div>
 <div id="kodil">🐱</div>
 </div>
 <div class="controls">
-<button onclick="geser(-40)">KIRI</button>
-<button onclick="geser(40)">KANAN</button>
-</div>
-<p style="color:white;margin-top:10px;font-size:12px;">Tap layar putih untuk teleport random!</p>
+<button onclick="geser(-60)">◀ KIRI</button>
+<button onclick="geser(60)">KANAN ▶</button>
 </div>
 <script>
-let skor=0, xKoin=150, yKoin=-50, xKodil=140;
+let skor=0,best=localStorage.getItem('kodilBest')||0,xKoin=150,yKoin=-60,xKodil=150,speed=5;
+document.getElementById('best').innerText=best;
 let gameEl=document.getElementById('game');
-gameEl.onclick=(e)=>{
-  if(e.target.tagName==='BUTTON')return;
-  xKodil=Math.random()*280; 
-  document.getElementById('kodil').style.left=xKodil+'px';
-}
+function goFull(){document.documentElement.requestFullscreen&&document.documentElement.requestFullscreen()}
+gameEl.addEventListener('click',(e)=>{if(e.target.tagName!=='BUTTON'){xKodil=Math.random()*(gameEl.clientWidth-80);updateKodil();createParticle(e.clientX,e.clientY,'💨')}})
+gameEl.addEventListener('touchstart',(e)=>{let r=gameEl.getBoundingClientRect();xKodil=e.touches[0].clientX-r.left-40;updateKodil()},{passive:true})
+function createConfetti(){for(let i=0;i<12;i++){let c=document.createElement('div');c.className='confetti';c.innerText=['🎉','✨','🎊','⭐'][Math.floor(Math.random()*4)];c.style.left=Math.random()*100+'%';c.style.top='-20px';c.style.animationDuration=(Math.random()*1+1)+'s';gameEl.appendChild(c);setTimeout(()=>c.remove(),2000)}}
+function createParticle(x,y,emoji){for(let i=0;i<5;i++){let p=document.createElement('div');p.className='particle';p.innerText=emoji;p.style.left=x+'px';p.style.top=y+'px';p.style.setProperty('--x',(Math.random()-0.5)*200+'px');p.style.setProperty('--y',(Math.random()-0.5)*200+'px');document.body.appendChild(p);setTimeout(()=>p.remove(),600)}}
 function loop(){
-  yKoin+=6;
-  if(yKoin>500){ yKoin=-50; xKoin=Math.random()*280; }
-  // cek tangkap
-  if(yKoin>380 && Math.abs(xKoin-xKodil)<50){
-    skor++; document.getElementById('skor').innerText=skor;
-    yKoin=-50; xKoin=Math.random()*280;
-    navigator.vibrate && navigator.vibrate(50);
+  yKoin+=speed;
+  if(yKoin>gameEl.clientHeight+60){yKoin=-60;xKoin=Math.random()*(gameEl.clientWidth-60);if(skor>0){skor=Math.max(0,skor-1);document.getElementById('skor').innerText=skor}}
+  if(yKoin>gameEl.clientHeight-120 && Math.abs(xKoin-xKodil)<60){
+    skor++;speed=Math.min(12,4+skor*0.25);
+    document.getElementById('skor').innerText=skor;
+    if(skor>best){best=skor;localStorage.setItem('kodilBest',best);document.getElementById('best').innerText=best}
+    createConfetti();createParticle(xKoin+30,yKoin,'💰');
+    document.getElementById('kodil').style.transform='scale(1.4)';setTimeout(()=>document.getElementById('kodil').style.transform='scale(1)',150);
+    yKoin=-60;xKoin=Math.random()*(gameEl.clientWidth-60);
+    if(navigator.vibrate)navigator.vibrate(30);
   }
   document.getElementById('koin').style.top=yKoin+'px';
   document.getElementById('koin').style.left=xKoin+'px';
   requestAnimationFrame(loop);
 }
-function geser(j){
-  xKodil+=j;
-  if(xKodil<0)xKodil=0; if(xKodil>280)xKodil=280;
-  document.getElementById('kodil').style.left=xKodil+'px';
-}
+function geser(j){xKodil+=j;if(xKodil<0)xKodil=0;if(xKodil>gameEl.clientWidth-80)xKodil=gameEl.clientWidth-80;updateKodil()}
+function updateKodil(){document.getElementById('kodil').style.left=xKodil+'px'}
 loop();
+// auto fullscreen hint
+setTimeout(()=>{if(!document.fullscreenElement){let b=document.getElementById('fullscreenBtn');b.style.animation='pop 0.5s 3';b.innerText='⛶ FULL'}},2000)
 </script>
-</div>
 </body>
-</html>￼Enter
+</html>
