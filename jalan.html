@@ -1,81 +1,52 @@
 <!DOCTYPE html>
-<html lang="id">
+<html>
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
-<title>JALAN SEHAT 3D FIX</title>
-<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@700;900&display=swap" rel="stylesheet">
-<link rel="manifest" href="manifest.json">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>JALAN SEHAT SMA</title>
 <style>
-*{margin:0;padding:0;box-sizing:border-box;font-family:'Fredoka',sans-serif}
-body{background:#0a5ac0;height:100vh;overflow:hidden}
-.screen{position:fixed;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:14px;z-index:100;background:inherit}
-.hidden{display:none!important}
-#menu{background:radial-gradient(circle at 50% 0%,#2af,#0a5ac0 60%,#051a3a)}
-.logo{width:160px;height:160px;background:white;border-radius:35px;display:flex;align-items:center;justify-content:center;font-size:80px;box-shadow:0 15px 30px rgba(0,0,0,.4)}
-.title{font-size:32px;font-weight:900;color:white;text-align:center;text-shadow:0 3px 0 #000;margin-top:10px;line-height:.9}
-.menu-card{background:white;border-radius:24px;padding:18px;width:100%;max-width:360px;margin-top:12px;box-shadow:0 15px 40px rgba(0,0,0,.4)}
-.btn{width:100%;padding:18px;border:none;border-radius:16px;font-size:18px;font-weight:900;margin-bottom:10px;cursor:pointer;display:block;position:relative;z-index:200;touch-action:manipulation}
-.btn-green{background:#00ff88;color:#003311;border:3px solid white}
-.btn-blue{background:#1e5eff;color:white}
-.btn:active{transform:scale(.97)}
-#gameScreen{padding:0;background:#87CEEB;z-index:50}
-.topbar{display:flex;justify-content:space-between;align-items:center;width:100%;padding:10px 12px;background:rgba(0,0,0,.6);color:white;font-weight:900;position:absolute;top:0;left:0;z-index:300}
-#track{flex:1;width:100%;max-width:440px;position:relative;overflow:hidden;background:linear-gradient(180deg,#87CEEB 0%,#c8f0ff 20%,#7CFF7C 21%,#8B7355 22%,#666 23%);margin-top:48px;height:calc(100vh - 120px);border-radius:20px 20px 0 0}
-#road{position:absolute;bottom:0;left:0;width:100%;height:75%;background:#666;transform-origin:bottom center}
-#playerWrap{position:absolute;bottom:30px;left:50%;transform:translateX(-50%);z-index:10;font-size:68px}
-.item{position:absolute;top:-60px;font-size:44px;z-index:5}
-.controls{width:100%;max-width:440px;display:flex;gap:8px;padding:8px;background:rgba(0,0,0,.3);z-index:300}
-.controls .btn{flex:1;margin:0;padding:18px;font-size:22px}
+body{margin:0;background:#1e5eff;font-family:sans-serif;text-align:center;color:white}
+.box{background:white;color:#1e5eff;border-radius:20px;padding:20px;margin:20px;max-width:350px;margin:20px auto}
+button{width:100%;padding:20px;font-size:20px;font-weight:900;border-radius:15px;border:3px solid #1e5eff;background:#00ff88;margin:10px 0;cursor:pointer}
+#game{display:none;background:linear-gradient(#87CEEB,#7CFF7C);height:100vh;position:relative;overflow:hidden}
+#player{position:absolute;bottom:80px;left:50%;font-size:60px;transform:translateX(-50%)}
+.obj{position:absolute;top:0;font-size:40px}
 </style>
 </head>
 <body>
-<div id="menu" class="screen">
-<div class="logo">🚶‍♂️</div>
-<div class="title">JALAN SEHAT<br>3D FIX</div>
-<div class="menu-card">
-<button class="btn btn-green" onclick="startGame()" id="btnStart">▶️ MULAI JALAN (KLIK SINI)</button>
-<button class="btn btn-blue" onclick="alert('Geser kiri kanan ambil air 💧')">❓ CARA MAIN</button>
-</div>
-<p style="color:white;margin-top:12px;font-size:12px">Kalau gak bisa klik, buka pakai Chrome Incognito Tuan!</p>
-</div>
-
-<div id="gameScreen" class="screen hidden">
-<div class="topbar">
-<button onclick="goMenu()">🏠 MENU</button>
-<div>💧 <span id="score">0</span> | <span id="dist">0</span>M</div>
-<button onclick="pauseGame()">⏸️ PAUSE</button>
-</div>
-<div id="track"><div id="road"></div><div id="playerWrap">🚶‍♂️</div></div>
-<div class="controls">
-<button class="btn btn-blue" ontouchstart="goLeft()" ontouchend="stop()" onmousedown="goLeft()" onmouseup="stop()">◀</button>
-<button class="btn btn-green" onclick="sprint()">🏃</button>
-<button class="btn btn-blue" ontouchstart="goRight()" ontouchend="stop()" onmousedown="goRight()" onmouseup="stop()">▶</button>
+<div id="menu">
+<h1 style="margin-top:60px">🚶‍♂️ JALAN SEHAT<br>SMA</h1>
+<div class="box">
+<h2>VERSI SMA</h2>
+<p>Anti Gagal Klik!</p>
+<button onclick="mulai()">▶️ KLIK DISINI UNTUK JALAN</button>
+<button onclick="alert('test klik ok')">TEST KLIK</button>
 </div>
 </div>
-
-<div id="pauseScreen" class="screen hidden" style="background:rgba(0,0,0,.8);z-index:400">
-<div class="menu-card" style="text-align:center">
-<h2>⏸️ PAUSE</h2>
-<button class="btn btn-green" onclick="resumeGame()">▶️ LANJUT</button>
-<button class="btn btn-blue" onclick="goMenu()">🏠 MENU UTAMA</button>
+<div id="game">
+<div style="background:black;color:white;padding:10px;display:flex;justify-content:space-between">
+<button onclick="kembali()" style="width:auto;padding:10px 20px;font-size:14px;background:gold">🏠 MENU</button>
+<div>💧 <span id="skor">0</span></div>
+<button onclick="kembali()" style="width:auto;padding:10px;background:white">✖️</button>
+</div>
+<div id="player">🚶‍♂️</div>
+<div style="position:fixed;bottom:0;width:100%;display:flex;gap:10px;padding:10px;background:rgba(0,0,0,.5)">
+<button style="flex:1" ontouchstart="kiri()" ontouchend="stop()" onmousedown="kiri()" onmouseup="stop()">◀</button>
+<button style="flex:1" ontouchstart="kanan()" ontouchend="stop()" onmousedown="kanan()" onmouseup="stop()">▶</button>
 </div>
 </div>
-
 <script>
-let score=0,dist=0,px=50,dir=0,isPlaying=false,items=[],loopId,speed=5;
-function startGame(){
- console.log('start');score=0;dist=0;px=50;items=[];document.querySelectorAll('.item').forEach(i=>i.remove());
- document.getElementById('menu').classList.add('hidden');document.getElementById('pauseScreen').classList.add('hidden');document.getElementById('gameScreen').classList.remove('hidden');
- isPlaying=true;run();
+let s=0,x=50,d=0,run=false,objs=[];
+function mulai(){document.getElementById('menu').style.display='none';document.getElementById('game').style.display='block';run=true;loop();}
+function kembali(){run=false;document.getElementById('game').style.display='none';document.getElementById('menu').style.display='block';}
+function kiri(){d=-5}function kanan(){d=5}function stop(){d=0}
+function loop(){
+ if(!run)return;
+ x+=d*0.8;if(x<10)x=10;if(x>90)x=90;document.getElementById('player').style.left=x+'%';
+ if(Math.random()<0.05){let e=document.createElement('div');e.className='obj';e.innerText=Math.random()<0.7?'💧':'🕳️';e.style.left=(Math.random()*80+10)+'%';e.style.top='0px';e.dataset.t=e.innerText=='💧'?'good':'bad';document.getElementById('game').appendChild(e);objs.push(e);}
+ objs.forEach((o,i)=>{let y=parseFloat(o.style.top);y+=5;o.style.top=y+'px';if(y>600){o.remove();objs.splice(i,1);return;}let ox=parseFloat(o.style.left);if(y>400&&y<500&&Math.abs(ox-x)<10){if(o.dataset.t=='good'){s++;document.getElementById('skor').innerText=s;}o.remove();objs.splice(i,1);}});
+ requestAnimationFrame(loop);
 }
-function goMenu(){isPlaying=false;cancelAnimationFrame(loopId);document.querySelectorAll('.screen').forEach(s=>s.classList.add('hidden'));document.getElementById('menu').classList.remove('hidden');}
-function pauseGame(){isPlaying=false;cancelAnimationFrame(loopId);document.getElementById('pauseScreen').classList.remove('hidden');}
-function resumeGame(){document.getElementById('pauseScreen').classList.add('hidden');document.getElementById('gameScreen').classList.remove('hidden');isPlaying=true;run();}
-function goLeft(){dir=-6}function goRight(){dir=6}function stop(){dir=0}function sprint(){speed=12;setTimeout(()=>speed=5,800)}
-function spawn(){if(Math.random()<0.06){let el=document.createElement('div');el.className='item';let r=Math.random();el.innerText=r<0.5?'💧':r<0.8?'🍎':'🕳️';el.dataset.t=r<0.8?'good':'bad';el.style.left=(Math.random()*80+10)+'%';el.style.top='-50px';document.getElementById('track').appendChild(el);items.push(el);}}
-function run(){if(!isPlaying)return;dist+=speed/10;px+=dir*0.8;if(px<10)px=10;if(px>90)px=90;document.getElementById('playerWrap').style.left=px+'%';document.getElementById('score').innerText=score;document.getElementById('dist').innerText=Math.floor(dist);spawn();items.forEach((o,i)=>{let y=parseFloat(o.style.top);y+=speed;o.style.top=y+'px';if(y>600){o.remove();items.splice(i,1);return;}let ox=parseFloat(o.style.left);if(y>380&&y<480&&Math.abs(ox-px)<10){if(o.dataset.t==='good'){score++;o.remove();items.splice(i,1);}else{o.remove();items.splice(i,1);}}});loopId=requestAnimationFrame(run);}
-document.getElementById('btnStart').addEventListener('touchstart',function(e){e.preventDefault();startGame();},{passive:false});
 </script>
 </body>
 </html>
