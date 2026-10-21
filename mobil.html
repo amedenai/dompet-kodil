@@ -3,118 +3,132 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
-<title>MOBIL ADVENTURE HD 4K</title>
+<title>MOBIL 3D HD 8K</title>
 <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@700;900&display=swap" rel="stylesheet">
 <style>
 *{margin:0;padding:0;box-sizing:border-box;font-family:'Fredoka',sans-serif}
-body{background:#0a3a9e;height:100vh;overflow:hidden;color:white}
+body{background:#050a1a;height:100vh;overflow:hidden}
 .screen{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:15px;z-index:10}
 .hidden{display:none!important}
-#menu{background:radial-gradient(circle at 50% 0%,#5ab2ff,#1a6bff 50%,#0a3a9e)}
-.logo{width:180px;height:180px;background:white;border-radius:35px;display:flex;align-items:center;justify-content:center;font-size:90px;box-shadow:0 15px 40px rgba(0,0,0,.4),0 0 0 6px rgba(255,255,255,.2);animation:float 2s infinite}
-@keyframes float{50%{transform:translateY(-12px)}}
-.logo-text{font-size:36px;text-align:center;text-shadow:0 4px 0 #0a3a9e;font-weight:900;margin-top:12px;line-height:.9}
-.menu-card{background:white;border-radius:28px;padding:20px;width:100%;max-width:360px;margin-top:14px;box-shadow:0 20px 40px rgba(0,0,0,.3)}
-.btn{display:block;width:100%;padding:16px;border:none;border-radius:18px;font-size:18px;font-weight:900;margin-bottom:10px;cursor:pointer;box-shadow:0 6px 0 rgba(0,0,0,.2)}
-.btn:active{transform:translateY(4px)}
-.btn-yellow{background:linear-gradient(180deg,#ffe27a,#ffbe2e);color:#1a3a8a}
-.btn-blue{background:linear-gradient(180deg,#3a8bff,#1e5eff);color:white}
-.btn-dark{background:#0a2a6e;color:white}
-#gameScreen{padding:0;background:linear-gradient(180deg,#87CEEB,#3aa0ff)}
-.topbar{display:flex;justify-content:space-between;width:100%;padding:10px 15px;background:rgba(0,0,0,.25);font-weight:900;align-items:center}
-#gameArea{flex:1;width:96%;max-width:420px;background:linear-gradient(180deg,#87CEEB 0%,#E0F6FF 40%,#8B7355 40%,#6B8E23 42%,#8B7355 100%);border-radius:24px;position:relative;overflow:hidden;margin:10px auto;box-shadow:0 20px 40px rgba(0,0,0,.3);border:4px solid white}
-#road{position:absolute;bottom:0;width:100%;height:38%;background:repeating-linear-gradient(90deg,#444 0 40px,#555 40px 80px);border-top:6px solid #FFD700}
-#car{position:absolute;bottom:40px;left:160px;font-size:65px;z-index:5;transition:bottom .2s;filter:drop-shadow(0 4px 6px rgba(0,0,0,.4))}
-.obj{position:absolute;top:-80px;font-size:50px;z-index:4}
-.controls{display:flex;gap:10px;width:100%;max-width:420px;padding:12px 12px 22px}
-.controls .btn{flex:1;margin:0;padding:20px;font-size:26px}
+#menu{background:radial-gradient(ellipse at 50% 0%,#1e5eff,#0a3a9e 40%,#050a1a 80%)}
+.logo3d{width:200px;height:200px;background:linear-gradient(145deg,#fff,#ddd);border-radius:40px;display:flex;align-items:center;justify-content:center;font-size:100px;box-shadow:0 30px 60px rgba(0,0,0,.6),0 0 0 8px rgba(255,215,0,.8),0 0 40px gold;animation:float3d 2s infinite;transform:rotateX(15deg) rotateY(-10deg)}
+@keyframes float3d{0%,100%{transform:rotateX(15deg) rotateY(-10deg) translateY(0)}50%{transform:rotateX(20deg) rotateY(-5deg) translateY(-15px)}}
+.logo-text{font-size:38px;text-align:center;text-shadow:0 3px 0 #000,0 0 20px #3aa0ff;font-weight:900;margin-top:14px;line-height:.9;color:white}
+.badge{background:linear-gradient(90deg,gold,#ff8c00);color:#000;padding:6px 16px;border-radius:20px;font-size:13px;font-weight:900;margin-top:8px;box-shadow:0 4px 15px rgba(255,215,0,.6)}
+.menu-card{background:linear-gradient(180deg,#fff,#e6f0ff);border-radius:28px;padding:22px;width:100%;max-width:380px;margin-top:16px;box-shadow:0 20px 60px rgba(0,0,0,.5),inset 0 2px 0 white;border:2px solid rgba(255,255,255,.8)}
+.btn{display:block;width:100%;padding:17px;border:none;border-radius:18px;font-size:18px;font-weight:900;margin-bottom:11px;cursor:pointer;box-shadow:0 8px 0 rgba(0,0,0,.25),0 10px 20px rgba(0,0,0,.2);transition:.1s}
+.btn:active{transform:translateY(6px);box-shadow:0 2px 0 rgba(0,0,0,.25)}
+.btn-gold{background:linear-gradient(180deg,#ffe27a,#ff8c00);color:#000;border:2px solid white}
+.btn-blue{background:linear-gradient(180deg,#5ab2ff,#1e5eff);color:white;border:2px solid rgba(255,255,255,.5)}
+.btn-dark{background:linear-gradient(180deg,#1a2a6e,#0a1a4e);color:white}
+
+#gameScreen{padding:0;background:linear-gradient(180deg,#0a3a9e 0%,#3aa0ff 30%,#87CEEB 60%)}
+.topbar{display:flex;justify-content:space-between;width:100%;padding:12px 14px;background:linear-gradient(180deg,rgba(0,0,0,.6),rgba(0,0,0,.2));font-weight:900;align-items:center;color:white;backdrop-filter:blur(10px);z-index:20}
+#gameArea{flex:1;width:100%;max-width:440px;position:relative;overflow:hidden;margin:0 auto;perspective:600px;perspective-origin:50% 0%;background:linear-gradient(180deg,#87CEEB 0%,#b8e6ff 25%,#6B8E23 25.5%,#8B7355 26%,#444 26.5%);}
+#road3d{position:absolute;bottom:-20%;left:-25%;width:150%;height:130%;background:repeating-linear-gradient(90deg,#2a2a2a 0 60px,#3a3a3a 60px 120px);transform:rotateX(60deg);transform-origin:50% 100%;box-shadow:inset 0 0 100px rgba(0,0,0,.8)}
+#roadLine{position:absolute;bottom:-20%;left:50%;width:12px;height:130%;background:repeating-linear-gradient(0deg,white 0 40px,transparent 40px 80px);transform:rotateX(60deg) translateX(-50%);transform-origin:50% 100%}
+#carWrap{position:absolute;bottom:35px;left:50%;transform:translateX(-50%);z-index:10;transition:left .15s ease-out;filter:drop-shadow(0 20px 15px rgba(0,0,0,.6))}
+#car{font-size:78px;display:block;transform:rotateX(25deg);transition:transform .2s}
+#carShadow{position:absolute;bottom:-8px;left:50%;transform:translateX(-50%);width:70px;height:18px;background:radial-gradient(ellipse,#0008,transparent 70%);border-radius:50%;filter:blur(2px)}
+.obj3d{position:absolute;top:-100px;font-size:52px;z-index:5;filter:drop-shadow(0 10px 8px rgba(0,0,0,.5));transform-origin:bottom center}
+#particles{position:absolute;inset:0;pointer-events:none;z-index:9}
+.controls{display:flex;gap:10px;width:100%;max-width:440px;padding:10px 10px 20px;background:linear-gradient(180deg,transparent,rgba(0,0,0,.4));z-index:20}
+.controls .btn{flex:1;margin:0;padding:22px 10px;font-size:28px}
+.tiltLeft{transform:rotateX(25deg) rotateZ(-15deg)!important}
+.tiltRight{transform:rotateX(25deg) rotateZ(15deg)!important}
 </style>
 </head>
 <body>
 <div id="menu" class="screen">
-<div class="logo">🚙</div>
-<div class="logo-text">MOBIL<br>ADVENTURE</div>
-<div style="background:gold;color:#0a3a9e;padding:5px 14px;border-radius:12px;font-size:12px;font-weight:900;margin-top:8px">🔥 OFFROAD HD 4K 🔥</div>
+<div class="logo3d">🏎️</div>
+<div class="logo-text">MOBIL<br>3D ADVENTURE</div>
+<div class="badge">💎 ULTRA HD 8K 3D EDITION 💎</div>
 <div class="menu-card">
-<button class="btn btn-yellow" onclick="startGame()">▶️ GAS SEKARANG!</button>
-<button class="btn btn-blue" onclick="alert('Ambil koin 🪙, hindari batu 🪨! Lompat pakai tombol ⬆️!')">❓ CARA MAIN</button>
-<button class="btn btn-dark" onclick="document.documentElement.requestFullscreen()">⛶ FULL SCREEN</button>
+<button class="btn btn-gold" onclick="startGame()">▶️ GAS POLL 3D!</button>
+<button class="btn btn-blue" onclick="alert('🎮 3D MODE:\n◀ ▶ Belok + Drift 3D\n⬆️ NITRO LOMPAT\n🪙 Koin = Turbo\n🪨 Batu = Slow\nGeser jari di layar buat belok!')">🎮 CARA MAIN 3D</button>
+<button class="btn btn-dark" onclick="document.documentElement.requestFullscreen()">⛶ FULL SCREEN 8K</button>
 </div>
 </div>
 
 <div id="gameScreen" class="screen hidden">
 <div class="topbar">
-<button onclick="goMenu()" style="background:gold;color:#0a3a9e;border:2px solid white;padding:6px 14px;border-radius:12px;font-weight:900">🏠 MENU</button>
+<button onclick="goMenu()" style="background:linear-gradient(90deg,gold,#ff8c00);color:#000;border:2px solid white;padding:7px 16px;border-radius:14px;font-weight:900;box-shadow:0 4px 10px rgba(0,0,0,.3)">🏠 MENU</button>
 <div>🪙 <span id="score">0</span> | ❤️ <span id="lives">999</span></div>
-<div>⏩ <span id="speedTxt">0</span> KM</div>
+<div style="background:rgba(255,255,255,.2);padding:5px 12px;border-radius:20px">💨 <span id="speedTxt">0</span></div>
 </div>
 <div id="gameArea">
-<div id="road"></div>
-<div id="car">🚙</div>
+<div id="road3d"></div>
+<div id="roadLine"></div>
+<div id="particles"></div>
+<div id="carWrap"><div id="carShadow"></div><div id="car">🏎️</div></div>
 </div>
 <div class="controls">
-<button class="btn btn-blue" ontouchstart="moveLeft()" ontouchend="stopMove()" onmousedown="moveLeft()" onmouseup="stopMove()">◀</button>
-<button class="btn btn-yellow" ontouchstart="jump()" onmousedown="jump()">⬆️ LOMPAT</button>
-<button class="btn btn-blue" ontouchstart="moveRight()" ontouchend="stopMove()" onmousedown="moveRight()" onmouseup="stopMove()">▶</button>
+<button class="btn btn-blue" id="btnL" ontouchstart="moveLeft()" ontouchend="stopMove()" onmousedown="moveLeft()" onmouseup="stopMove()">◀ DRIFT</button>
+<button class="btn btn-gold" ontouchstart="nitro()" onmousedown="nitro()">🚀 NITRO</button>
+<button class="btn btn-blue" id="btnR" ontouchstart="moveRight()" ontouchend="stopMove()" onmousedown="moveRight()" onmouseup="stopMove()">DRIFT ▶</button>
 </div>
 </div>
 
-<div id="overScreen" class="screen hidden" style="background:radial-gradient(circle,#ff5a7a,#c70036)">
-<h1 style="font-size:40px">CRASH!</h1>
+<div id="overScreen" class="screen hidden" style="background:radial-gradient(circle at 50% 0%,#ff5a7a,#8b0000)">
+<h1 style="font-size:44px;text-shadow:0 4px 0 #000">💥 CRASH 3D!</h1>
 <div class="menu-card" style="text-align:center;color:#1a3a8a">
-<div style="font-size:18px;font-weight:700">JARAK</div>
-<div style="font-size:46px;font-weight:900" id="finalScore">0 KM</div>
-<button class="btn btn-yellow" style="margin-top:14px" onclick="startGame()">🔄 GAS LAGI</button>
-<button class="btn btn-dark" onclick="goMenu()">🏠 MENU</button>
+<div style="font-size:16px;font-weight:700">JARAK TEMPUH 3D</div>
+<div style="font-size:50px;font-weight:900" id="finalScore">0 M</div>
+<button class="btn btn-gold" style="margin-top:14px" onclick="startGame()">🔄 GAS LAGI 3D</button>
+<button class="btn btn-dark" onclick="goMenu()">🏠 MENU HD</button>
 </div>
 </div>
 
 <script>
-let score=0,lives=999,carX=160,carY=40,isJump=false,isPlaying=false,gameLoop,speed=5,dir=0,objs=[],dist=0;
-const carEl=document.getElementById('car'), area=document.getElementById('gameArea');
+let score=0,lives=999,carX=50,dist=0,speed=6,dir=0,isJump=false,objs=[],isPlaying=false,loopId,turbo=0;
+const carWrap=document.getElementById('carWrap'), carEl=document.getElementById('car'), area=document.getElementById('gameArea');
 
 function startGame(){
- score=0;lives=999;carX=160;dist=0;speed=5;objs=[];document.querySelectorAll('.obj').forEach(o=>o.remove());
- document.querySelectorAll('.screen').forEach(s=>s.classList.add('hidden'));
- document.getElementById('gameScreen').classList.remove('hidden');
- document.getElementById('score').innerText=0;document.getElementById('lives').innerText=lives;
- isPlaying=true;loop();
+ score=0;lives=999;carX=50;dist=0;speed=6;turbo=0;objs=[];document.querySelectorAll('.obj3d').forEach(o=>o.remove());
+ document.querySelectorAll('.screen').forEach(s=>s.classList.add('hidden'));document.getElementById('gameScreen').classList.remove('hidden');
+ isPlaying=true;run();
 }
-function goMenu(){isPlaying=false;cancelAnimationFrame(gameLoop);document.querySelectorAll('.screen').forEach(s=>s.classList.add('hidden'));document.getElementById('menu').classList.remove('hidden');}
-function moveLeft(){dir=-7}function moveRight(){dir=7}function stopMove(){dir=0}
-function jump(){if(isJump)return;isJump=true;carEl.style.bottom='130px';setTimeout(()=>{carEl.style.bottom='40px';setTimeout(()=>isJump=false,200)},400)}
-
+function goMenu(){isPlaying=false;cancelAnimationFrame(loopId);document.querySelectorAll('.screen').forEach(s=>s.classList.add('hidden'));document.getElementById('menu').classList.remove('hidden');}
+function moveLeft(){dir=-8;carEl.className='tiltLeft'}function moveRight(){dir=8;carEl.className='tiltRight'}function stopMove(){dir=0;carEl.className=''}
+function nitro(){
+ if(isJump)return;isJump=true;turbo=20;carWrap.style.bottom='150px';carWrap.style.transform='translateX(-50%) scale(1.3)';carEl.innerText='🏎️💨';
+ setTimeout(()=>{carWrap.style.bottom='35px';carWrap.style.transform='translateX(-50%) scale(1)';carEl.innerText='🏎️';setTimeout(()=>isJump=false,200)},500);
+}
 function spawn(){
- if(Math.random()<0.05){
-   let el=document.createElement('div');el.className='obj';
-   let type=Math.random();
-   if(type<0.5){el.innerText='🪙';el.dataset.type='coin';}
-   else if(type<0.8){el.innerText='🪨';el.dataset.type='rock';}
-   else{el.innerText='⛽';el.dataset.type='fuel';}
-   el.style.left=(Math.random()*320)+'px';el.style.top='-60px';area.appendChild(el);objs.push(el);
+ if(Math.random()<0.06){
+   let el=document.createElement('div');el.className='obj3d';let r=Math.random();
+   if(r<0.5){el.innerText='🪙';el.dataset.t='coin';el.style.fontSize='48px';}
+   else if(r<0.8){el.innerText='🪨';el.dataset.t='rock';el.style.fontSize='58px';}
+   else{el.innerText='🔋';el.dataset.t='fuel';}
+   el.style.left=(Math.random()*80+10)+'%';el.style.top='-80px';area.appendChild(el);objs.push(el);
  }
 }
-
-function loop(){
+function run(){
  if(!isPlaying)return;
- carX+=dir;if(carX<0)carX=0;if(carX>340)carX=340;carEl.style.left=carX+'px';
- dist+=speed;speed+=0.002;document.getElementById('speedTxt').innerText=Math.floor(dist/10);document.getElementById('score').innerText=score;
+ carX+=dir*0.7;if(carX<5)carX=5;if(carX>95)carX=95;carWrap.style.left=carX+'%';
+ let curSpeed=speed+turbo;dist+=curSpeed;if(turbo>0)turbo-=0.3;
+ document.getElementById('score').innerText=score;document.getElementById('speedTxt').innerText=Math.floor(curSpeed*18)+' KM/H';document.getElementById('lives').innerText=lives;
  spawn();
  objs.forEach((o,i)=>{
-   let y=parseFloat(o.style.top);y+=speed;o.style.top=y+'px';
-   if(y>480){o.remove();objs.splice(i,1);return;}
-   if(y>320 && y<420 && Math.abs(parseFloat(o.style.left)-carX)<50){
-     if(o.dataset.type==='coin'){score+=10;o.remove();objs.splice(i,1);}
-     else if(o.dataset.type==='rock' && !isJump){lives--;document.getElementById('lives').innerText=lives;o.remove();objs.splice(i,1);carEl.innerText='💥';setTimeout(()=>carEl.innerText='🚙',200);if(lives<=0){gameOver();return;}}
-     else if(o.dataset.type==='fuel'){lives+=10;document.getElementById('lives').innerText=lives;o.remove();objs.splice(i,1);}
+   let y=parseFloat(o.style.top||-80);y+=curSpeed*1.2;o.style.top=y+'px';
+   let scale=1+y/800;o.style.transform=`scale(${scale}) rotateX(${20+scale*5}deg)`;
+   if(y>650){o.remove();objs.splice(i,1);return;}
+   let ox=parseFloat(o.style.left);let diff=Math.abs(ox-carX);
+   if(y>380 && y<520 && diff<9){
+     if(o.dataset.t==='coin'){score+=20;turbo=12;createParticle(ox,y,'✨');o.remove();objs.splice(i,1);}
+     else if(o.dataset.t==='rock' && !isJump){lives-=5;if(lives<0)lives=0;document.getElementById('lives').innerText=lives;createParticle(ox,y,'💥');carEl.innerText='💥';setTimeout(()=>carEl.innerText='🏎️',200);o.remove();objs.splice(i,1);if(lives<=0){gameOver();return;}}
+     else if(o.dataset.t==='fuel'){lives+=15;turbo=15;createParticle(ox,y,'⚡');o.remove();objs.splice(i,1);}
    }
  });
- gameLoop=requestAnimationFrame(loop);
+ loopId=requestAnimationFrame(run);
 }
-function gameOver(){isPlaying=false;document.getElementById('finalScore').innerText=Math.floor(dist/10)+' KM';document.querySelectorAll('.screen').forEach(s=>s.classList.add('hidden'));document.getElementById('overScreen').classList.remove('hidden');}
-
-// geser jari langsung
-area.addEventListener('touchmove',e=>{e.preventDefault();let rect=area.getBoundingClientRect();let x=e.touches[0].clientX-rect.left-32;carX=Math.max(0,Math.min(340,x))},{passive:false});
+function createParticle(x,y,txt){
+ let p=document.createElement('div');p.innerText=txt;p.style.position='absolute';p.style.left=x+'%';p.style.top=y+'px';p.style.fontSize='30px';p.style.zIndex=15;area.appendChild(p);
+ let py=y;let id=setInterval(()=>{py-=6;p.style.top=py+'px';p.style.opacity=0.9-py/1000;if(py<y-80){clearInterval(id);p.remove();}},30);
+}
+function gameOver(){isPlaying=false;document.getElementById('finalScore').innerText=Math.floor(dist/5)+' M';document.querySelectorAll('.screen').forEach(s=>s.classList.add('hidden'));document.getElementById('overScreen').classList.remove('hidden');}
+area.addEventListener('touchmove',e=>{e.preventDefault();let rect=area.getBoundingClientRect();let x=((e.touches[0].clientX-rect.left)/rect.width)*100;carX=Math.max(5,Math.min(95,x));if(e.touches[0].clientX<rect.left+rect.width/2){carEl.className='tiltLeft'}else{carEl.className='tiltRight'}},{passive:false});
+area.addEventListener('touchend',()=>{carEl.className=''});
 </script>
 </body>
-</html>￼Enter
+</html>
