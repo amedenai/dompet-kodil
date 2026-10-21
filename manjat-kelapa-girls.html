@@ -1,0 +1,106 @@
+<!DOCTYPE html><html lang="id"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>MANJAT KELAPA GIRLS - LAUT FULL</title><style>
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@700;900&display=swap');
+*{margin:0;padding:0;box-sizing:border-box;font-family:'Outfit',sans-serif}
+body{background:#000;display:flex;justify-content:center;overflow:hidden}
+#app{width:100%;max-width:500px;height:100vh;background:linear-gradient(to bottom,#87CEEB 0%,#1e90ff 30%,#001a33 70%,#000 100%);display:flex;flex-direction:column;color:white;position:relative}
+#top{height:50px;background:linear-gradient(90deg,#ff1493,#fbbf24);display:flex;justify-content:space-between;align-items:center;padding:0 8px;z-index:20;border-bottom:3px solid gold}
+#sea{flex:1;position:relative;overflow:hidden}
+.tree{position:absolute;bottom:0;width:60px;background:linear-gradient(#8B4513,#5D2906);border-radius:10px 10px 0 0;display:flex;flex-direction:column;align-items:center}
+.leaves{width:90px;height:90px;background:radial-gradient(#22c55e,#14532d);border-radius:50%;margin-top:-20px;box-shadow:0 0 20px #22c55e}
+.coconut{position:absolute;top:20px;width:16px;height:16px;background:radial-gradient(#8B4513,#3d1f00);border-radius:50%;font-size:10px;display:flex;align-items:center;justify-content:center}
+.girl{position:absolute;width:32px;height:32px;border-radius:50%;border:2px solid gold;overflow:hidden;transition:bottom 0.2s;z-index:10;box-shadow:0 0 10px gold}
+.girl img{width:100%;height:100%;object-fit:cover}
+.fish{position:absolute;font-size:18px;animation:swim linear infinite}
+@keyframes swim{from{transform:translateX(-50px)}to{transform:translateX(550px)}}
+.wave{position:absolute;bottom:0;left:0;right:0;height:20px;background:repeating-linear-gradient(90deg,rgba(255,255,255,.3) 0 20px,transparent 20px 40px);animation:wave 2s linear infinite}
+@keyframes wave{from{transform:translateX(0)}to{transform:translateX(40px)}}
+#controls{height:80px;background:#000;display:grid;grid-template-columns:repeat(4,1fr);gap:4px;padding:6px;border-top:3px solid gold;z-index:20}
+.cbtn{border-radius:12px;border:0;font-weight:900;font-size:10px;cursor:pointer}
+#leader{position:absolute;top:60px;right:6px;background:rgba(0,0,0,.8);border:2px solid gold;border-radius:10px;padding:6px;font-size:8px;z-index:15;width:110px;max-height:180px;overflow-y:auto}
+</style></head><body>
+<div id="app">
+<div id="top">
+<div style="display:flex;gap:6px;align-items:center"><b>🌴 MANJAT KELAPA</b><div style="font-size:9px;background:black;padding:2px 6px;border-radius:10px">👁️ <span id="views">2,134</span> | 🥥 <span id="score">0</span></div></div>
+<div style="background:black;padding:4px 8px;border-radius:20px;border:2px solid gold;font-size:9px">🏆 <b id="rank">#1,234</b></div>
+</div>
+
+<div id="sea">
+<div id="leader"><b style="color:gold">🏆 LEADERBOARD 2000 PESERTA</b><div id="list"></div></div>
+<!-- pohon kelapa -->
+<div class="tree" style="left:20%"><div class="leaves"></div><div style="width:100%;height:100px;display:flex;flex-direction:column;align-items:center;justify-content:flex-start;padding-top:10px"><div class="coconut" style="left:10px">🥥</div><div class="coconut" style="left:30px;top:40px">🥥</div><div class="coconut" style="left:5px;top:60px">🥥</div></div></div>
+<div class="tree" style="left:50%"><div class="leaves" style="background:radial-gradient(#4ade80,#14532d)"></div><div style="width:100%;height:140px"></div></div>
+<div class="tree" style="left:75%"><div class="leaves"></div><div style="width:100%;height:80px"><div class="coconut">🥥</div></div></div>
+
+<div class="girl" id="myGirl" style="left:23%;bottom:20px"><img src="https://raw.githubusercontent.com/amedenai/dompet-kodil/main/IMG-20261021-WA0461.jpg"><div style="position:absolute;bottom:-2px;background:gold;color:black;font-size:6px;font-weight:900;width:100%;text-align:center">YOU</div></div>
+
+<div class="wave"></div>
+</div>
+
+<div id="controls">
+<button class="cbtn" style="background:gold;color:black" onclick="climb()">🌴 MANJAT!</button>
+<button class="cbtn" style="background:#22c55e;color:white" onclick="shake()">🥥 GOYANG!</button>
+<button class="cbtn" style="background:#fbbf24;color:black" onclick="collect()">💰 AMBIL KELAPA</button>
+<button class="cbtn" style="background:#ec4899;color:white" onclick="jumpSea()">🌊 LONCAT LAUT</button>
+<button class="cbtn" style="background:#7c3aed;color:white" onclick="fishCatch()">🐟 TANGKAP IKAN</button>
+<button class="cbtn" style="background:#06b6d4;color:white" onclick="speed()">⚡ NGEBUT</button>
+<button class="cbtn" style="background:#222;color:white;border:2px solid #333" onclick="talk()">💖 TALK</button>
+<button class="cbtn" style="background:white;color:black" onclick="share()">📤 SHARE</button>
+</div>
+<div style="background:#111;text-align:center;font-size:7px;padding:2px">🌴 MANJAT KELAPA + BAWAH LAUT ADA IKAN 100+ | FOTO ASLI TUAN JADI PEMAIN!</div>
+</div>
+
+<script>
+let h=20, score=0, views=2134, rank=1234;
+let myGirl=document.getElementById('myGirl');
+function climb(){
+ h=Math.min(200,h+15);
+ myGirl.style.bottom=h+'px';
+ score+=10;
+ document.getElementById('score').innerText=score;
+ rank=Math.max(1,rank-5);
+ document.getElementById('rank').innerText='#'+rank;
+ views+=3;
+ document.getElementById('views').innerText=views.toLocaleString();
+ if(h>150){addFish('🥥 Jatuh!'); score+=50; h=20; myGirl.style.bottom='20px';}
+ if(Math.random()<0.5) talk();
+}
+function shake(){
+ myGirl.style.transform='translateX(5px)'; setTimeout(()=>myGirl.style.transform='',100);
+ score+=5; document.getElementById('score').innerText=score;
+ for(let i=0;i<3;i++){let f=document.createElement('div');f.className='fish';f.innerText='🥥';f.style.left='20%';f.style.bottom=(h+20)+'px';f.style.animation='swim 1s linear';document.getElementById('sea').appendChild(f); setTimeout(()=>f.remove(),1000);}
+}
+function collect(){score+=20;document.getElementById('score').innerText=score; addFish('💰 +20 kelapa!');}
+function jumpSea(){
+ h=5; myGirl.style.bottom='5px'; myGirl.style.left='40%'; 
+ addFish('🌊 Byurr! Loncat ke laut!');
+ for(let i=0;i<5;i++){let f=document.createElement('div');f.className='fish';f.innerText=['🐟','🐠','🦈','🐙','🦑'][Math.floor(Math.random()*5)];f.style.bottom=Math.random()*100+'px';f.style.animationDuration=(3+Math.random()*4)+'s';document.getElementById('sea').appendChild(f); setTimeout(()=>f.remove(),5000);}
+}
+function fishCatch(){score+=30;document.getElementById('score').innerText=score; addFish('🐟 Dapat ikan! +30');}
+function speed(){for(let i=0;i<5;i++) setTimeout(climb,i*100);}
+function talk(){let t=['Halo Tuan! Girls manjat kelapa nih! Tinggi banget!','Wah kelapanya banyak! Jatuhin semua ya Tuan!','Lautnya biru! Ada ikan hiu! Takut!','Tuan liat aku manjat! Kuat kan? Hehe'];let m=t[Math.floor(Math.random()*t.length)]; addFish('💖 '+m); try{let u=new SpeechSynthesisUtterance(m);u.lang='id-ID';u.pitch=1.8;u.rate=1;speechSynthesis.speak(u);}catch(e){}}
+function addFish(txt){let d=document.createElement('div');d.style.position='absolute';d.style.left='50%';d.style.bottom=(h+40)+'px';d.style.background='rgba(0,0,0,.8)';d.style.padding='2px 6px';d.style.borderRadius='10px';d.style.fontSize='9px';d.style.zIndex='30';d.innerText=txt;document.getElementById('sea').appendChild(d); setTimeout(()=>d.remove(),1500);}
+function share(){alert('🌴 MANJAT KELAPA GIRLS! Link: https://amedenai.github.io/dompet-kodil/manjat-kelapa-girls.html');}
+
+// spawn ikan terus
+setInterval(()=>{
+ let sea=document.getElementById('sea');
+ let f=document.createElement('div'); f.className='fish';
+ f.innerText=['🐟','🐠','🐡','🦈','🐙','🦑','🐳','🦐'][Math.floor(Math.random()*8)];
+ f.style.bottom=Math.random()*120+'px';
+ f.style.animationDuration=(4+Math.random()*6)+'s';
+ sea.appendChild(f);
+ setTimeout(()=>f.remove(),8000);
+},600);
+
+// leaderboard 2000 peserta
+let names=['Sultan Alip','Mas Rizky','Bunda Siti','Bocil FF','Mas Budi','Nenek Gaul','Pak RT','Mbak Sari'];
+let list=document.getElementById('list');
+for(let i=0;i<15;i++){
+ let n=names[Math.floor(Math.random()*names.length)]+' '+(Math.floor(Math.random()*2000)+1);
+ let s=Math.floor(Math.random()*5000);
+ let d=document.createElement('div'); d.style.display='flex'; d.style.justifyContent='space-between'; d.style.borderBottom='1px solid #222'; d.style.padding='2px 0';
+ d.innerHTML=`<span>${i+1}. ${n}</span><span style="color:gold">${s} 🥥</span>`;
+ list.appendChild(d);
+}
+talk();
+</script></body></html>￼Enter
