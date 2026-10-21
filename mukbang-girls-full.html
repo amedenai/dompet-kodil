@@ -1,0 +1,174 @@
+<!DOCTYPE html><html lang="id"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>MUKBANG GIRLS FULL - SUARA + MAKANAN FULL</title><style>
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@700;900&display=swap');
+*{margin:0;padding:0;box-sizing:border-box;font-family:'Outfit',sans-serif}
+body{background:#000;display:flex;justify-content:center}
+#app{width:100%;max-width:500px;min-height:100vh;background:#0f0a0a;display:flex;flex-direction:column;color:white;overflow:hidden}
+#soundBtn{position:sticky;top:0;background:linear-gradient(90deg,red,gold);color:black;font-weight:900;padding:12px;text-align:center;z-index:100;font-size:13px;cursor:pointer}
+#top{height:48px;background:linear-gradient(90deg,#ff6b00,#ff1493);display:flex;justify-content:space-between;align-items:center;padding:0 10px;border-bottom:3px solid gold}
+#table{flex:1;background:radial-gradient(ellipse at center,#2a1a0a 0%,#1a0f00 60%,#000 100%);padding:8px;position:relative;display:flex;flex-direction:column}
+#girlBox{background:rgba(0,0,0,.85);border:3px solid gold;border-radius:20px;padding:10px;margin:6px 0;display:flex;gap:10px;align-items:center;box-shadow:0 0 30px rgba(255,215,0,.5)}
+#girl{width:90px;height:90px;border-radius:18px;border:3px solid gold;overflow:hidden;flex-shrink:0;position:relative}
+#girl img{width:100%;height:100%;object-fit:cover}
+#mouth{position:absolute;bottom:8px;left:50%;transform:translateX(-50%);width:20px;height:8px;background:#ff1493;border-radius:0 0 10px 10px;transition:0.1s}
+#mouth.eat{height:20px;border-radius:50%;background:#000}
+#stats{display:flex;gap:4px;margin:6px 0}
+.stat{flex:1;background:rgba(0,0,0,.7);border:2px solid #333;border-radius:10px;padding:6px;text-align:center;font-size:9px}
+.stat b{font-size:14px;display:block}
+#foodGrid{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin:8px 0;max-height:220px;overflow-y:auto;background:rgba(0,0,0,.5);border-radius:12px;padding:6px;border:2px solid #333}
+.food{aspect-ratio:1;background:linear-gradient(#222,#000);border:2px solid #444;border-radius:12px;display:flex;flex-direction:column;align-items:center;justify-content:center;cursor:pointer;font-size:24px;position:relative;transition:0.2s}
+.food:hover{transform:scale(1.05);border-color:gold}
+.food b{font-size:7px;margin-top:2px;text-align:center;line-height:1}
+.food .price{font-size:6px;background:gold;color:black;padding:1px 4px;border-radius:10px;font-weight:900;position:absolute;top:2px;right:2px}
+#chat{height:90px;background:rgba(0,0,0,.7);border:2px solid #333;border-radius:10px;padding:6px;font-size:10px;overflow-y:auto;margin:4px 0}
+#controls{display:grid;grid-template-columns:repeat(4,1fr);gap:4px;background:#000;padding:6px;border-top:3px solid gold}
+.cbtn{padding:10px;border-radius:12px;border:0;font-weight:900;font-size:9px;cursor:pointer}
+.eating{animation:chew 0.3s infinite}
+@keyframes chew{0%,100%{transform:scale(1)}50%{transform:scale(1.1)}}
+</style></head><body>
+<div id="app">
+<div id="soundBtn" onclick="enableSound()">🔊 KLIK UNTUK AKTIFKAN SUARA MUKBANG GIRLS! 🔊</div>
+<div id="top">
+<div style="display:flex;gap:6px;align-items:center"><div style="width:8px;height:8px;background:red;border-radius:50%;animation:blink 1s infinite"></div><b>🔴 MUKBANG LIVE</b><div style="font-size:9px;background:black;padding:2px 6px;border-radius:10px">👁️ <span id="views">4,291</span></div></div>
+<div style="display:flex;gap:4px"><div style="background:black;padding:4px 8px;border-radius:20px;border:2px solid gold;font-size:9px">💰 Rp <b id="money">0</b></div><div style="background:black;padding:4px 8px;border-radius:20px;font-size:9px">🍜 <b id="eaten">0</b> porsi</div></div>
+</div>
+
+<div id="table">
+<div id="stats">
+<div class="stat"><b id="fullness">0%</b>Kenyang</div>
+<div class="stat"><b id="happy">100%</b>Happy</div>
+<div class="stat"><b id="level">Lv 1</b>Mukbanger</div>
+<div class="stat"><b style="color:gold" id="donate">Rp 0</b>Donasi</div>
+</div>
+
+<div id="girlBox">
+<div id="girl"><img src="https://raw.githubusercontent.com/amedenai/dompet-kodil/main/IMG-20261021-WA0461.jpg"><div id="mouth"></div><div style="position:absolute;top:2px;right:2px;background:red;color:white;font-size:6px;padding:2px 4px;border-radius:10px;font-weight:900">🔴 LIVE</div></div>
+<div style="flex:1">
+<div style="font-weight:900;font-size:12px" id="girlTalk">HALO SULTAN! LAPER NIH! MAU MUKBANG! 💖🍜</div>
+<div style="font-size:9px;opacity:.8;margin:4px 0" id="foodName">Pilih makanan di bawah, Girls makan langsung!</div>
+<div style="display:flex;gap:4px"><div style="background:gold;color:black;padding:2px 6px;border-radius:10px;font-size:8px;font-weight:900">🎙️ ASMR ON</div><div style="background:#ff1493;color:white;padding:2px 6px;border-radius:10px;font-size:8px;font-weight:900" id="status">😋 Laper</div></div>
+</div>
+</div>
+
+<div style="font-size:9px;font-weight:900;margin:4px 0">🍜 MENU MUKBANG FULL 30+ MAKANAN - KLIK BUAT MAKAN!</div>
+<div id="foodGrid"></div>
+
+<div id="chat">
+<div><b style="color:gold">Sultan_Alip:</b> Mukbang mie ayam dong Girls! 😋</div>
+<div><b style="color:#ff1493">Mas_Rizky:</b> Suaranya ngunyah bikin laper! 🤤</div>
+</div>
+</div>
+
+<div id="controls">
+<button class="cbtn" style="background:gold;color:black" onclick="talk()">💖 NGOMONG</button>
+<button class="cbtn" style="background:#ff6b00;color:white" onclick="randomEat()">🎲 RANDOM</button>
+<button class="cbtn" style="background:#ec4899;color:white" onclick="spicyChallenge()">🌶️ PEDES!</button>
+<button class="cbtn" style="background:linear-gradient(90deg,red,gold);color:white" onclick="bigDonate()">👑 DONASI 10JT</button>
+<button class="cbtn" style="background:#22c55e;color:white" onclick="drink()">🥤 MINUM</button>
+<button class="cbtn" style="background:#7c3aed;color:white" onclick="burp()">😮‍💨 SENDAWA</button>
+<button class="cbtn" style="background:#222;color:white;border:2px solid #333" onclick="testSound()">🔊 TEST SUARA</button>
+<button class="cbtn" style="background:white;color:black" onclick="share()">📤 SHARE</button>
+</div>
+<div style="padding:4px;background:#111;text-align:center;font-size:7px;color:#666">💡 KLIK MAKANAN = MAKAN + SUARA ASMR! WAJIB KLIK TOMBOL KUNING ATAS DULU BUAT SUARA!</div>
+</div>
+
+<script>
+let soundOn=false, eaten=0, money=0, full=0, donateMoney=0, level=1, foods=[
+{e:'🍜',n:'Mie Ayam Sultan',p:'15k',cal:10,talk:'Mie ayamnya enak banget Tuan! Ayamnya banyak! Nyam nyam!'},
+{e:'🍗',n:'Ayam Geprek Pedes',p:'20k',cal:15,talk:'Pedesnya nampol Tuan! Tapi nagih! Aduh bibir aku pedes!'},
+{e:'🍔',n:'Burger Jumbo',p:'25k',cal:20,talk:'Burgernya gede banget! Mulut aku sampe penuh!'},
+{e:'🍕',n:'Pizza Keju Lumer',p:'30k',cal:18,talk:'Kejunya molor Tuan! Lumer di mulut! Enak!'},
+{e:'🍣',n:'Sushi Salmon',p:'35k',cal:8,talk:'Sushi salmon fresh banget! Kayak di Jepang!'},
+{e:'🍩',n:'Donat Pink',p:'10k',cal:12,talk:'Donat pink gemes kayak aku! Manis!'},
+{e:'🍿',n:'Popcorn Caramel',p:'12k',cal:10,talk:'Popcornnya kriuk kriuk! Nonton sambil mukbang!'},
+{e:'🍰',n:'Kue Ultah',p:'18k',cal:14,talk:'Kue ultahnya lembut! Tuan mau suapin?'},
+{e:'🍤',n:'Udang Goreng',p:'28k',cal:12,talk:'Udangnya kriuk! Fresh dari laut!'},
+{e:'🥩',n:'Steak Wagyu',p:'100k',cal:25,talk:'Wagyu Sultan! Mahal tapi enak gila! Makasih Tuan!'},
+{e:'🍙',n:'Onigiri',p:'8k',cal:6,talk:'Onigiri lucu! Nasi kepal ala Jepang!'},
+{e:'🥟',n:'Dimsum',p:'15k',cal:9,talk:'Dimsumnya juicy! Gigit langsung meletus!'},
+{e:'🍢',n:'Sate Ayam',p:'18k',cal:11,talk:'Sate ayam madura! Bumbunya kacang enak!'},
+{e:'🍝',n:'Spaghetti',p:'22k',cal:13,talk:'Spaghettinya al dente! Italian banget!'},
+{e:'🥘',n:'Rendang',p:'25k',cal:16,talk:'Rendang Padang! Pedes gurih! Juara!'},
+{e:'🍱',n:'Bento Box',p:'20k',cal:14,talk:'Bento lengkap! Ada nasi, ayam, telur! Komplit!'},
+{e:'🧋',n:'Boba Brown Sugar',p:'15k',cal:10,talk:'Bobanya kenyal! Manis! Seger!'},
+{e:'🍦',n:'Es Krim',p:'8k',cal:8,talk:'Es krimnya dingin! Lidah aku beku!'},
+{e:'🌶️',n:'Sambel Setan',p:'5k',cal:20,talk:'SAMBEL SETAN! PEDES GILA! TOLONG AIR!'},
+{e:'🍉',n:'Semangka',p:'6k',cal:4,talk:'Semangkanya segar! Juicy!'},
+{e:'🍇',n:'Anggur',p:'12k',cal:3,talk:'Anggurnya manis asem! Sehat!'},
+{e:'🍓',n:'Strawberry',p:'15k',cal:3,talk:'Strawberry gemes! Kayak bibir aku!'},
+{e:'🥭',n:'Mangga',p:'8k',cal:5,talk:'Mangganya manis! Harum!'},
+{e:'🍪',n:'Cookies',p:'7k',cal:9,talk:'Cookies coklat! Kriuk di luar lembut di dalam!'}
+];
+
+function init(){let g=document.getElementById('foodGrid');foods.forEach((f,i)=>{let d=document.createElement('div');d.className='food';d.innerHTML=`<div>${f.e}</div><b>${f.n}</b><div class="price">${f.p}</div>`;d.onclick=()=>eat(i);g.appendChild(d);});speechSynthesis.getVoices();}
+
+function enableSound(){
+ soundOn=true;
+ document.getElementById('soundBtn').style.display='none';
+ let u=new SpeechSynthesisUtterance('Suara mukbang aktif Tuan! Sekarang Girls bisa mukbang dengan suara! Halo Sultan! Laper banget nih! Ayo kasih makan Girls!');
+ u.lang='id-ID';u.pitch=1.9;u.rate=0.95;speechSynthesis.speak(u);
+ addChat('SYSTEM','✅ SUARA MUKBANG AKTIF!','gold');
+}
+
+function eat(i){
+ let f=foods[i];
+ eaten++; full=Math.min(100,full+f.cal); money+=parseInt(f.p);
+ document.getElementById('eaten').innerText=eaten;
+ document.getElementById('money').innerText=(money/1000).toFixed(0)+'k';
+ document.getElementById('fullness').innerText=full+'%';
+ document.getElementById('foodName').innerText='Makan '+f.n+' '+f.e;
+ document.getElementById('girlTalk').innerText=f.talk.toUpperCase();
+ document.getElementById('status').innerText='😋 Nyam!';
+ let mouth=document.getElementById('mouth');mouth.classList.add('eat');
+ document.getElementById('girl').classList.add('eating');
+ setTimeout(()=>{mouth.classList.remove('eat');document.getElementById('girl').classList.remove('eating');document.getElementById('status').innerText=full>80?'🤢 Kenyang':'😋 Laper';},800);
+ addChat('🍜 GIRLS','Makan '+f.n+'! '+f.talk,'#ff1493');
+ if(full>90){addChat('SYSTEM','Girls kenyang banget Tuan! Istirahat dulu!','red');}
+ if(eaten%5==0){level++;document.getElementById('level').innerText='Lv '+level;}
+ // SUARA
+ if(soundOn){
+  speechSynthesis.cancel();
+  let u=new SpeechSynthesisUtterance(f.talk + ' Nyam nyam nyam! Enak banget!');
+  u.lang='id-ID';u.pitch=1.9+Math.random()*0.3;u.rate=1+Math.random()*0.2;u.volume=1;
+  let voices=speechSynthesis.getVoices();
+  let v=voices.find(x=>x.lang.includes('id'));
+  if(v) u.voice=v;
+  speechSynthesis.speak(u);
+ }else{
+  addChat('SYSTEM','Klik tombol kuning atas dulu buat suara!','red');
+ }
+ let views=parseInt(document.getElementById('views').innerText.replace(',',''))+Math.floor(Math.random()*10);
+ document.getElementById('views').innerText=views.toLocaleString();
+}
+
+function talk(){
+ if(!soundOn){alert('🔊 KLIK TOMBOL KUNING ATAS DULU!');return;}
+ let t=['Halo Sultan! Girls laper nih! Kasih makan dong!','Makanan favorit aku mie ayam Tuan! Enak!','Tuan nonton mukbang aku sambil ngiler ya? Hehe','Makasih donasinya Tuan! Jadi bisa beli makanan banyak!','Kenyang banget Tuan! Perut aku buncit nih! Lucu!'];
+ let txt=t[Math.floor(Math.random()*t.length)];
+ document.getElementById('girlTalk').innerText=txt;
+ let u=new SpeechSynthesisUtterance(txt);u.lang='id-ID';u.pitch=1.9;u.rate=0.95;speechSynthesis.speak(u);
+ addChat('💖 GIRLS',txt,'#ec4899');
+}
+function randomEat(){eat(Math.floor(Math.random()*foods.length));}
+function spicyChallenge(){
+ if(!soundOn)enableSound();
+ addChat('🌶️ CHALLENGE','GIRLS MAKAN SAMBEL SETAN! PEDES GILA!','red');
+ document.getElementById('girlTalk').innerText='PEDES BANGET TUAN! TOLONG! AIR! AIR!';
+ let u=new SpeechSynthesisUtterance('Pedes banget Tuan! Lidah aku kebakar! Tolong air! Pedes! Pedes! Aduh!');u.lang='id-ID';u.pitch=2.2;u.rate=1.3;speechSynthesis.speak(u);
+ full+=20;document.getElementById('fullness').innerText=full+'%';
+}
+function drink(){
+ addChat('🥤 GIRLS','Minum boba! Seger! Gluk gluk!','#22c55e');
+ if(soundOn){let u=new SpeechSynthesisUtterance('Minum boba brown sugar! Seger banget! Gluk gluk!');u.lang='id-ID';u.pitch=1.9;speechSynthesis.speak(u);}
+ full=Math.max(0,full-10);document.getElementById('fullness').innerText=full+'%';
+}
+function burp(){
+ addChat('😮‍💨 GIRLS','*SENDAWA* Eh malu! Kenyang banget! Hehe','gold');
+ if(soundOn){let u=new SpeechSynthesisUtterance('Eh sendawa! Malu ah! Kenyang banget Tuan!');u.lang='id-ID';u.pitch=1.7;speechSynthesis.speak(u);}
+}
+function bigDonate(){donateMoney+=10000000;document.getElementById('donate').innerText='Rp '+(donateMoney/1000000)+'JT';addChat('👑 SULTAN','DONASI 10 JUTA BUAT MUKBANG!','gold');if(soundOn){let u=new SpeechSynthesisUtterance('Wah Sultan donasi sepuluh juta! Makasih Sultan! Jadi bisa mukbang sepuasnya!');u.lang='id-ID';u.pitch=2;speechSynthesis.speak(u);}}
+function testSound(){if(!soundOn)enableSound();else{let u=new SpeechSynthesisUtterance('Test suara mukbang! Nyam nyam nyam! Enak!');u.lang='id-ID';u.pitch=1.9;speechSynthesis.speak(u);}}
+function addChat(n,m,c){let d=document.createElement('div');d.innerHTML=`<b style="color:${c}">${n}:</b> ${m}`;let box=document.getElementById('chat');box.appendChild(d);box.scrollTop=9999;}
+function share(){alert('🍜 MUKBANG GIRLS FULL!\\nLink: https://amedenai.github.io/dompet-kodil/mukbang-girls-full.html\\n30+ makanan + suara ASMR!');}
+init();
+setTimeout(()=>speechSynthesis.getVoices(),500);
+</script></body></html>￼Enter
