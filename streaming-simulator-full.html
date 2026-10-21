@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+<title>Streaming Simulator ULTIMATE</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@600;800;900&display=swap');
+*{margin:0;padding:0;box-sizing:border-box;font-family:'Outfit',sans-serif}
+body{background:#020617;display:flex;justify-content:center;height:100vh;overflow:hidden}
+#app{width:100%;max-width:500px;height:100vh;background:linear-gradient(180deg,#0f0f1e,#020617);display:flex;flex-direction:column;position:relative}
+
+/* HEADER */
+#header{padding:8px 10px;background:rgba(0,0,0,.9);border-bottom:2px solid #ff0000;display:flex;justify-content:space-between;align-items:center}
+.live{background:#ff0000;padding:3px 8px;border-radius:12px;font-size:11px;font-weight:900;animation:blink 1s infinite}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.6}}
+.stat{font-size:11px;text-align:center} .stat b{color:#fbbf24;font-size:13px}
+
+/* STAGE */
+#stage{flex:1;position:relative;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:10px}
+#avatarBox{position:relative}
+#avatar{width:110px;height:110px;border-radius:50%;background:linear-gradient(135deg,#fde68a,#f59e0b);display:flex;align-items:center;justify-content:center;font-size:55px;border:4px solid white;box-shadow:0 0 25px #fbbf24;cursor:pointer}
+#avatarLabel{position:absolute;bottom:-8px;left:50%;transform:translateX(-50%);background:#fbbf24;color:black;font-size:9px;padding:2px 8px;border-radius:10px;font-weight:900;white-space:nowrap}
+#actionInfo{text-align:center;margin-top:14px}
+#actionTxt{font-size:16px;font-weight:900} #actionSub{font-size:11px;color:#94a3b8;margin-top:3px}
+
+/* BARS */
+.bars{position:absolute;top:10px;left:10px;right:10px;display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px}
+.barCard{background:rgba(0,0,0,.7);border:1px solid #333;border-radius:10px;padding:6px;text-align:center}
+.barCard .l{font-size:7px;color:#fbbf24;letter-spacing:1px} .barCard .v{font-size:11px;font-weight:800}
+.bar{height:5px;background:#222;border-radius:3px;margin-top:4px;overflow:hidden}
+.fill{height:100%;transition:width .5s}
+
+/* CHAT */
+#chatWrap{height:36%;background:rgba(0,0,0,.9);border-top:2px solid #222;display:flex;flex-direction:column}
+#chatTabs{display:flex;gap:4px;padding:6px;background:#111}
+.tab{font-size:10px;padding:4px 8px;border-radius:8px;background:#222;color:#888;border:0}
+.tab.active{background:#fbbf24;color:black;font-weight:900}
+#chat{flex:1;overflow-y:auto;padding:6px;font-size:11px;display:flex;flex-direction:column;gap:5px}
+.msg{padding:5px 8px;border-radius:10px;background:rgba(255,255,255,.06);display:flex;justify-content:space-between;align-items:center}
+.msg.donate{background:linear-gradient(90deg,#f59e0b,#ef4444);font-weight:700;box-shadow:0 0 10px #f59e0b}
+.msg.hate{background:linear-gradient(90deg,#450a0a,#7f1d1d);border:1px solid #ef4444}
+.msg.raid{background:linear-gradient(90deg,#4c1d95,#db2777)}
+.msg.sultan{background:linear-gradient(90deg,#fde68a,#f59e0b,#78350f);color:black;font-weight:900;animation:shine 1s infinite;box-shadow:0 0 20px gold}
+@keyframes shine{0%,100%{transform:scale(1)}50%{transform:scale(1.02)}}
+.banBtn{margin-left:8px;background:#ef4444;color:white;border:0;border-radius:6px;padding:2px 6px;font-size:9px;font-weight:800}
+
+/* ACTIONS */
+#actions{display:grid;grid-template-columns:repeat(4,1fr);gap:5px;padding:8px;background:#0a0a0f}
+.btn{padding:10px 2px;border-radius:10px;border:0;font-weight:800;font-size:10px;color:white;box-shadow:0 3px 0 rgba(0,0,0,.6)}
+.btn:active{transform:translateY(2px);box-shadow:0 1px 0 rgba(0,0,0,.6)}
+#secondRow{display:grid;grid-template-columns:1fr 1fr 1fr;gap:5px;padding:0 8px 8px;background:#0a0a0f}
+
+/* MODALS */
+.modal{position:fixed;inset:0;background:rgba(0,0,0,.9);display:none;align-items:center;justify-content:center;z-index:100;padding:20px}
+.modal.show{display:flex}
+.box{background:linear-gradient(145deg,#1e293b,#0f172a);border:2px solid #fbbf24;border-radius:16px;padding:16px;width:100%;max-width:360px;text-align:center;box-shadow:0 0 30px rgba(251,191,36,.4)}
+.box h2{font-size:18px;margin-bottom:8px} .box p{font-size:12px;color:#94a3b8;margin-bottom:12px}
+.pick{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin:10px 0}
+.pick div{padding:12px;background:#0f172a;border:2px solid #333;border-radius:12px;font-size:24px;cursor:pointer}
+.pick div.sel{border-color:#fbbf24;background:#fbbf24;transform:scale(1.1)}
+.bigBtn{width:100%;padding:12px;border-radius:12px;border:0;background:linear-gradient(#fde68a,#f59e0b);color:#78350f;font-weight:900;font-size:14px;margin-top:8px}
+</style>
+</head>
+<body>
+<div id="app">
+<div id="header">
+<div class="live">● LIVE</div>
+<div class="stat">👁 <b id="viewers">15</b></div>
+<div class="stat">❤️ <b id="followers">0</b></div>
+<div class="stat">💰 Rp <b id="money">0</b></div>
+<div class="stat" id="timer">00:00</div>
+</div>
+
+<div id="stage">
+<div class="bars">
+<div class="barCard"><div class="l">ENERGY</div><div class="v" id="eTxt">100%</div><div class="bar"><div class="fill" id="eFill" style="width:100%;background:#22c55e"></div></div></div>
+<div class="barCard"><div class="l">HYPE</div><div class="v" id="hTxt">50%</div><div class="bar"><div class="fill" id="hFill" style="width:50%;background:#f59e0b"></div></div></div>
+<div class="barCard"><div class="l">SETUP LV</div><div class="v" id="setupTxt">LV 1</div><div class="bar"><div class="fill" style="width:20%;background:#8b5cf6"></div></div></div>
+</div>
+<div id="avatarBox" onclick="openAvatar()"><div id="avatar">🎙️</div><div id="avatarLabel">GANTI AVATAR</div></div>
+<div id="actionInfo"><div id="actionTxt">Mulai Streaming Sultan!</div><div id="actionSub">Pilih aksi di bawah, jangan sampai pingsan!</div></div>
+</div>
+
+<div id="chatWrap">
+<div id="chatTabs">
+<button class="tab active" onclick="switchTab('all')" id="tabAll">ALL</button>
+<button class="tab" onclick="switchTab('hate')" id="tabHate">😡 HATE (0)</button>
+<button class="tab" onclick="switchTab('donate')" id="tabDonate">💸 DONATE</button>
+</div>
+<div id="chat"></div>
+</div>
+
+<div id="actions">
+<button class="btn" style="background:linear-gradient(#38bdf8,#0ea5e9)" onclick="act('game')">🎮 GAME</button>
+<button class="btn" style="background:linear-gradient(#fbbf24,#f59e0b);color:#713f12" onclick="act('react')">😂 REACT</button>
+<button class="btn" style="background:linear-gradient(#a78bfa,#8b5cf6)" onclick="act('drama')">🔥 DRAMA</button>
+<button class="btn" style="background:linear-gradient(#4ade80,#22c55e)" onclick="act('giveaway')">🎁 GIVEAWAY 10K</button>
+</div>
+<div id="secondRow">
+<button class="btn" style="background:#1e293b;border:1px solid #333" onclick="act('rest')">😴 REST (+30 EN)</button>
+<button class="btn" style="background:linear-gradient(#fde68a,#f59e0b);color:#78350f" onclick="openShop()">🛒 UPGRADE SETUP</button>
+<button class="btn" style="background:linear-gradient(#f87171,#dc2626)" onclick="openSalary()">💼 GAJI & PAJAK</button>
+</div>
+</div>
+
+<!-- MODAL AVATAR -->
+<div class="modal" id="modalAvatar"><div class="box">
+<h2>🎭 Pilih Avatar Sultan</h2><p>Ganti karakter streaming lu!</p>
+<div class="pick" id="avatarPick">
+<div onclick="pickAvatar('🎙️','Streamer Pemula')">🎙️</div>
+<div onclick="pickAvatar('👩‍🎤','Cewek Gamers')">👩‍🎤</div>
+<div onclick="pickAvatar('🧑‍💻','Sultan Gaming')">🧑‍💻</div>
+<div onclick="pickAvatar('👑','Lord Sultan')">👑</div>
+<div onclick="pickAvatar('🦊','Kitsune VTuber')">🦊</div>
+<div onclick="pickAvatar('😺','Neko Streamer')">😺</div>
+<div onclick="pickAvatar('🤖','Robot AI')">🤖</div>
+<div onclick="pickAvatar('👽','Alien Sultan')">👽</div>
+</div>
+<div style="font-size:12px;margin:8px" id="avatarName">Streamer Pemula</div>
+<button class="bigBtn" onclick="closeModal('modalAvatar')">PAKAI AVATAR INI</button>
+</div></div>
+
+<!-- MODAL SHOP -->
+<div class="modal" id="modalShop"><div class="box">
+<h2>🛒 Upgrade Setup</h2><p id="shopDesc">Setup lebih bagus = viewers naik lebih cepat!</p>
+<div style="text-align:left;font-size:12px;background:#020617;padding:10px;border-radius:10px;margin:10px 0">
+<div>🎤 Mic LV <span id="micLV">1</span> - +5% viewers <button style="float:right" onclick="buy('mic')">Rp 25k</button></div>
+<div style="margin-top:8px">📷 Kamera LV <span id="camLV">1</span> - +10% hype <button style="float:right" onclick="buy('cam')">Rp 50k</button></div>
+<div style="margin-top:8px">💻 PC LV <span id="pcLV">1</span> - -50% energy cost <button style="float:right" onclick="buy('pc')">Rp 100k</button></div>
+</div>
+<button class="bigBtn" onclick="closeModal('modalShop')">TUTUP TOKO</button>
+</div></div>
+
+<!-- MODAL GAJI -->
+<div class="modal" id="modalSalary"><div class="box">
+<h2>💼 Laporan Gaji Bulanan</h2>
+<div style="background:#020617;padding:12px;border-radius:10px;text-align:left;font-size:12px;line-height:20px" id="salaryBox"></div>
+<button class="bigBtn" onclick="closeModal('modalSalary')">TUTUP</button>
+</div></div>
+
+<script>
+var viewers=15, followers=0, money=0, energy=100, hype=50, sec=0, setupLV=1;
+var micLV=1, camLV=1, pcLV=1;
+var totalDonate=0, totalBanned=0, month=1;
+var avatar='🎙️', curTab='all';
+var names=['Joko','SultanGaming','Mawar','BocilKematian','Lord123','CeweGamers','KangDonate','Rizky','Ayu','Fren','Haters99','ToxicBoy'];
+var msgs=['first!','semangat bang','GG','spill setup dong','wkwkwk','gas terus','kok sepi?','content keren'];
+var hateMsgs=['BAPERAN LU!','GAK LUCU!','SKILL ISSUE!','PENSI AJA!','CRINGE BET!','OVERRATED!'];
+var chatEl=document.getElementById('chat');
+var hateCount=0;
+
+function addChat(txt,type,canBan){
+ var d=document.createElement('div'); d.className='msg '+type; d.dataset.type=type;
+ var ban=''; if(canBan) ban='<button class="banBtn" onclick="banUser(this)">BAN</button>';
+ d.innerHTML='<span>'+txt+'</span>'+ban;
+ chatEl.appendChild(d); chatEl.scrollTop=chatEl.scrollHeight;
+ if(type==='hate'){hateCount++; document.getElementById('tabHate').innerHTML='😡 HATE ('+hateCount+')';}
+ if(chatEl.children.length>40) chatEl.removeChild(chatEl.firstChild);
+ filterChat();
+}
+function switchTab(t){curTab=t; document.querySelectorAll('.tab').forEach(function(b){b.classList.remove('active');}); document.getElementById(t==='all'?'tabAll':t==='hate'?'tabHate':'tabDonate').classList.add('active'); filterChat();}
+function filterChat(){var childs=chatEl.children; for(var i=0;i<childs.length;i++){var tp=childs[i].dataset.type; if(curTab==='all') childs[i].style.display='flex'; else if(curTab==='hate') childs[i].style.display=tp==='hate'?'flex':'none'; else if(curTab==='donate') childs[i].style.display=(tp==='donate'||tp==='sultan')?'flex':'none';}}
+function banUser(btn){var msg=btn.parentElement; msg.style.background='#222'; msg.innerHTML='<span>✅ User di-BAN! Hype +5%</span>'; totalBanned++; hype+=5; if(hype>100)hype=100; update(); setTimeout(function(){if(msg.parentElement) msg.remove();},1500);}
+
+function update(){
+ document.getElementById('viewers').innerHTML=viewers;
+ document.getElementById('followers').innerHTML=followers;
+ document.getElementById('money').innerHTML=money.toLocaleString('id-ID');
+ document.getElementById('eTxt').innerHTML=Math.floor(energy)+'%'; document.getElementById('eFill').style.width=energy+'%';
+ document.getElementById('hTxt').innerHTML=hype+'%'; document.getElementById('hFill').style.width=hype+'%';
+ document.getElementById('setupTxt').innerHTML='LV '+setupLV;
+ document.getElementById('micLV').innerHTML=micLV; document.getElementById('camLV').innerHTML=camLV; document.getElementById('pcLV').innerHTML=pcLV;
+ if(energy<30) document.getElementById('eFill').style.background='#ef4444'; else document.getElementById('eFill').style.background='#22c55e';
+}
+
+function act(type){
+ if(energy<8 && type!=='rest'){addChat('⚠️ Kecapean! Klik REST dulu!','raid'); return;}
+ var cost=pcLV===1?12:pcLV===2?8:5;
+ if(type!=='rest') energy-=cost;
+ var gv=0,gf=0,gm=0,gh=0, txt='', sub='';
+ var mult=1+ (micLV*0.05)+(camLV*0.1)+(setupLV*0.1);
+
+ if(type==='game'){gv=Math.floor((Math.random()*8+2)*mult); gh=4; txt='🎮 Main game seru!'; sub='Gameplay stabil, viewer naik'; document.getElementById('avatar').innerHTML=avatar;}
+ if(type==='react'){gv=Math.floor((Math.random()*15+5)*mult); gf=Math.floor(Math.random()*5+1); gh=8; txt='😂 React ngakak!'; sub='Chat ngakak semua!';}
+ if(type==='drama'){gv=Math.floor((Math.random()*40+15)*mult); gf=Math.floor(Math.random()*12); gh=-12; txt='🔥 DRAMA PANAS!'; sub='Viewer meledak, hype turun!'; if(Math.random()<0.6){addChat('🚨 <b>RAID 30 VIEWERS!</b> dari Lord Gaming!','raid'); gv+=30;} if(Math.random()<0.5){addChat('<b>'+names[Math.floor(Math.random()*names.length)]+':</b> '+hateMsgs[Math.floor(Math.random()*hateMsgs.length)],'hate',true);}}
+ if(type==='giveaway'){if(money<10000){addChat('❌ Duit kurang! Butuh 10k buat giveaway','raid'); energy+=cost; return;} gv=Math.floor((Math.random()*25+10)*mult); gf=Math.floor(Math.random()*18+5); gm=-10000; gh=15; txt='🎁 GIVEAWAY 10K!'; sub='Followers meledak!';}
+ if(type==='rest'){energy+=30; if(energy>100) energy=100; txt='😴 Istirahat...'; sub='Energy +30%'; gv=-Math.floor(viewers*0.05); if(gv>0) gv=0;}
+
+ viewers+=gv; followers+=gf; money+=gm; hype+=gh;
+ if(hype>100)hype=100; if(hype<0)hype=0; if(viewers<5)viewers=5;
+ document.getElementById('actionTxt').innerHTML=txt; document.getElementById('actionSub').innerHTML=sub;
+ for(var i=0;i<2;i++) setTimeout(function(){addChat('<b>'+names[Math.floor(Math.random()*names.length)]+':</b> '+msgs[Math.floor(Math.random()*msgs.length)]);}, i*350);
+ update();
+ if(followers>200){addChat('🏆 <b>VIRAL! SPONSOR MASUK!</b>','donate');}
+
+ // DONASI SULTAN 1 JUTA - RARE!
+ if(Math.random()<0.03 && viewers>50){
+  var isSultan=Math.random()<0.15;
+  if(isSultan){var don=1000000; money+=don; totalDonate+=don; addChat('👑💎 <b>SULTAN ASLI DONASI Rp 1.000.000!</b> - "GOKIL BANG LANJUTKAN!"','sultan'); viewers+=50; followers+=30; hype=100; var aud=new Audio('https://www.myinstants.com/media/sounds/anime-wow.mp3'); try{aud.play();}catch(e){}}
+  else {var don2=Math.floor(Math.random()*50000)+5000; money+=don2; totalDonate+=don2; addChat('💸 <b>'+names[Math.floor(Math.random()*names.length)]+'</b> donasi Rp '+don2.toLocaleString('id-ID'),'donate');}
+ }
+ if(followers>1000){openSalary(true);}
+}
+
+function openAvatar(){document.getElementById('modalAvatar').classList.add('show');}
+function pickAvatar(icon,name){avatar=icon; document.getElementById('avatar').innerHTML=icon; document.getElementById('avatarName').innerHTML=name; document.querySelectorAll('#avatarPick div').forEach(function(d){d.classList.remove('sel');}); event.target.classList.add('sel');}
+function openShop(){document.getElementById('modalShop').classList.add('show');}
+function buy(item){
+ if(item==='mic'&&money>=25000){money-=25000; micLV++; setupLV++; addChat('✅ Mic upgrade ke LV '+micLV+'! Viewer +5%','donate');}
+ else if(item==='cam'&&money>=50000){money-=50000; camLV++; setupLV++; addChat('✅ Kamera upgrade ke LV '+camLV+'! Hype +10%','donate');}
+ else if(item==='pc'&&money>=100000){money-=100000; pcLV++; setupLV++; addChat('✅ PC Sultan LV '+pcLV+'! Energy cost -50%','donate');}
+ else{addChat('❌ Duit kurang!','raid'); return;}
+ update();
+}
+function openSalary(isWin){
+ var tax=Math.floor(totalDonate*0.1); var bersih=money-tax;
+ var html='<b>📅 Bulan ke-'+month+'</b><br>👁 Total Views: '+viewers*30+'<br>❤️ Followers: '+followers+'<br>💸 Total Donasi: Rp '+totalDonate.toLocaleString('id-ID')+'<br>💰 Saldo: Rp '+money.toLocaleString('id-ID')+'<br>📉 Pajak (10%): Rp '+tax.toLocaleString('id-ID')+'<br><b>💵 Bersih: Rp '+bersih.toLocaleString('id-ID')+'</b><br><br>🔨 Banned: '+totalBanned+' haters<br>⭐ Setup: LV '+setupLV;
+ if(isWin) html+='<br><br>🏆 <b style="color:gold">KAMU JADI SULTAN STREAMER!</b>';
+ document.getElementById('salaryBox').innerHTML=html;
+ document.getElementById('modalSalary').classList.add('show');
+ if(!isWin){month++; money=bersih; totalDonate=0;}
+}
+function closeModal(id){document.getElementById(id).classList.remove('show');}
+
+setInterval(function(){
+ sec++; document.getElementById('timer').innerHTML=Math.floor(sec/60).toString().padStart(2,'0')+':'+(sec%60).toString().padStart(2,'0');
+ if(sec%6===0 && Math.random()<0.5) addChat('<b>'+names[Math.floor(Math.random()*names.length)]+':</b> '+msgs[Math.floor(Math.random()*msgs.length)]);
+ if(sec%4===0 && Math.random()<0.25){addChat('<b>'+names[Math.floor(Math.random()*names.length)]+':</b> '+hateMsgs[Math.floor(Math.random()*hateMsgs.length)],'hate',true);}
+ if(sec%3===0 && energy<100) energy+=0.8;
+ if(sec%30===0 && sec>0) openSalary(false);
+ update();
+ if(energy<=0){addChat('😴 <b>PINGSAN! STREAM OFF 10 DETIK!</b>','raid'); energy=0; viewers=Math.floor(viewers*0.6); setTimeout(function(){energy=50; addChat('☕ Bangun! Lanjut streaming!','raid');},10000);}
+},1000);
+
+addChat('🔴 <b>Stream dimulai! Jadi Sultan Streaming!</b>','raid');
+addChat('<b>System:</b> Semua fitur aktif! Donasi 1 JUTA bisa muncul kapan aja! Good luck!');
+update();
+</script>
+</body>
+</html>￼Enter
