@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="id"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>GIRLS ALL IN ONE - 3 GAME SULTAN</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@800;900&display=swap');
+*{margin:0;padding:0;box-sizing:border-box;font-family:'Outfit',sans-serif}
+body{background:#020617;display:flex;justify-content:center}
+#app{width:100%;max-width:540px;min-height:100vh;background:#0a0a0f;display:flex;flex-direction:column}
+#header{height:60px;background:linear-gradient(90deg,#ec4899,#f59e0b);display:flex;align-items:center;padding:0 10px;gap:10px;border-bottom:3px solid white}
+#girlFace{width:44px;height:44px;border-radius:14px;border:3px solid white;overflow:hidden;box-shadow:0 0 15px gold;flex-shrink:0}
+#girlFace img{width:100%;height:100%;object-fit:cover}
+#tabs{display:grid;grid-template-columns:repeat(3,1fr);gap:0;background:#000}
+.tab{padding:12px 2px;text-align:center;font-weight:900;font-size:11px;cursor:pointer;border-bottom:3px solid transparent;color:white;transition:.2s}
+.tab.active{border-color:#fbbf24;background:#1f1600;color:#fbbf24}
+#gameArea{flex:1;background:#000;position:relative;overflow:hidden}
+.game{display:none;height:100%} .game.active{display:flex;flex-direction:column}
+iframe{width:100%;height:100%;border:0}
+.preview{height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:20px;text-align:center;color:white;background:radial-gradient(#1e1b4b,#020617)}
+.btnPlay{margin-top:12px;padding:14px 28px;border-radius:20px;border:3px solid white;background:linear-gradient(90deg,#ec4899,#f59e0b);color:white;font-weight:900;font-size:14px;cursor:pointer;box-shadow:0 0 20px #ec4899}
+</style></head><body>
+<div id="app">
+<div id="header">
+<div id="girlFace"><img src="IMG-20261021-WA0461.jpg" alt="Girls"></div>
+<div style="color:white;line-height:1.1"><div style="font-weight:900;font-size:14px">PINKYCAT GIRLS - ALL IN ONE 💖</div><div style="font-size:10px;opacity:.9">Foto asli Tuan | 3 Game Sultan HD</div></div>
+<div style="margin-left:auto;background:black;color:#fbbf24;padding:6px 10px;border-radius:20px;font-size:10px;border:2px solid #fbbf24">🔴 LIVE</div>
+</div>
+
+<div id="tabs">
+<div class="tab active" onclick="switchGame(0)">🎙️ STREAMING V2</div>
+<div class="tab" onclick="switchGame(1)">🏠 RENOVASI 3D</div>
+<div class="tab" onclick="switchGame(2)">🍜 MIE AYAM HD</div>
+</div>
+
+<div id="gameArea">
+<div class="game active" id="g0">
+<div class="preview">
+<div style="font-size:60px">🎙️💖</div>
+<div style="font-weight:900;font-size:18px;margin-top:10px">STREAMING WITH GIRLS V2 ULTIMATE</div>
+<div style="font-size:11px;opacity:.7;margin-top:6px">Ada suara cewek, fullscreen, Sultan 100JT<br>Foto Girls SAMA PERSIS pakai IMG-20261021-WA0461.jpg</div>
+<div style="margin-top:12px;width:90px;height:90px;border-radius:20px;border:3px solid #fbbf24;overflow:hidden;box-shadow:0 0 20px gold"><img src="IMG-20261021-WA0461.jpg" style="width:100%;height:100%;object-fit:cover"></div>
+<button class="btnPlay" onclick="openGame('streaming-with-girls-v2.html')">▶️ MAIN STREAMING</button>
+</div>
+</div>
+<div class="game" id="g1">
+<div class="preview">
+<div style="font-size:60px">🏠✨</div>
+<div style="font-weight:900;font-size:18px;margin-top:10px">RENOVASI RUMAH 3D HD</div>
+<div style="font-size:11px;opacity:.7;margin-top:6px">Dari semen → villa sultan | Mandornya Girls foto asli</div>
+<div style="margin-top:12px;width:90px;height:90px;border-radius:20px;border:3px solid #fbbf24;overflow:hidden;box-shadow:0 0 20px gold"><img src="IMG-20261021-WA0461.jpg" style="width:100%;height:100%;object-fit:cover"></div>
+<button class="btnPlay" onclick="openGame('renovasi-rumah-girls-3d.html')">🔨 MAIN RENOVASI</button>
+</div>
+</div>
+<div class="game" id="g2">
+<div class="preview">
+<div style="font-size:60px">🍜👩‍🍳</div>
+<div style="font-weight:900;font-size:18px;margin-top:10px">MIE AYAM FULL HD + KASIR GIRLS</div>
+<div style="font-size:11px;opacity:.7;margin-top:6px">Gerobak, bumbu lengkap, kasir wanita = foto asli Tuan yang sama persis!</div>
+<div style="margin-top:12px;width:90px;height:90px;border-radius:20px;border:3px solid #fbbf24;overflow:hidden;box-shadow:0 0 20px gold"><img src="IMG-20261021-WA0461.jpg" style="width:100%;height:100%;object-fit:cover"></div>
+<button class="btnPlay" onclick="openGame('mie-ayam-girls-full-hd.html')">🍜 MAIN MIE AYAM</button>
+</div>
+</div>
+</div>
+
+<div style="padding:8px;background:#000;display:grid;grid-template-columns:repeat(2,1fr);gap:6px">
+<button style="padding:10px;border-radius:12px;border:0;background:#222;color:white;font-weight:800;font-size:10px" onclick="speakGirls()">💖 GIRLS TALK - FOTO ASLI</button>
+<button style="padding:10px;border-radius:12px;border:0;background:#fbbf24;color:black;font-weight:900;font-size:10px" onclick="shareAll()">📤 SHARE SEMUA GAME</button>
+</div>
+</div>
+
+<script>
+function switchGame(n){
+ document.querySelectorAll('.tab').forEach((t,i)=>t.classList.toggle('active',i==n));
+ document.querySelectorAll('.game').forEach((g,i)=>g.classList.toggle('active',i==n));
+}
+function openGame(file){
+ window.open(file,'_blank');
+}
+function speakGirls(){
+ try{
+  speechSynthesis.cancel();
+  let u=new SpeechSynthesisUtterance('Halo Tuan Sultan! Ini foto asli Girls yang sama persis di semua game! Girls ada di streaming, renovasi, dan mie ayam! Makasih ya Tuan!');
+  u.lang='id-ID'; u.pitch=1.6; u.rate=1.05; speechSynthesis.speak(u);
+ }catch(e){}
+ alert('💖 GIRLS: Foto di semua game SAMA PERSIS pakai file IMG-20261021-WA0461.jpg yang Tuan upload! Gak ada yang diganti!');
+}
+function shareAll(){
+ let link='https://amedenai.github.io/dompet-kodil/girls-all-in-one.html';
+ navigator.clipboard.writeText(link).then(()=>alert('✅ LINK 3 GAME DISALIN!\n\n'+link+'\n\nShare ke kawan Tuan! Semua game foto Girls sama persis!')).catch(()=>alert(link));
+}
+speakGirls();
+</script></body></html>￼Enter
