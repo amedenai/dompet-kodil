@@ -2,115 +2,183 @@
 <html lang="id">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Dompet Kodil - DANA</title>
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+<title>Dompet Kodil - eWallet Sultan</title>
 <style>
-  body { margin:0; font-family:sans-serif; background:#f0f4f8; }
-  .header { background:#118EEA; color:white; padding:20px; border-radius:0 0 20px 20px; }
-  .saldo-box { background:white; color:black; padding:15px; border-radius:12px; margin-top:15px; display:flex; justify-content:space-between; align-items:center; }
-  .saldo { font-size:22px; font-weight:bold; }
-  .menu { display:grid; grid-template-columns: repeat(4,1fr); gap:10px; padding:20px; }
-  .menu div { background:white; padding:15px 5px; text-align:center; border-radius:12px; box-shadow:0 2px 5px rgba(0,0,0,0.1); cursor:pointer; }
-  .menu div:active { transform:scale(0.9); }
-  .riwayat { background:white; margin:0 20px; padding:15px; border-radius:12px; }
-  .item { display:flex; justify-content:space-between; padding:10px 0; border-bottom:1px solid #eee; cursor:pointer; }
-  .popup { display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.5); justify-content:center; align-items:center; }
-  .popup-content { background:white; padding:20px; border-radius:12px; width:80%; max-width:300px; text-align:center; }
-  .btn { background:#118EEA; color:white; border:none; padding:10px 20px; border-radius:8px; margin-top:10px; width:100%; }
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@600;700;800&display=swap');
+*{margin:0;padding:0;box-sizing:border-box;font-family:'Inter',sans-serif}
+body{background:#f0f4f8;display:flex;justify-content:center}
+#app{width:100%;max-width:420px;min-height:100vh;background:#fff;position:relative;box-shadow:0 0 30px rgba(0,0,0,.1)}
+.screen{display:none;padding:16px;min-height:100vh;padding-bottom:90px} .screen.active{display:block}
+.topBlue{background:linear-gradient(135deg,#108EE9,#0A6BC7);color:white;padding:20px 16px 70px;border-radius:0 0 28px 28px}
+.cardBal{background:white;color:#0f172a;border-radius:22px;padding:18px;margin-top:-50px;box-shadow:0 10px 30px rgba(0,0,0,.15);border:3px solid #e2e8f0}
+.grid4{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin:16px 0}
+.act{background:#f8fafc;border:2px solid #e2e8f0;border-radius:18px;padding:12px 4px;text-align:center;font-size:11px;font-weight:800} .act span{font-size:26px;display:block;margin-bottom:4px}
+.listItem{display:flex;justify-content:space-between;align-items:center;padding:14px;border-bottom:1px solid #f1f5f9}
+.btn{width:100%;padding:16px;border-radius:16px;border:none;font-weight:800;font-size:15px} .btnBlue{background:#108EE9;color:white} .btnGold{background:#fbbf24;color:black;border:3px solid black;box-shadow:0 4px 0 black}
+.input{width:100%;padding:14px;border-radius:12px;border:2px solid #cbd5e1;margin:8px 0;font-size:15px}
+.tabBar{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:420px;background:white;border-top:3px solid #e2e8f0;display:grid;grid-template-columns:repeat(4,1fr);padding:8px;z-index:100}
+.tab{padding:8px;text-align:center;font-size:11px;font-weight:800;opacity:.5} .tab.on{opacity:1;color:#108EE9}
+.qrBox{width:220px;height:220px;background:white;border:4px solid black;border-radius:20px;margin:20px auto;display:flex;align-items:center;justify-content:center;font-size:100px;box-shadow:0 8px 0 black}
 </style>
 </head>
 <body>
+<div id="app">
 
-<div class="header">
-  <div>Hai, Tuan Kodil 👋</div>
-  <div style="font-size:28px; margin-top:10px;">🐱</div>
-  <div class="saldo-box">
-    <div>
-      <div style="font-size:12px; color:gray;">Saldo Dompet Kodil</div>
-      <div class="saldo" id="saldo">Rp 275.000</div>
-    </div>
-    <div style="color:#118EEA; font-weight:bold; cursor:pointer;" onclick="topup()">+ Top Up</div>
-  </div>
+<!-- LOGIN -->
+<div id="s-login" class="screen active" style="background:linear-gradient(#108EE9,#0A6BC7);color:white;display:flex;flex-direction:column;justify-content:center">
+<h1 style="font-size:32px;text-align:center">💳 DOMPET KODIL</h1><p style="text-align:center;opacity:.9;margin:8px 0 24px">eWallet Sultan - Kayak DANA</p>
+<input id="hp" class="input" placeholder="Nomor HP: 0812xxxx" value="081234567890">
+<input id="pin" class="input" type="password" placeholder="PIN 6 digit" value="123456">
+<button class="btn btnGold" onclick="login()" style="margin-top:12px">MASUK / DAFTAR</button>
+<p style="text-align:center;margin-top:16px;font-size:12px;opacity:.8">Gak perlu OTP beneran, langsung masuk Tuan!</p>
 </div>
 
-<div class="menu">
-  <div onclick="aksi('Kirim')">📤<br>Kirim</div>
-  <div onclick="aksi('Minta')">📥<br>Minta</div>
-  <div onclick="aksi('Bayar')">🛒<br>Bayar</div>
-  <div onclick="topup()">💰<br>Top Up</div>
-  <div onclick="aksi('Pulsa')">📱<br>Pulsa</div>
-  <div onclick="aksi('Listrik')">💡<br>Listrik</div>
-  <div onclick="aksi('BPJS')">🏥<br>BPJS</div>
-  <div onclick="aksi('Lainnya')">⋯<br>Lainnya</div>
+<!-- HOME -->
+<div id="s-home" class="screen">
+<div class="topBlue">
+<div style="display:flex;justify-content:space-between"><div>Hi, <b id="uName">Sultan</b> 👋<br><small id="uHp">0812...</small></div><div onclick="to('s-profile')" style="background:white;color:#108EE9;padding:8px 12px;border-radius:20px;font-size:12px;font-weight:800">👤 e-KYC ✅</div></div>
+</div>
+<div class="cardBal">
+<div style="display:flex;justify-content:space-between;align-items:center"><div><small style="color:#64748b">SALDO KODIL</small><div style="font-size:28px;font-weight:800">Rp <span id="bal">0</span></div></div><button onclick="to('s-topup')" style="background:#fbbf24;padding:10px 16px;border-radius:12px;border:2px solid black;font-weight:800">+ TOP UP</button></div>
+<div style="margin-top:12px;display:flex;gap:8px"><span style="background:#dcfce7;color:#166534;padding:6px 10px;border-radius:20px;font-size:11px;font-weight:800">✅ PREMIUM</span><span style="background:#dbeafe;color:#1e40af;padding:6px 10px;border-radius:20px;font-size:11px;font-weight:800">💳 LIMIT 20JT</span></div>
+</div>
+<div class="grid4">
+<div class="act" onclick="to('s-topup')"><span>💰</span>TOP UP</div>
+<div class="act" onclick="to('s-transfer')"><span>📤</span>TRANSFER</div>
+<div class="act" onclick="to('s-qris')"><span>📷</span>QRIS</div>
+<div class="act" onclick="to('s-tarik')"><span>🏧</span>TARIK</div>
+<div class="act" onclick="alert('Bayar PLN - Coming Soon')"><span>💡</span>PLN</div>
+<div class="act" onclick="alert('Pulsa - Coming Soon')"><span>📱</span>PULSA</div>
+<div class="act" onclick="alert('BPJS - Coming Soon')"><span>🏥</span>BPJS</div>
+<div class="act" onclick="to('s-history')"><span>📊</span>RIWAYAT</div>
+</div>
+<div style="background:#f8fafc;border-radius:16px;padding:14px;margin-top:10px">
+<div style="font-weight:800;margin-bottom:10px">Transaksi Terakhir</div><div id="lastTx"></div>
+</div>
 </div>
 
-<div class="riwayat">
-  <b>Riwayat Transaksi</b>
-  <div class="item" onclick="aksi('Detail DORTMUND')">
-    <span>⚽ DORTMUND 75%</span><span style="color:green;">Berhasil</span>
-  </div>
-  <div class="item" onclick="aksi('Detail Top Up')">
-    <span>💰 Top Up 100rb</span><span style="color:green;">+ Rp 100.000</span>
-  </div>
-  <div class="item" onclick="aksi('Detail Bayar')">
-    <span>🛒 Bayar Warung</span><span style="color:red;">- Rp 25.000</span>
-  </div>
+<!-- TOP UP -->
+<div id="s-topup" class="screen">
+<h2 style="font-weight:800">💰 Top Up Saldo</h2>
+<p style="color:#64748b;font-size:13px;margin:8px 0">Pilih nominal (simulasi, langsung masuk)</p>
+<div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin:16px 0">
+<button class="btn" style="background:#f1f5f9;border:2px solid #cbd5e1" onclick="topup(20000)">20K</button>
+<button class="btn" style="background:#f1f5f9;border:2px solid #cbd5e1" onclick="topup(50000)">50K</button>
+<button class="btn" style="background:#f1f5f9;border:2px solid #cbd5e1" onclick="topup(100000)">100K</button>
+<button class="btn" style="background:#f1f5f9;border:2px solid #cbd5e1" onclick="topup(200000)">200K</button>
+<button class="btn" style="background:#f1f5f9;border:2px solid #cbd5e1" onclick="topup(500000)">500K</button>
+<button class="btn" style="background:#fbbf24;border:3px solid black" onclick="topup(1000000)">1JT</button>
+</div>
+<div style="background:#fffbeb;border:2px dashed #f59e0b;border-radius:14px;padding:12px;font-size:12px">Metode: VA BCA, Mandiri, QRIS, Alfamart (Simulasi - langsung masuk Tuan)</div>
+<button class="btn" style="margin-top:20px;background:#e2e8f0" onclick="to('s-home')">← KEMBALI</button>
 </div>
 
-<div class="popup" id="popup">
-  <div class="popup-content">
-    <h3 id="popup-judul">Fitur</h3>
-    <p id="popup-isi">Ini fitur bisa di klik Tuan!</p>
-    <input type="number" id="inputNominal" placeholder="Masukkan nominal" style="width:100%; padding:10px; display:none; margin-top:10px; border-radius:8px; border:1px solid #ddd;">
-    <button class="btn" onclick="tutupPopup()">Tutup</button>
-    <button class="btn" id="btnProses" onclick="proses()" style="display:none; background:green;">Proses</button>
-  </div>
+<!-- TRANSFER -->
+<div id="s-transfer" class="screen">
+<h2 style="font-weight:800">📤 Transfer</h2>
+<input id="tfHp" class="input" placeholder="Nomor HP / Username tujuan">
+<input id="tfNom" class="input" type="number" placeholder="Nominal Rp">
+<input id="tfNote" class="input" placeholder="Catatan (opsional)">
+<button class="btn btnBlue" onclick="transfer()" style="margin-top:12px">KIRIM SEKARANG</button>
+<div style="margin-top:16px;background:#f8fafc;padding:12px;border-radius:12px;font-size:12px">Transfer ke sesama Kodil GRATIS! Ke bank biaya Rp 2.500 (simulasi)</div>
+<button class="btn" style="margin-top:20px;background:#e2e8f0" onclick="to('s-home')">← KEMBALI</button>
 </div>
 
+<!-- QRIS -->
+<div id="s-qris" class="screen" style="text-align:center">
+<h2 style="font-weight:800">📷 QRIS Bayar</h2>
+<div class="qrBox" id="qr">💳</div>
+<div style="font-weight:800" id="qrNom">Rp <span id="qrBal">0</span></div>
+<p style="font-size:12px;color:#64748b;margin:8px">Tunjukkan QR ini ke merchant</p>
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:20px">
+<button class="btn btnBlue" onclick="scan()">SCAN QR MERCHANT</button>
+<button class="btn" style="background:#fbbf24;border:3px solid black" onclick="generateQR()">BUAT QR TERIMA UANG</button>
+</div>
+<button class="btn" style="margin-top:20px;background:#e2e8f0" onclick="to('s-home')">← KEMBALI</button>
+</div>
+
+<!-- TARIK -->
+<div id="s-tarik" class="screen">
+<h2 style="font-weight:800">🏧 Tarik Tunai</h2>
+<input class="input" placeholder="Pilih ATM: BCA, Mandiri, Alfamart">
+<input id="tarikNom" class="input" type="number" placeholder="Nominal Tarik">
+<button class="btn btnBlue" onclick="tarik()">BUAT KODE TARIK</button>
+<div id="kodeTarik" style="display:none;margin-top:16px;background:black;color:#22c55e;padding:16px;border-radius:14px;text-align:center;font-family:monospace;font-size:20px">KODE: <span id="kode"></span><br><small style="color:white">Berlaku 1 jam</small></div>
+<button class="btn" style="margin-top:20px;background:#e2e8f0" onclick="to('s-home')">← KEMBALI</button>
+</div>
+
+<!-- HISTORY -->
+<div id="s-history" class="screen">
+<h2 style="font-weight:800">📊 Riwayat</h2><div id="hist" style="margin-top:12px"></div>
+<button class="btn" style="margin-top:20px;background:#e2e8f0" onclick="to('s-home')">← KEMBALI</button>
+</div>
+
+<!-- PROFILE -->
+<div id="s-profile" class="screen">
+<h2 style="font-weight:800">👤 Profil & e-KYC</h2>
+<div style="background:#f0fdf4;border:2px solid #22c55e;border-radius:16px;padding:14px;margin:12px 0">
+✅ Akun Premium Terverifikasi<br><small>NIK: 32xxxx • Limit 20JT</small>
+</div>
+<input class="input" value="Nama: Sultan Kodil">
+<input class="input" id="pHp" disabled>
+<button class="btn" style="background:#fee2e2;color:#991b1b;margin-top:12px" onclick="logout()">LOGOUT</button>
+<button class="btn" style="margin-top:12px;background:#e2e8f0" onclick="to('s-home')">← KEMBALI</button>
+</div>
+
+<div class="tabBar" id="tabBar" style="display:none">
+<div class="tab on" onclick="to('s-home')">🏠<br>HOME</div>
+<div class="tab" onclick="to('s-history')">📊<br>RIWAYAT</div>
+<div class="tab" onclick="to('s-qris')">📷<br>QRIS</div>
+<div class="tab" onclick="to('s-profile')">👤<br>AKUN</div>
+</div>
+
+</div>
 <script>
-let saldoAwal = 275000;
-let fiturAktif = '';
-
-function formatRupiah(angka){
-  return 'Rp ' + angka.toLocaleString('id-ID');
+let data=JSON.parse(localStorage.getItem('kodil_v2')||'{"bal":1250000,"tx":[]}');
+function save(){localStorage.setItem('kodil_v2',JSON.stringify(data)); render();}
+function render(){
+ document.getElementById('bal').innerText=data.bal.toLocaleString('id-ID');
+ document.getElementById('qrBal').innerText=data.bal.toLocaleString('id-ID');
+ let last=document.getElementById('lastTx'); last.innerHTML='';
+ data.tx.slice(-3).reverse().forEach(t=>{last.innerHTML+=`<div class="listItem"><div><b>${t.type}</b><br><small style="color:#64748b">${t.note} • ${t.time}</small></div><div style="font-weight:800;color:${t.plus? '#16a34a':'#dc2626'}">${t.plus?'+':'-'}Rp ${t.nom.toLocaleString('id-ID')}</div></div>`});
+ let h=document.getElementById('hist'); h.innerHTML=''; if(data.tx.length==0) h.innerHTML='<p style="color:#94a3b8;text-align:center;margin-top:30px">Belum ada transaksi</p>'; else data.tx.slice().reverse().forEach(t=>{h.innerHTML+=`<div class="listItem"><div><b>${t.type}</b><br><small>${t.note} • ${t.time}</small></div><div style="font-weight:800;color:${t.plus?'#16a34a':'#dc2626'}">${t.plus?'+':'-'}${t.nom.toLocaleString('id-ID')}</div></div>`});
 }
-
-function aksi(nama){
-  fiturAktif = nama;
-  document.getElementById('popup-judul').innerText = nama;
-  document.getElementById('popup-isi').innerText = 'Kamu klik ' + nama + ' Tuan! Fitur ini aktif.';
-  document.getElementById('inputNominal').style.display = 'none';
-  document.getElementById('btnProses').style.display = 'none';
-  document.getElementById('popup').style.display = 'flex';
+function to(id){
+ document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active')); document.getElementById(id).classList.add('active');
+ document.querySelectorAll('.tab').forEach((t,i)=>{t.classList.remove('on'); if(id.includes(['home','history','qris','profile'][i])) t.classList.add('on');});
+ if(id!='s-login') document.getElementById('tabBar').style.display='grid'; else document.getElementById('tabBar').style.display='none';
+ if(id=='s-home') render();
 }
-
-function topup(){
-  fiturAktif = 'Top Up';
-  document.getElementById('popup-judul').innerText = 'Top Up Saldo';
-  document.getElementById('popup-isi').innerText = 'Mau top up berapa Tuan?';
-  document.getElementById('inputNominal').style.display = 'block';
-  document.getElementById('btnProses').style.display = 'block';
-  document.getElementById('popup').style.display = 'flex';
+function login(){
+ let hp=document.getElementById('hp').value; if(hp.length<10) return alert('Isi HP dulu Tuan');
+ localStorage.setItem('kodil_hp',hp); document.getElementById('uHp').innerText=hp; document.getElementById('pHp').value=hp; document.getElementById('uName').innerText='Sultan '+hp.slice(-4);
+ to('s-home'); render();
 }
-
-function proses(){
-  let nominal = parseInt(document.getElementById('inputNominal').value);
-  if(!nominal){ alert('Masukkan nominal dulu Tuan!'); return; }
-  if(fiturAktif === 'Top Up'){
-    saldoAwal += nominal;
-  } else {
-    saldoAwal -= nominal;
-  }
-  document.getElementById('saldo').innerText = formatRupiah(saldoAwal);
-  tutupPopup();
-  alert('Berhasil! Saldo baru: ' + formatRupiah(saldoAwal));
+function topup(nom){
+ data.bal+=nom; data.tx.push({type:'TOP UP',nom,plus:true,note:'VA BCA',time:new Date().toLocaleString('id-ID')}); save(); alert('Berhasil Top Up Rp '+nom.toLocaleString('id-ID')+'!'); to('s-home');
 }
-
-function tutupPopup(){
-  document.getElementById('popup').style.display = 'none';
-  document.getElementById('inputNominal').value = '';
+function transfer(){
+ let hp=document.getElementById('tfHp').value, nom=parseInt(document.getElementById('tfNom').value), note=document.getElementById('tfNote').value||'Transfer';
+ if(!hp||!nom) return alert('Lengkapi dulu Tuan'); if(nom>data.bal) return alert('Saldo kurang Tuan!');
+ data.bal-=nom; data.tx.push({type:'TRANSFER ke '+hp,nom,plus:false,note,time:new Date().toLocaleString('id-ID')}); save(); alert('Berhasil transfer ke '+hp); to('s-home');
 }
+function generateQR(){
+ let nom=prompt('Mau terima berapa? (kosong = QR saldo bebas)','50000'); if(nom===null) return;
+ document.getElementById('qr').innerText='🔳'; document.getElementById('qr').innerHTML=`<div style="font-size:14px;font-weight:800">QR Rp ${parseInt(nom||0).toLocaleString('id-ID')}<br>◼️◼️◻️◼️<br>◻️◼️◼️◻️<br>◼️◻️◼️◼️</div>`;
+}
+function scan(){
+ let bayar=prompt('Scan berhasil! Bayar merchant berapa?','25000'); if(!bayar) return; let nom=parseInt(bayar); if(nom>data.bal) return alert('Saldo kurang!');
+ data.bal-=nom; data.tx.push({type:'QRIS BAYAR',nom,plus:false,note:'Merchant',time:new Date().toLocaleString('id-ID')}); save(); alert('Berhasil bayar QRIS Rp '+nom.toLocaleString('id-ID')); to('s-home');
+}
+function tarik(){
+ let nom=parseInt(document.getElementById('tarikNom').value); if(!nom) return alert('Isi nominal'); if(nom>data.bal) return alert('Saldo kurang');
+ data.bal-=nom; data.tx.push({type:'TARIK TUNAI',nom,plus:false,note:'Kode Tarik',time:new Date().toLocaleString('id-ID')}); save();
+ document.getElementById('kodeTarik').style.display='block'; document.getElementById('kode').innerText=Math.floor(100000+Math.random()*900000);
+}
+function logout(){ if(confirm('Logout Tuan?')){to('s-login'); document.getElementById('tabBar').style.display='none';} }
+if(localStorage.getItem('kodil_hp')){document.getElementById('hp').value=localStorage.getItem('kodil_hp'); login();}
+render();
 </script>
-
 </body>
 </html>
