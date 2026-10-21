@@ -1,52 +1,35 @@
-<!DOCTYPE html>
-<html>
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>JALAN SEHAT SMA</title>
+<!DOCTYPE html><html><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <style>
-body{margin:0;background:#1e5eff;font-family:sans-serif;text-align:center;color:white}
-.box{background:white;color:#1e5eff;border-radius:20px;padding:20px;margin:20px;max-width:350px;margin:20px auto}
-button{width:100%;padding:20px;font-size:20px;font-weight:900;border-radius:15px;border:3px solid #1e5eff;background:#00ff88;margin:10px 0;cursor:pointer}
-#game{display:none;background:linear-gradient(#87CEEB,#7CFF7C);height:100vh;position:relative;overflow:hidden}
-#player{position:absolute;bottom:80px;left:50%;font-size:60px;transform:translateX(-50%)}
-.obj{position:absolute;top:0;font-size:40px}
-</style>
-</head>
-<body>
-<div id="menu">
-<h1 style="margin-top:60px">🚶‍♂️ JALAN SEHAT<br>SMA</h1>
-<div class="box">
-<h2>VERSI SMA</h2>
-<p>Anti Gagal Klik!</p>
-<button onclick="mulai()">▶️ KLIK DISINI UNTUK JALAN</button>
-<button onclick="alert('test klik ok')">TEST KLIK</button>
-</div>
-</div>
+body{margin:0;background:#1e5eff;font-family:sans-serif;overflow:hidden}
+#game{background:linear-gradient(#87CEEB 0%,#a0e0ff 25%,#7CFF7C 25.5%);height:100vh;position:relative}
+#player{position:absolute;bottom:90px;left:50%;transform:translateX(-50%);font-size:75px;z-index:50;background:rgba(255,255,255,.9);border-radius:50%;width:85px;height:85px;display:flex;align-items:center;justify-content:center;box-shadow:0 5px 15px rgba(0,0,0,.4);border:3px solid white}
+.obj{position:absolute;font-size:48px;z-index:10}
+.top{position:absolute;top:0;left:0;right:0;background:black;color:white;padding:10px;display:flex;justify-content:space-between;align-items:center;z-index:100}
+.controls{position:absolute;bottom:0;left:0;right:0;display:flex;gap:10px;padding:10px;background:rgba(0,0,0,.4);z-index:100}
+.controls button{flex:1;padding:22px;font-size:28px;background:#00ff88;border-radius:18px;border:3px solid white;font-weight:900}
+</style></head><body>
 <div id="game">
-<div style="background:black;color:white;padding:10px;display:flex;justify-content:space-between">
-<button onclick="kembali()" style="width:auto;padding:10px 20px;font-size:14px;background:gold">🏠 MENU</button>
-<div>💧 <span id="skor">0</span></div>
-<button onclick="kembali()" style="width:auto;padding:10px;background:white">✖️</button>
+<div class="top">
+<button onclick="location.href='jalan.html'" style="background:gold;padding:10px 18px;border-radius:12px;font-weight:900;border:2px solid white">🏠 MENU</button>
+<div>💧 <span id="skor">0</span> M: <span id="meter">0</span></div>
+<button onclick="location.reload()" style="background:white;padding:10px 14px;border-radius:12px;font-weight:900">✖️</button>
 </div>
-<div id="player">🚶‍♂️</div>
-<div style="position:fixed;bottom:0;width:100%;display:flex;gap:10px;padding:10px;background:rgba(0,0,0,.5)">
-<button style="flex:1" ontouchstart="kiri()" ontouchend="stop()" onmousedown="kiri()" onmouseup="stop()">◀</button>
-<button style="flex:1" ontouchstart="kanan()" ontouchend="stop()" onmousedown="kanan()" onmouseup="stop()">▶</button>
+<div id="player">🚶</div>
+<div class="controls">
+<button ontouchstart="kiri=1" ontouchend="kiri=0" onmousedown="kiri=1" onmouseup="kiri=0">◀</button>
+<button ontouchstart="kanan=1" ontouchend="kanan=0" onmousedown="kanan=1" onmouseup="kanan=0">▶</button>
 </div>
 </div>
 <script>
-let s=0,x=50,d=0,run=false,objs=[];
-function mulai(){document.getElementById('menu').style.display='none';document.getElementById('game').style.display='block';run=true;loop();}
-function kembali(){run=false;document.getElementById('game').style.display='none';document.getElementById('menu').style.display='block';}
-function kiri(){d=-5}function kanan(){d=5}function stop(){d=0}
+let s=0,m=0,x=50,kiri=0,kanan=0,objs=[],run=true;
+const p=document.getElementById('player');
 function loop(){
- if(!run)return;
- x+=d*0.8;if(x<10)x=10;if(x>90)x=90;document.getElementById('player').style.left=x+'%';
- if(Math.random()<0.05){let e=document.createElement('div');e.className='obj';e.innerText=Math.random()<0.7?'💧':'🕳️';e.style.left=(Math.random()*80+10)+'%';e.style.top='0px';e.dataset.t=e.innerText=='💧'?'good':'bad';document.getElementById('game').appendChild(e);objs.push(e);}
- objs.forEach((o,i)=>{let y=parseFloat(o.style.top);y+=5;o.style.top=y+'px';if(y>600){o.remove();objs.splice(i,1);return;}let ox=parseFloat(o.style.left);if(y>400&&y<500&&Math.abs(ox-x)<10){if(o.dataset.t=='good'){s++;document.getElementById('skor').innerText=s;}o.remove();objs.splice(i,1);}});
- requestAnimationFrame(loop);
-}
+if(!run)return;
+if(kiri)x-=4;if(kanan)x+=4;if(x<8)x=8;if(x>92)x=92;p.style.left=x+'%';
+m+=0.2;document.getElementById('meter').innerText=Math.floor(m);
+if(Math.random()<0.04){let e=document.createElement('div');e.className='obj';e.innerText=Math.random()<0.6?'💧':'🕳️';e.style.left=(Math.random()*80+10)+'%';e.style.top='60px';e.dataset.t=e.innerText=='💧'?'good':'bad';document.getElementById('game').appendChild(e);objs.push(e);}
+objs.forEach((o,i)=>{let y=parseFloat(o.style.top);y+=4;o.style.top=y+'px';if(y>700){o.remove();objs.splice(i,1);return;}let ox=parseFloat(o.style.left);if(y>480&&y<580&&Math.abs(ox-x)<12){if(o.dataset.t=='good'){s++;document.getElementById('skor').innerText=s;p.innerText='😋';setTimeout(()=>p.innerText='🚶',300);}else{p.innerText='🤕';setTimeout(()=>p.innerText='🚶',400);}o.remove();objs.splice(i,1);}});
+requestAnimationFrame(loop);
+}loop();
 </script>
-</body>
-</html>
+</body></html>
