@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="id"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>RENOVASI RUMAH GIRLS 3D HD - PinkyCat</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@700;900&display=swap');
+*{margin:0;padding:0;box-sizing:border-box;font-family:'Outfit',sans-serif}
+body{background:#0f172a;display:flex;justify-content:center;min-height:100vh}
+#app{width:100%;max-width:500px;background:linear-gradient(#1e1b4b,#020617);display:flex;flex-direction:column;min-height:100vh;color:white}
+#top{height:48px;background:#000;display:flex;justify-content:space-between;align-items:center;padding:0 10px;border-bottom:2px solid #fbbf24}
+.coin{background:#1f2937;padding:6px 10px;border-radius:20px;font-size:11px;border:1px solid #333}
+#house3D{height:320px;background:radial-gradient(#334155,#020617);position:relative;overflow:hidden;display:flex;align-items:center;justify-content:center;perspective:1000px}
+#houseModel{width:220px;height:220px;transform-style:preserve-3d;transition:1s;position:relative;transform:rotateX(55deg) rotateZ(-45deg)}
+.wall{position:absolute;width:100%;height:100%;background:var(--c);border:2px solid rgba(0,0,0,.3);display:flex;align-items:center;justify-content:center;font-size:30px;box-shadow:inset 0 0 30px rgba(0,0,0,.4)}
+#floor{width:220px;height:220px;background:var(--floor);transform:rotateX(0) translateZ(-20px);position:absolute;bottom:0}
+#brick{position:absolute;width:100%;height:100%;opacity:var(--brickO);background:repeating-linear-gradient(0deg,#b45309 0 10px,#78350f 10px 12px),repeating-linear-gradient(90deg,#b45309 0 20px,#78350f 20px 22px)}
+#plaster{position:absolute;width:100%;height:100%;opacity:var(--plasterO);background:#e5e7eb}
+#paint{position:absolute;width:100%;height:100%;opacity:var(--paintO);background:var(--paintC)}
+#girls{position:absolute;bottom:10px;right:10px;width:76px;height:76px;border-radius:20px;border:3px solid #fbbf24;overflow:hidden;box-shadow:0 0 20px gold;z-index:10;animation:float 2s infinite alternate}
+#girls img{width:100%;height:100%;object-fit:cover}
+@keyframes float{0%{transform:translateY(0)}100%{transform:translateY(-6px)}}
+#tasks{padding:10px;display:flex;flex-direction:column;gap:8px}
+.task{background:#111827;border:2px solid #374151;border-radius:14px;padding:10px;display:flex;justify-content:space-between;align-items:center;transition:.3s}
+.task.done{border-color:#22c55e;background:#052e16;opacity:.7}
+.task.active{border-color:#fbbf24;background:#1f1600;box-shadow:0 0 15px rgba(251,191,36,.4);transform:scale(1.02)}
+.taskBtn{padding:8px 14px;border-radius:10px;border:0;font-weight:900;font-size:11px;cursor:pointer}
+#shop{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;padding:10px;background:#000;border-top:2px solid #333}
+.sItem{background:#1f2937;border:2px solid #374151;border-radius:12px;padding:8px;text-align:center;cursor:pointer;transition:.2s}
+.sItem:hover{border-color:#fbbf24;transform:scale(1.05)}
+#progressBar{height:14px;background:#111;border-radius:20px;overflow:hidden;border:1px solid #333;margin:8px 10px}
+#progress{height:100%;background:linear-gradient(90deg,#fbbf24,#f59e0b);width:0%;transition:1s}
+</style></head><body>
+<div id="app">
+<div id="top">
+<div style="font-weight:900;font-size:12px">🏠 RENOVASI GIRLS 3D HD</div>
+<div style="display:flex;gap:6px">
+<div class="coin">💰 <b id="coins">2500</b></div>
+<div class="coin">⭐ <b id="progTxt">0%</b></div>
+</div></div>
+
+<div id="house3D" onclick="rotateHouse()">
+<div id="houseModel" style="--c:#444;--floor:#27272a;--brickO:0;--plasterO:0;--paintO:0;--paintC:#fbbf24">
+<div class="wall" style="transform:translateZ(20px);"><div id="brick"></div><div id="plaster"></div><div id="paint"></div><span id="icon">🏚️</span></div>
+<div id="floor"></div>
+</div>
+<div id="girls"><img src="IMG-20261021-WA0461.jpg"></div>
+<div style="position:absolute;top:8px;left:8px;background:rgba(0,0,0,.7);padding:4px 8px;border-radius:8px;font-size:9px">KLIK RUMAH = PUTER 360° | LVL <b id="lvl">1</b></div>
+</div>
+
+<div id="progressBar"><div id="progress"></div></div>
+
+<div id="tasks">
+<div class="task active" id="t1"><div><b>1. SEMEN PONDASI</b><br><span style="font-size:10px;opacity:.7">Butuh: Semen 5 sak - Rp 500</span></div><button class="taskBtn" style="background:#fbbf24;color:#000" onclick="doTask(1)">🔨 COR</button></div>
+<div class="task" id="t2"><div><b>2. BATA DINDING</b><br><span style="font-size:10px;opacity:.7">Bata Merah 100 biji - Rp 700</span></div><button class="taskBtn" style="background:#b45309;color:white" onclick="doTask(2)">🧱 PASANG</button></div>
+<div class="task" id="t3"><div><b>3. ATAP BAJA RINGAN</b><br><span style="font-size:10px;opacity:.7">Genteng + Rangka - Rp 800</span></div><button class="taskBtn" style="background:#475569;color:white" onclick="doTask(3)">🏠 ATAP</button></div>
+<div class="task" id="t4"><div><b>4. PLESTER ACIAN</b><br><span style="font-size:10px;opacity:.7">Semen + Pasir Halus - Rp 600</span></div><button class="taskBtn" style="background:#9ca3af;color:black" onclick="doTask(4)">🪣 PLESTER</button></div>
+<div class="task" id="t5"><div><b>5. CAT DINDING</b><br><span style="font-size:10px;opacity:.7">Pilih Warna Cantik - Rp 500</span></div><button class="taskBtn" style="background:#ec4899;color:white" onclick="doTask(5)">🎨 CAT</button></div>
+<div class="task" id="t6"><div><b>6. LANTAI KERAMIK</b><br><span style="font-size:10px;opacity:.7">Keramik Sultan Glossy - Rp 900</span></div><button class="taskBtn" style="background:#eab308;color:black" onclick="doTask(6)">✨ LANTAI</button></div>
+<div class="task" id="t7"><div><b>7. FURNITURE SULTAN</b><br><span style="font-size:10px;opacity:.7">Sofa, Pool, Lampu - Rp 1000</span></div><button class="taskBtn" style="background:linear-gradient(90deg,#ff00cc,#ffcc00);color:white" onclick="doTask(7)">👑 FINISH</button></div>
+</div>
+
+<div id="shop">
+<div class="sItem" onclick="buyPaint('#fbbf24','Kuning Sultan')"><div style="font-size:22px">🟨</div><div style="font-size:9px"><b>Kuning</b><br>Rp 0</div></div>
+<div class="sItem" onclick="buyPaint('#f472b6','Pink Girls')"><div style="font-size:22px">🩷</div><div style="font-size:9px"><b>Pink Girls</b><br>Rp 200</div></div>
+<div class="sItem" onclick="buyPaint('#60a5fa','Biru Estetik')"><div style="font-size:22px">🟦</div><div style="font-size:9px"><b>Biru</b><br>Rp 200</div></div>
+<div class="sItem" onclick="speak('Tuan, rumahnya udah mau jadi nih! Semangat!')"><div style="font-size:22px">💖</div><div style="font-size:9px"><b>Girls Talk</b></div></div>
+<div class="sItem" onclick="addCoins(1000)"><div style="font-size:22px">💰</div><div style="font-size:9px"><b>+1000 Coin</b></div></div>
+<div class="sItem" onclick="resetGame()"><div style="font-size:22px">🔄</div><div style="font-size:9px"><b>Ulang</b></div></div>
+</div>
+
+<div style="padding:10px;font-size:10px;text-align:center;opacity:.6">💡 Klik rumah buat muter | Selesaikan 7 tahap dari semen sampai jadi villa mewah!</div>
+</div>
+
+<script>
+let coins=2500,progress=0,lvl=1,rot=0,paintColor='#fbbf24',stage=1;
+let done=[false,false,false,false,false,false,false];
+function $(id){return document.getElementById(id);}
+function speak(t){
+ try{speechSynthesis.cancel(); let u=new SpeechSynthesisUtterance(t); u.lang='id-ID'; u.pitch=1.5; u.rate=1.1; speechSynthesis.speak(u);}catch(e){}
+}
+function rotateHouse(){rot+=90; $('houseModel').style.transform=`rotateX(55deg) rotateZ(${-45+rot}deg)`;}
+function updateUI(){
+ $('coins').innerText=coins; $('progTxt').innerText=progress+'%'; $('progress').style.width=progress+'%'; $('lvl').innerText=stage;
+}
+function doTask(n){
+ if(n!==stage){speak('Kerjain yang urut dulu ya Tuan'); alert('Selesaikan tahap '+stage+' dulu ya Tuan!'); return;}
+ let costs=[500,700,800,600,500,900,1000];
+ let cost=costs[n-1];
+ if(coins<cost){alert('Coin kurang Tuan! Butuh Rp '+cost); return;}
+ coins-=cost; done[n-1]=true; stage++; progress=Math.floor((n/7)*100);
+ let el=$('t'+n); el.classList.remove('active'); el.classList.add('done'); el.querySelector('button').innerHTML='✅ DONE';
+ if(n<7){$('t'+(n+1)).classList.add('active');}
+ // 3D effects
+ let model=$('houseModel');
+ if(n==1){model.style.setProperty('--c','#3f3f46'); model.style.setProperty('--floor','#57534e'); $('icon').innerHTML='🧱'; speak('Pondasi semen selesai Tuan! Kuat banget!');}
+ if(n==2){model.style.setProperty('--brickO','1'); $('icon').innerHTML='🏗️'; speak('Dinding bata udah kepasang Tuan!');}
+ if(n==3){$('icon').innerHTML='🏠'; model.style.setProperty('--c','#27272a'); speak('Atap baja ringan selesai, anti bocor!');}
+ if(n==4){model.style.setProperty('--plasterO','1'); $('icon').innerHTML='🪣'; speak('Plester halus mulus Tuan!');}
+ if(n==5){model.style.setProperty('--paintO','0.9'); model.style.setProperty('--paintC',paintColor); $('icon').innerHTML='🎨'; speak('Warna '+paintColor+' cantik banget Tuan!');}
+ if(n==6){model.style.setProperty('--floor','#fde68a'); $('icon').innerHTML='✨'; speak('Lantai keramik sultan, kinclong!');}
+ if(n==7){$('icon').innerHTML='👑💎 VILLA SULTAN!'; model.style.setProperty('--paintO','1'); model.style.transform='rotateX(30deg) rotateZ(-30deg) scale(1.2)'; speak('Ya ampun Tuan! Rumahnya jadi villa mewah! Girls mau tinggal sama Tuan!'); alert('🎉 SELAMAT TUAN! RUMAH DARI SEMEN JADI VILLA SULTAN SENILAI 500 JUTA! 💎👑\n\nGirls bangga sama Tuan! Mau renovasi lagi?');}
+ updateUI();
+}
+function buyPaint(c,name){
+ if(coins<200 && c!='#fbbf24'){alert('Coin kurang!'); return;}
+ if(c!='#fbbf24') coins-=200;
+ paintColor=c; if(done[4]){ $('houseModel').style.setProperty('--paintC',c); $('icon').innerHTML='🎨 '+name;}
+ speak('Warna '+name+' dipilih! Cantik!');
+ updateUI();
+}
+function addCoins(a){coins+=a; updateUI(); speak('Makasih Sultan, coin nambah!');}
+function resetGame(){if(confirm('Ulang renovasi dari semen lagi?')){location.reload();}}
+speak('Halo Tuan Sultan, ayo kita renovasi rumah dari semen sampai jadi villa mewah bareng Girls!');
+updateUI();
+</script></body></html>￼Enter
