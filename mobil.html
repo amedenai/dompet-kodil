@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+<title>MOBIL ADVENTURE HD 4K</title>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@700;900&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:'Fredoka',sans-serif}
+body{background:#0a3a9e;height:100vh;overflow:hidden;color:white}
+.screen{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:15px;z-index:10}
+.hidden{display:none!important}
+#menu{background:radial-gradient(circle at 50% 0%,#5ab2ff,#1a6bff 50%,#0a3a9e)}
+.logo{width:180px;height:180px;background:white;border-radius:35px;display:flex;align-items:center;justify-content:center;font-size:90px;box-shadow:0 15px 40px rgba(0,0,0,.4),0 0 0 6px rgba(255,255,255,.2);animation:float 2s infinite}
+@keyframes float{50%{transform:translateY(-12px)}}
+.logo-text{font-size:36px;text-align:center;text-shadow:0 4px 0 #0a3a9e;font-weight:900;margin-top:12px;line-height:.9}
+.menu-card{background:white;border-radius:28px;padding:20px;width:100%;max-width:360px;margin-top:14px;box-shadow:0 20px 40px rgba(0,0,0,.3)}
+.btn{display:block;width:100%;padding:16px;border:none;border-radius:18px;font-size:18px;font-weight:900;margin-bottom:10px;cursor:pointer;box-shadow:0 6px 0 rgba(0,0,0,.2)}
+.btn:active{transform:translateY(4px)}
+.btn-yellow{background:linear-gradient(180deg,#ffe27a,#ffbe2e);color:#1a3a8a}
+.btn-blue{background:linear-gradient(180deg,#3a8bff,#1e5eff);color:white}
+.btn-dark{background:#0a2a6e;color:white}
+#gameScreen{padding:0;background:linear-gradient(180deg,#87CEEB,#3aa0ff)}
+.topbar{display:flex;justify-content:space-between;width:100%;padding:10px 15px;background:rgba(0,0,0,.25);font-weight:900;align-items:center}
+#gameArea{flex:1;width:96%;max-width:420px;background:linear-gradient(180deg,#87CEEB 0%,#E0F6FF 40%,#8B7355 40%,#6B8E23 42%,#8B7355 100%);border-radius:24px;position:relative;overflow:hidden;margin:10px auto;box-shadow:0 20px 40px rgba(0,0,0,.3);border:4px solid white}
+#road{position:absolute;bottom:0;width:100%;height:38%;background:repeating-linear-gradient(90deg,#444 0 40px,#555 40px 80px);border-top:6px solid #FFD700}
+#car{position:absolute;bottom:40px;left:160px;font-size:65px;z-index:5;transition:bottom .2s;filter:drop-shadow(0 4px 6px rgba(0,0,0,.4))}
+.obj{position:absolute;top:-80px;font-size:50px;z-index:4}
+.controls{display:flex;gap:10px;width:100%;max-width:420px;padding:12px 12px 22px}
+.controls .btn{flex:1;margin:0;padding:20px;font-size:26px}
+</style>
+</head>
+<body>
+<div id="menu" class="screen">
+<div class="logo">🚙</div>
+<div class="logo-text">MOBIL<br>ADVENTURE</div>
+<div style="background:gold;color:#0a3a9e;padding:5px 14px;border-radius:12px;font-size:12px;font-weight:900;margin-top:8px">🔥 OFFROAD HD 4K 🔥</div>
+<div class="menu-card">
+<button class="btn btn-yellow" onclick="startGame()">▶️ GAS SEKARANG!</button>
+<button class="btn btn-blue" onclick="alert('Ambil koin 🪙, hindari batu 🪨! Lompat pakai tombol ⬆️!')">❓ CARA MAIN</button>
+<button class="btn btn-dark" onclick="document.documentElement.requestFullscreen()">⛶ FULL SCREEN</button>
+</div>
+</div>
+
+<div id="gameScreen" class="screen hidden">
+<div class="topbar">
+<button onclick="goMenu()" style="background:gold;color:#0a3a9e;border:2px solid white;padding:6px 14px;border-radius:12px;font-weight:900">🏠 MENU</button>
+<div>🪙 <span id="score">0</span> | ❤️ <span id="lives">999</span></div>
+<div>⏩ <span id="speedTxt">0</span> KM</div>
+</div>
+<div id="gameArea">
+<div id="road"></div>
+<div id="car">🚙</div>
+</div>
+<div class="controls">
+<button class="btn btn-blue" ontouchstart="moveLeft()" ontouchend="stopMove()" onmousedown="moveLeft()" onmouseup="stopMove()">◀</button>
+<button class="btn btn-yellow" ontouchstart="jump()" onmousedown="jump()">⬆️ LOMPAT</button>
+<button class="btn btn-blue" ontouchstart="moveRight()" ontouchend="stopMove()" onmousedown="moveRight()" onmouseup="stopMove()">▶</button>
+</div>
+</div>
+
+<div id="overScreen" class="screen hidden" style="background:radial-gradient(circle,#ff5a7a,#c70036)">
+<h1 style="font-size:40px">CRASH!</h1>
+<div class="menu-card" style="text-align:center;color:#1a3a8a">
+<div style="font-size:18px;font-weight:700">JARAK</div>
+<div style="font-size:46px;font-weight:900" id="finalScore">0 KM</div>
+<button class="btn btn-yellow" style="margin-top:14px" onclick="startGame()">🔄 GAS LAGI</button>
+<button class="btn btn-dark" onclick="goMenu()">🏠 MENU</button>
+</div>
+</div>
+
+<script>
+let score=0,lives=999,carX=160,carY=40,isJump=false,isPlaying=false,gameLoop,speed=5,dir=0,objs=[],dist=0;
+const carEl=document.getElementById('car'), area=document.getElementById('gameArea');
+
+function startGame(){
+ score=0;lives=999;carX=160;dist=0;speed=5;objs=[];document.querySelectorAll('.obj').forEach(o=>o.remove());
+ document.querySelectorAll('.screen').forEach(s=>s.classList.add('hidden'));
+ document.getElementById('gameScreen').classList.remove('hidden');
+ document.getElementById('score').innerText=0;document.getElementById('lives').innerText=lives;
+ isPlaying=true;loop();
+}
+function goMenu(){isPlaying=false;cancelAnimationFrame(gameLoop);document.querySelectorAll('.screen').forEach(s=>s.classList.add('hidden'));document.getElementById('menu').classList.remove('hidden');}
+function moveLeft(){dir=-7}function moveRight(){dir=7}function stopMove(){dir=0}
+function jump(){if(isJump)return;isJump=true;carEl.style.bottom='130px';setTimeout(()=>{carEl.style.bottom='40px';setTimeout(()=>isJump=false,200)},400)}
+
+function spawn(){
+ if(Math.random()<0.05){
+   let el=document.createElement('div');el.className='obj';
+   let type=Math.random();
+   if(type<0.5){el.innerText='🪙';el.dataset.type='coin';}
+   else if(type<0.8){el.innerText='🪨';el.dataset.type='rock';}
+   else{el.innerText='⛽';el.dataset.type='fuel';}
+   el.style.left=(Math.random()*320)+'px';el.style.top='-60px';area.appendChild(el);objs.push(el);
+ }
+}
+
+function loop(){
+ if(!isPlaying)return;
+ carX+=dir;if(carX<0)carX=0;if(carX>340)carX=340;carEl.style.left=carX+'px';
+ dist+=speed;speed+=0.002;document.getElementById('speedTxt').innerText=Math.floor(dist/10);document.getElementById('score').innerText=score;
+ spawn();
+ objs.forEach((o,i)=>{
+   let y=parseFloat(o.style.top);y+=speed;o.style.top=y+'px';
+   if(y>480){o.remove();objs.splice(i,1);return;}
+   if(y>320 && y<420 && Math.abs(parseFloat(o.style.left)-carX)<50){
+     if(o.dataset.type==='coin'){score+=10;o.remove();objs.splice(i,1);}
+     else if(o.dataset.type==='rock' && !isJump){lives--;document.getElementById('lives').innerText=lives;o.remove();objs.splice(i,1);carEl.innerText='💥';setTimeout(()=>carEl.innerText='🚙',200);if(lives<=0){gameOver();return;}}
+     else if(o.dataset.type==='fuel'){lives+=10;document.getElementById('lives').innerText=lives;o.remove();objs.splice(i,1);}
+   }
+ });
+ gameLoop=requestAnimationFrame(loop);
+}
+function gameOver(){isPlaying=false;document.getElementById('finalScore').innerText=Math.floor(dist/10)+' KM';document.querySelectorAll('.screen').forEach(s=>s.classList.add('hidden'));document.getElementById('overScreen').classList.remove('hidden');}
+
+// geser jari langsung
+area.addEventListener('touchmove',e=>{e.preventDefault();let rect=area.getBoundingClientRect();let x=e.touches[0].clientX-rect.left-32;carX=Math.max(0,Math.min(340,x))},{passive:false});
+</script>
+</body>
+</html>￼Enter
