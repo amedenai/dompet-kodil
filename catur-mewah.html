@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+<title>Catur Mewah Sultan</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@700&family=Inter:wght@700&display=swap');
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:radial-gradient(ellipse at center,#1e293b 0%,#020617 100%);display:flex;justify-content:center;min-height:100vh;color:white}
+#app{width:100%;max-width:460px;padding:14px}
+h1{font-family:'Cinzel',serif;text-align:center;font-size:26px;letter-spacing:3px;background:linear-gradient(#fde68a,#f59e0b);-webkit-background-clip:text;-webkit-text-fill-color:transparent;margin:8px 0}
+.goldFrame{background:linear-gradient(145deg,#fde68a,#f59e0b,#b45309,#fde68a);padding:6px;border-radius:18px;box-shadow:0 0 30px rgba(251,191,36,.5),0 10px 0 #78350f}
+#board{display:grid;grid-template-columns:repeat(8,1fr);aspect-ratio:1;border-radius:10px;overflow:hidden;background:black}
+.sq{aspect-ratio:1;display:flex;align-items:center;justify-content:center;position:relative;cursor:pointer}
+.sq.light{background:radial-gradient(circle at 30% 30%, #ffffff, #e2e8f0 40%, #f1f5f9 80%);box-shadow:inset 0 0 20px rgba(251,191,36,.15)} 
+.sq.dark{background:radial-gradient(circle at 30% 30%, #1e293b, #0f172a 60%, #020617);box-shadow:inset 0 0 20px black}
+.sq::after{content:'';position:absolute;inset:0;background:linear-gradient(100deg,transparent 40%, rgba(251,191,36,.15) 50%, transparent 60%);opacity:0}
+.sq.light::before{content:'';position:absolute;width:100%;height:2px;background:linear-gradient(90deg,transparent,rgba(180,83,9,.2),transparent);top:50%;transform:rotate(25deg)}
+.sq.sel{outline:4px solid #fbbf24;outline-offset:-4px;z-index:2;box-shadow:0 0 20px #fbbf24}
+.sq.last{background:#fef08a !important}
+.sq.hint::after{content:'';width:26%;height:26%;background:radial-gradient(#22c55e,#16a34a);border-radius:50%;position:absolute;opacity:.9;box-shadow:0 0 10px #22c55e}
+.sq.cap::after{content:'';width:82%;height:82%;border:3px solid #ef4444;border-radius:50%;position:absolute;box-shadow:0 0 12px #ef4444}
+
+.p{font-size:38px;filter:drop-shadow(0 3px 3px rgba(0,0,0,.8));transition:all .2s;user-select:none}
+.p.w{color:linear-gradient();background:linear-gradient(180deg,#fef3c7,#fde68a,#f59e0b);-webkit-background-clip:text;-webkit-text-fill-color:transparent;-webkit-text-stroke:1px #78350f;text-shadow:0 2px 0 #92400e, 0 0 15px rgba(251,191,36,.8);font-weight:900}
+.p.b{color:#111;-webkit-text-stroke:1px #fbbf24;text-shadow:0 0 10px rgba(251,191,36,.6);filter:brightness(.4) sepia(1) hue-rotate(10deg) saturate(3)}
+.p.w::before{content:attr(data-icon);position:absolute;background:linear-gradient(#fff,#fde68a);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+
+#panel{background:linear-gradient(145deg,#1e293b,#0f172a);border:2px solid #f59e0b;border-radius:16px;padding:12px;margin-top:14px;display:flex;justify-content:space-between;align-items:center}
+.btn{padding:10px 14px;border-radius:12px;border:2px solid #f59e0b;background:linear-gradient(#fde68a,#f59e0b);color:#78350f;font-weight:800;font-family:'Inter',sans-serif;box-shadow:0 3px 0 #78350f} .btn:active{transform:translateY(2px);box-shadow:0 1px 0 #78350f}
+
+#captured{display:flex;justify-content:space-between;margin-top:10px;font-size:12px;opacity:.8}
+</style>
+</head>
+<body>
+<div id="app">
+<h1>♔ CATUR SULTAN ♛</h1>
+<div style="text-align:center;font-size:11px;letter-spacing:4px;color:#fbbf24;margin-bottom:10px">GOLD MARBLE EDITION</div>
+
+<div class="goldFrame"><div id="board"></div></div>
+
+<div id="panel">
+<div><div style="font-size:11px;color:#fbbf24">GILIRAN</div><div id="turn" style="font-weight:800;font-size:16px">PUTIH EMAS</div></div>
+<div style="text-align:center"><div style="font-size:11px;color:#fbbf24">STATUS</div><div id="status" style="font-size:13px">Pilih bidak</div></div>
+<div><div style="font-size:11px;color:#fbbf24">SKOR</div><div id="score" style="font-weight:800">$0</div></div>
+</div>
+
+<div id="captured"><div id="capW">Dimakan: </div><div id="capB"></div></div>
+
+<div style="display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:8px;margin-top:12px">
+<button class="btn" onclick="undo()">↩️ UNDO</button>
+<button class="btn" onclick="hint()">✨ HINT</button>
+<button class="btn" onclick="newGame()">🔄 BARU</button>
+<button class="btn" id="modeBtn" onclick="toggleMode()">🤖 BOT</button>
+</div>
+</div>
+
+<script>
+let boardEl=document.getElementById('board'), turn='w', sel=null, moves=[], hist=[], mode='bot';
+let capW=[], capB=[];
+let init=[
+['r','n','b','q','k','b','n','r'],
+['p','p','p','p','p','p','p','p'],
+['','','','','','','',''],
+['','','','','','','',''],
+['','','','','','','',''],
+['','','','','','','',''],
+['P','P','P','P','P','P','P','P'],
+['R','N','B','Q','K','B','N','R']
+];
+let board=JSON.parse(JSON.stringify(init));
+const ico={K:'♔',Q:'♕',R:'♖',B:'♗',N:'♘',P:'♙',k:'♚',q:'♛',r:'♜',b:'♝',n:'♞',p:'♟'};
+
+function render(){
+ boardEl.innerHTML='';
+ for(let r=0;r<8;r++) for(let c=0;c<8;c++){
+  let sq=document.createElement('div'); sq.className='sq '+((r+c)%2?'dark':'light'); if(sel&&sel.r==r&&sel.c==c) sq.classList.add('sel');
+  let mv=moves.find(m=>m.r==r&&m.c==c); if(mv) sq.classList.add(board[r][c]?'cap':'hint');
+  let p=board[r][c]; if(p){let s=document.createElement('div'); s.className='p '+(p==p.toUpperCase()?'w':'b'); s.innerText=ico[p]; sq.appendChild(s);}
+  sq.onclick=()=>click(r,c); boardEl.appendChild(sq);
+ }
+ document.getElementById('turn').innerText=turn=='w'?'PUTIH EMAS':'HITAM ONYX';
+ document.getElementById('capW').innerText='Putih makan: '+capB.join(' '); document.getElementById('capB').innerText='Hitam makan: '+capW.join(' ');
+}
+function isW(p){return p&&p==p.toUpperCase();}
+function getMoves(r,c){
+ let p=board[r][c]; if(!p) return []; let m=[], w=isW(p), t=p.toLowerCase();
+ let add=(nr,nc)=>{if(nr<0||nr>7||nc<0||nc>7) return false; let q=board[nr][nc]; if(!q){m.push({r:nr,c:nc});return true;} if(isW(q)!=w){m.push({r:nr,c:nc});return false;} return false;};
+ if(t=='p'){let dir=w?-1:1,st=w?6:1; if(!board[r+dir]?.[c]){m.push({r:r+dir,c}); if(r==st&&!board[r+dir*2]?.[c]) m.push({r:r+dir*2,c});} for(let dc of [-1,1]){let nr=r+dir,nc=c+dc; if(nr>=0&&nr<8&&nc>=0&&nc<8&&board[nr][nc]&&isW(board[nr][nc])!=w) m.push({r:nr,c:nc});}}
+ if(t=='r'||t=='q'){for(let [dr,dc] of [[1,0],[-1,0],[0,1],[0,-1]]) for(let k=1;k<8;k++) if(!add(r+dr*k,c+dc*k)) break;}
+ if(t=='b'||t=='q'){for(let [dr,dc] of [[1,1],[1,-1],[-1,1],[-1,-1]]) for(let k=1;k<8;k++) if(!add(r+dr*k,c+dc*k)) break;}
+ if(t=='n'){for(let [dr,dc] of [[2,1],[2,-1],[-2,1],[-2,-1],[1,2],[1,-2],[-1,2],[-1,-2]]) add(r+dr,c+dc);}
+ if(t=='k'){for(let dr=-1;dr<=1;dr++) for(let dc=-1;dc<=1;dc++) if(dr||dc) add(r+dr,c+dc);}
+ return m;
+}
+function click(r,c){
+ let p=board[r][c];
+ if(sel){let mv=moves.find(m=>m.r==r&&m.c==c); if(mv){move(sel.r,sel.c,r,c); sel=null; moves=[]; render(); return;}}
+ if(p&&isW(p)==(turn=='w')){sel={r,c}; moves=getMoves(r,c); render(); document.getElementById('status').innerText=moves.length?`${ico[p]} ${moves.length} langkah`:'Tidak bisa jalan';}
+}
+function move(fr,fc,tr,tc){
+ hist.push({b:JSON.parse(JSON.stringify(board)),capW:[...capW],capB:[...capB],turn});
+ let p=board[fr][fc], q=board[tr][tc]; if(q){if(isW(q)) capW.push(ico[q]); else capB.push(ico[q]);}
+ if(q&&q.toLowerCase()=='k'){document.getElementById('status').innerText=(turn=='w'?'EMAS':'ONYX')+' MENANG! RAJA DIMAKAN! 👑'; render(); setTimeout(newGame,2000); return;}
+ board[tr][tc]=p; board[fr][fc]=''; if(p=='P'&&tr==0) board[tr][tc]='Q'; if(p=='p'&&tr==7) board[tr][tc]='q';
+ turn=turn=='w'?'b':'w'; document.getElementById('status').innerText=turn=='w'?'Giliran Emas':'Giliran Onyx';
+ if(mode=='bot'&&turn=='b') setTimeout(bot,700);
+}
+function bot(){
+ let all=[]; for(let r=0;r<8;r++) for(let c=0;c<8;c++) if(board[r][c]&&!isW(board[r][c])){let ms=getMoves(r,c); ms.forEach(m=>all.push({fr:r,fc:c,tr:m.r,tc:m.c,val:board[m.r][m.c]?{p:1,n:3,b:3,r:5,q:9,k:100}[board[m.r][m.c].toLowerCase()]||0:0}));}
+ if(!all.length){document.getElementById('status').innerText='BOT MENYERAH! EMAS MENANG!';return;} all.sort((a,b)=>b.val-a.val); let pick=all[Math.floor(Math.random()*Math.min(4,all.length))]; move(pick.fr,pick.fc,pick.tr,pick.tc); render();
+}
+function undo(){if(hist.length){let h=hist.pop(); board=h.b; capW=h.capW; capB=h.capB; turn=h.turn; sel=null; moves=[]; render();}}
+function hint(){for(let r=0;r<8;r++) for(let c=0;c<8;c++) if(board[r][c]&&isW(board[r][c])==(turn=='w')){let m=getMoves(r,c); if(m.length){sel={r,c}; moves=m; render(); return;}}}
+function newGame(){board=JSON.parse(JSON.stringify(init)); turn='w'; sel=null; moves=[]; hist=[]; capW=[]; capB=[]; render(); document.getElementById('status').innerText='Game Baru - Emas jalan';}
+function toggleMode(){mode=mode=='bot'?'2p':'bot'; document.getElementById('modeBtn').innerText=mode=='bot'?'🤖 BOT':'👥 2P'; newGame();}
+newGame();
+</script>
+</body>
+</html>￼Enter
