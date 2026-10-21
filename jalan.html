@@ -3,86 +3,79 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
-<title>JALAN SEHAT 3D HD 8K</title>
+<title>JALAN SEHAT 3D FIX</title>
 <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@700;900&display=swap" rel="stylesheet">
+<link rel="manifest" href="manifest.json">
 <style>
 *{margin:0;padding:0;box-sizing:border-box;font-family:'Fredoka',sans-serif}
-body{background:#0a1a2a;height:100vh;overflow:hidden}
-.screen{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:14px;z-index:20}
+body{background:#0a5ac0;height:100vh;overflow:hidden}
+.screen{position:fixed;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:14px;z-index:100;background:inherit}
 .hidden{display:none!important}
-
-/* MENU UTAMA HD */
-#menu{background:radial-gradient(ellipse at 50% 0%,#2af,#0a5ac0 40%,#051a3a 80%)}
-.logo3d{width:190px;height:190px;background:linear-gradient(145deg,#fff,#c8f0ff);border-radius:40px;display:flex;align-items:center;justify-content:center;font-size:95px;box-shadow:0 25px 50px rgba(0,0,0,.5),0 0 0 7px white,0 0 35px #2af;animation:float 2s infinite}
-@keyframes float{50%{transform:translateY(-12px) rotateZ(2deg)}}
-.title{font-size:34px;font-weight:900;color:white;text-align:center;text-shadow:0 4px 0 #000,0 0 20px #2af;line-height:.9;margin-top:12px}
-.badge{background:linear-gradient(90deg,#7CFF7C,#00FF88);color:#003311;padding:6px 16px;border-radius:20px;font-weight:900;font-size:12px;margin-top:8px;box-shadow:0 4px 12px rgba(0,255,136,.5)}
-.menu-card{background:linear-gradient(180deg,#fff,#e0f6ff);border-radius:26px;padding:20px;width:100%;max-width:380px;margin-top:14px;box-shadow:0 20px 60px rgba(0,0,0,.5);border:2px solid white}
-.btn{width:100%;padding:16px;border:none;border-radius:18px;font-size:17px;font-weight:900;margin-bottom:10px;cursor:pointer;box-shadow:0 7px 0 rgba(0,0,0,.2);transition:.1s}
-.btn:active{transform:translateY(5px)}
-.btn-green{background:linear-gradient(180deg,#7CFF7C,#00cc66);color:#003311;border:2px solid white}
-.btn-blue{background:linear-gradient(180deg,#5ab2ff,#1e5eff);color:white}
-.btn-dark{background:linear-gradient(180deg,#1a2a6e,#0a1a4e);color:white}
-.stats{display:flex;gap:8px;margin:12px 0;justify-content:center}
-.stat{background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.3);padding:7px 12px;border-radius:18px;font-weight:700;font-size:12px;color:white}
-
-/* GAME AREA 3D */
-#gameScreen{padding:0;background:linear-gradient(180deg,#87CEEB 0%,#b8e6ff 20%,#7CFF7C 20.5%)}
-.topbar{display:flex;justify-content:space-between;align-items:center;width:100%;padding:10px 12px;background:linear-gradient(180deg,rgba(0,0,0,.65),rgba(0,0,0,.25));backdrop-filter:blur(10px);color:white;font-weight:900;z-index:30}
-.topbar button{background:linear-gradient(90deg,gold,#ff8c00);color:#000;border:2px solid white;padding:6px 14px;border-radius:12px;font-weight:900;box-shadow:0 3px 8px rgba(0,0,0,.3)}
-#track{flex:1;width:100%;max-width:460px;position:relative;overflow:hidden;margin:0 auto;perspective:700px;perspective-origin:50% 5%;background:linear-gradient(180deg,#87CEEB 0%,#d0f0ff 22%,#90EE90 22.5%,#6B8E23 23%,#8B7355 23.2%);}
-#road3d{position:absolute;bottom:-25%;left:-30%;width:160%;height:140%;background:repeating-linear-gradient(90deg,#666 0 55px,#777 55px 110px);transform:rotateX(65deg);transform-origin:50% 100%;box-shadow:inset 0 0 80px rgba(0,0,0,.6)}
-#centerLine{position:absolute;bottom:-25%;left:50%;width:10px;height:140%;background:repeating-linear-gradient(0deg,white 0 35px,transparent 35px 70px);transform:rotateX(65deg) translateX(-50%);transform-origin:50% 100%}
-#playerWrap{position:absolute;bottom:38px;left:50%;transform:translateX(-50%);z-index:12;filter:drop-shadow(0 18px 12px rgba(0,0,0,.5))}
-#player{font-size:72px;display:block;animation:walk .4s infinite;transform-origin:bottom center}
-@keyframes walk{0%,100%{transform:translateY(0) rotateX(10deg)}50%{transform:translateY(-6px) rotateX(15deg)}}
-#shadow{position:absolute;bottom:-5px;left:50%;transform:translateX(-50%);width:60px;height:14px;background:radial-gradient(ellipse,rgba(0,0,0,.5),transparent 70%);border-radius:50%}
-.item3d{position:absolute;top:-90px;font-size:46px;z-index:6;filter:drop-shadow(0 8px 6px rgba(0,0,0,.4))}
-.controls{display:flex;gap:10px;width:100%;max-width:460px;padding:10px 10px 18px;background:linear-gradient(0deg,rgba(0,0,0,.45),transparent);z-index:25}
-.controls .btn{flex:1;margin:0;padding:20px 10px;font-size:26px}
-.walkAnim{animation:walk .35s infinite!important}
+#menu{background:radial-gradient(circle at 50% 0%,#2af,#0a5ac0 60%,#051a3a)}
+.logo{width:160px;height:160px;background:white;border-radius:35px;display:flex;align-items:center;justify-content:center;font-size:80px;box-shadow:0 15px 30px rgba(0,0,0,.4)}
+.title{font-size:32px;font-weight:900;color:white;text-align:center;text-shadow:0 3px 0 #000;margin-top:10px;line-height:.9}
+.menu-card{background:white;border-radius:24px;padding:18px;width:100%;max-width:360px;margin-top:12px;box-shadow:0 15px 40px rgba(0,0,0,.4)}
+.btn{width:100%;padding:18px;border:none;border-radius:16px;font-size:18px;font-weight:900;margin-bottom:10px;cursor:pointer;display:block;position:relative;z-index:200;touch-action:manipulation}
+.btn-green{background:#00ff88;color:#003311;border:3px solid white}
+.btn-blue{background:#1e5eff;color:white}
+.btn:active{transform:scale(.97)}
+#gameScreen{padding:0;background:#87CEEB;z-index:50}
+.topbar{display:flex;justify-content:space-between;align-items:center;width:100%;padding:10px 12px;background:rgba(0,0,0,.6);color:white;font-weight:900;position:absolute;top:0;left:0;z-index:300}
+#track{flex:1;width:100%;max-width:440px;position:relative;overflow:hidden;background:linear-gradient(180deg,#87CEEB 0%,#c8f0ff 20%,#7CFF7C 21%,#8B7355 22%,#666 23%);margin-top:48px;height:calc(100vh - 120px);border-radius:20px 20px 0 0}
+#road{position:absolute;bottom:0;left:0;width:100%;height:75%;background:#666;transform-origin:bottom center}
+#playerWrap{position:absolute;bottom:30px;left:50%;transform:translateX(-50%);z-index:10;font-size:68px}
+.item{position:absolute;top:-60px;font-size:44px;z-index:5}
+.controls{width:100%;max-width:440px;display:flex;gap:8px;padding:8px;background:rgba(0,0,0,.3);z-index:300}
+.controls .btn{flex:1;margin:0;padding:18px;font-size:22px}
 </style>
 </head>
 <body>
-
-<!-- MENU UTAMA -->
 <div id="menu" class="screen">
-<div class="logo3d">🚶‍♂️</div>
-<div class="title">JALAN SEHAT<br>3D ADVENTURE</div>
-<div class="badge">🌳 SEHAT BUGAR HD 8K 🌳</div>
-<div class="stats"><div class="stat">🏆 <span id="mBest">0</span> M</div><div class="stat">💧 <span id="mWater">0</span></div><div class="stat">🔥 <span id="mCal">0</span> kal</div></div>
+<div class="logo">🚶‍♂️</div>
+<div class="title">JALAN SEHAT<br>3D FIX</div>
 <div class="menu-card">
-<button class="btn btn-green" onclick="startGame()">▶️ MULAI JALAN!</button>
-<button class="btn btn-blue" onclick="alert('🎮 CARA MAIN:\n◀ ▶ Geser kiri kanan\n💧 Ambil air minum + sehat\n🕳️ Hindari lubang & sampah\n🚶‍♂️ Makin jauh makin sehat!')">❓ CARA MAIN</button>
-<button class="btn btn-dark" onclick="document.documentElement.requestFullscreen()">⛶ FULL SCREEN 3D</button>
+<button class="btn btn-green" onclick="startGame()" id="btnStart">▶️ MULAI JALAN (KLIK SINI)</button>
+<button class="btn btn-blue" onclick="alert('Geser kiri kanan ambil air 💧')">❓ CARA MAIN</button>
 </div>
+<p style="color:white;margin-top:12px;font-size:12px">Kalau gak bisa klik, buka pakai Chrome Incognito Tuan!</p>
 </div>
 
-<!-- GAME SCREEN -->
 <div id="gameScreen" class="screen hidden">
 <div class="topbar">
 <button onclick="goMenu()">🏠 MENU</button>
 <div>💧 <span id="score">0</span> | <span id="dist">0</span>M</div>
-<div style="display:flex;gap:6px">
-<button onclick="pauseGame()" style="background:rgba(255,255,255,.25);border:1px solid white;color:white">⏸️</button>
-<button onclick="goMenu()" style="background:rgba(255,255,255,.25);border:1px solid white;color:white">✖️</button>
+<button onclick="pauseGame()">⏸️ PAUSE</button>
 </div>
-</div>
-<div id="track">
-<div id="road3d"></div>
-<div id="centerLine"></div>
-<div id="playerWrap"><div id="shadow"></div><div id="player">🚶‍♂️</div></div>
-</div>
+<div id="track"><div id="road"></div><div id="playerWrap">🚶‍♂️</div></div>
 <div class="controls">
 <button class="btn btn-blue" ontouchstart="goLeft()" ontouchend="stop()" onmousedown="goLeft()" onmouseup="stop()">◀</button>
-<button class="btn btn-green" ontouchstart="sprint()" onmousedown="sprint()">🏃 SPRINT</button>
+<button class="btn btn-green" onclick="sprint()">🏃</button>
 <button class="btn btn-blue" ontouchstart="goRight()" ontouchend="stop()" onmousedown="goRight()" onmouseup="stop()">▶</button>
 </div>
 </div>
 
-<!-- PAUSE -->
-<div id="pauseScreen" class="screen hidden" style="background:rgba(0,0,0,.7);backdrop-filter:blur(12px)">
+<div id="pauseScreen" class="screen hidden" style="background:rgba(0,0,0,.8);z-index:400">
 <div class="menu-card" style="text-align:center">
-<h2 style="color:#0a3a9e">⏸️ PAUSE</h2>
-<p style="color:#555;margin:8px 0">Istirahat dulu Tuan 😼</p>
-<button class="btn btn-green" onclick￼Enter
+<h2>⏸️ PAUSE</h2>
+<button class="btn btn-green" onclick="resumeGame()">▶️ LANJUT</button>
+<button class="btn btn-blue" onclick="goMenu()">🏠 MENU UTAMA</button>
+</div>
+</div>
+
+<script>
+let score=0,dist=0,px=50,dir=0,isPlaying=false,items=[],loopId,speed=5;
+function startGame(){
+ console.log('start');score=0;dist=0;px=50;items=[];document.querySelectorAll('.item').forEach(i=>i.remove());
+ document.getElementById('menu').classList.add('hidden');document.getElementById('pauseScreen').classList.add('hidden');document.getElementById('gameScreen').classList.remove('hidden');
+ isPlaying=true;run();
+}
+function goMenu(){isPlaying=false;cancelAnimationFrame(loopId);document.querySelectorAll('.screen').forEach(s=>s.classList.add('hidden'));document.getElementById('menu').classList.remove('hidden');}
+function pauseGame(){isPlaying=false;cancelAnimationFrame(loopId);document.getElementById('pauseScreen').classList.remove('hidden');}
+function resumeGame(){document.getElementById('pauseScreen').classList.add('hidden');document.getElementById('gameScreen').classList.remove('hidden');isPlaying=true;run();}
+function goLeft(){dir=-6}function goRight(){dir=6}function stop(){dir=0}function sprint(){speed=12;setTimeout(()=>speed=5,800)}
+function spawn(){if(Math.random()<0.06){let el=document.createElement('div');el.className='item';let r=Math.random();el.innerText=r<0.5?'💧':r<0.8?'🍎':'🕳️';el.dataset.t=r<0.8?'good':'bad';el.style.left=(Math.random()*80+10)+'%';el.style.top='-50px';document.getElementById('track').appendChild(el);items.push(el);}}
+function run(){if(!isPlaying)return;dist+=speed/10;px+=dir*0.8;if(px<10)px=10;if(px>90)px=90;document.getElementById('playerWrap').style.left=px+'%';document.getElementById('score').innerText=score;document.getElementById('dist').innerText=Math.floor(dist);spawn();items.forEach((o,i)=>{let y=parseFloat(o.style.top);y+=speed;o.style.top=y+'px';if(y>600){o.remove();items.splice(i,1);return;}let ox=parseFloat(o.style.left);if(y>380&&y<480&&Math.abs(ox-px)<10){if(o.dataset.t==='good'){score++;o.remove();items.splice(i,1);}else{o.remove();items.splice(i,1);}}});loopId=requestAnimationFrame(run);}
+document.getElementById('btnStart').addEventListener('touchstart',function(e){e.preventDefault();startGame();},{passive:false});
+</script>
+</body>
+</html>
