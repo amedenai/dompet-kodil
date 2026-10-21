@@ -3,70 +3,154 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>GAME KODIL TANGKAP KOIN - MERIAH!</title>
+<title>KODIL COIN MASTER</title>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@700;900&display=swap" rel="stylesheet">
 <style>
 *{margin:0;padding:0;box-sizing:border-box;font-family:'Fredoka',sans-serif}
-body{background:linear-gradient(180deg,#3aa0ff 0%,#1a6bff 100%);height:100vh;height:100dvh;overflow:hidden;touch-action:none}
-.top{padding:10px 15px;text-align:center}
-h1{color:white;font-size:28px;line-height:0.9;text-shadow:0 3px 0 #0a3a9e,0 6px 10px rgba(0,0,0,0.3);letter-spacing:1px}
-.score-box{background:linear-gradient(180deg,#ffe27a,#ffbe2e);border-radius:20px;padding:10px 25px;display:inline-block;margin-top:10px;font-weight:900;color:#1a3a8a;font-size:22px;box-shadow:0 5px 0 #c78e00,0 10px 15px rgba(0,0,0,0.2)}
-#game{width:92%;max-width:400px;height:68vh;height:68dvh;background:white;border-radius:30px;position:relative;overflow:hidden;margin:10px auto;box-shadow:0 20px 40px rgba(0,0,0,0.3),inset 0 0 0 4px #e0f0ff}
-#kodil{position:absolute;bottom:10px;left:150px;font-size:75px;filter:drop-shadow(0 5px 5px rgba(0,0,0,0.2));transition:transform 0.1s;z-index:10}
-#koin{position:absolute;top:-60px;font-size:60px;filter:drop-shadow(0 5px 5px rgba(0,0,0,0.2))}
-.confetti{position:absolute;font-size:20px;animation:fall linear forwards;pointer-events:none}
-@keyframes fall{to{transform:translateY(100vh) rotate(720deg);opacity:0}}
-.controls{position:fixed;bottom:0;left:0;right:0;display:flex;gap:12px;padding:12px 15px 25px;background:linear-gradient(0deg,rgba(26,107,255,0.9),transparent);z-index:20}
-.controls button{flex:1;background:linear-gradient(180deg,#3a8bff,#1e5eff);color:white;border:none;padding:18px;border-radius:18px;font-size:22px;font-weight:900;box-shadow:0 6px 0 #0a3a9e,0 10px 20px rgba(0,0,0,0.3);text-shadow:0 2px 0 rgba(0,0,0,0.3)}
-.controls button:active{transform:translateY(5px);box-shadow:0 1px 0 #0a3a9e}
-#fullscreenBtn{position:absolute;top:15px;right:15px;background:rgba(255,255,255,0.9);border:none;border-radius:50%;width:45px;height:45px;font-size:22px;box-shadow:0 3px 10px rgba(0,0,0,0.2);z-index:30}
-.particle{position:absolute;pointer-events:none;font-size:30px;animation:pop 0.6s ease-out forwards}
-@keyframes pop{0%{transform:translate(0,0) scale(0)} 100%{transform:translate(var(--x),var(--y)) scale(1.5);opacity:0}}
+body{background:linear-gradient(180deg,#3aa0ff 0%,#0a3a9e 100%);height:100vh;height:100dvh;overflow:hidden;color:white}
+.screen{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:20px;z-index:10;transition:0.3s}
+.hidden{display:none!important}
+#menu{background:radial-gradient(circle at 50% 0%,#5ab2ff,#1a6bff 60%,#0a3a9e)}
+.logo{font-size:48px;line-height:0.9;text-align:center;text-shadow:0 4px 0 #0a3a9e,0 8px 20px rgba(0,0,0,0.4);animation:float 2s infinite}
+@keyframes float{50%{transform:translateY(-8px)}}
+.menu-card{background:white;border-radius:28px;padding:22px;width:100%;max-width:360px;margin-top:20px;box-shadow:0 20px 40px rgba(0,0,0,0.3)}
+.btn{display:block;width:100%;padding:16px;border:none;border-radius:18px;font-size:20px;font-weight:900;margin-bottom:12px;cursor:pointer;box-shadow:0 6px 0 rgba(0,0,0,0.2);transition:0.1s}
+.btn:active{transform:translateY(5px);box-shadow:0 1px 0 rgba(0,0,0,0.2)}
+.btn-primary{background:linear-gradient(180deg,#ffe27a,#ffbe2e);color:#1a3a8a}
+.btn-blue{background:linear-gradient(180deg,#3a8bff,#1e5eff);color:white}
+.btn-dark{background:#0a2a6e;color:white}
+.stats{display:flex;gap:10px;justify-content:center;margin:15px 0}
+.stat{background:rgba(255,255,255,0.15);backdrop-filter:blur(10px);padding:8px 16px;border-radius:20px;font-size:14px;border:1px solid rgba(255,255,255,0.3)}
+#gameScreen{padding:0}
+.topbar{display:flex;justify-content:space-between;align-items:center;padding:12px 15px;width:100%;background:rgba(0,0,0,0.15);backdrop-filter:blur(10px)}
+#gameArea{flex:1;width:92%;max-width:420px;background:white;border-radius:28px;position:relative;overflow:hidden;margin:12px auto;box-shadow:0 20px 40px rgba(0,0,0,0.3)}
+#kodil{position:absolute;bottom:12px;left:160px;font-size:70px;z-index:5;filter:drop-shadow(0 4px 6px rgba(0,0,0,0.2))}
+#koin,#bom{position:absolute;top:-80px;font-size:55px}
+.controls{padding:10px 15px 25px;display:flex;gap:12px;width:100%;max-width:420px}
+.controls button{flex:1;padding:18px}
+.shop-item{display:flex;justify-content:space-between;align-items:center;background:#f0f6ff;padding:12px 16px;border-radius:16px;margin-bottom:10px;color:#1a3a8a;font-weight:700}
+.badge{background:#ffbe2e;padding:4px 10px;border-radius:10px;font-size:12px}
+.heart{color:#ff2e63}
+.level-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;width:100%;margin-top:15px}
+.level-btn{aspect-ratio:1;background:white;color:#1a3a8a;border-radius:18px;display:flex;flex-direction:column;align-items:center;justify-content:center;font-weight:900;box-shadow:0 4px 0 #d0d8ff}
+.level-btn.locked{opacity:0.4}
 </style>
 </head>
 <body>
-<button id="fullscreenBtn" onclick="goFull()">⛶</button>
-<div class="top">
-<h1>GAME KODIL<br>TANGKAP KOIN</h1>
-<div class="score-box">💰 SCORE: <span id="skor">0</span> | BEST: <span id="best">0</span></div>
+
+<div id="menu" class="screen">
+<div class="logo">😼<br>GAME KODIL<br>TANGKAP KOIN</div>
+<div class="stats">
+<div class="stat">🏆 BEST: <span id="mBest">0</span></div>
+<div class="stat">💰 <span id="mCoin">0</span> KOIN</div>
+<div class="stat">❤️ <span id="mLevel">1</span></div>
 </div>
-<div id="game">
+<div class="menu-card">
+<button class="btn btn-primary" onclick="startGame()">▶️ MAIN SEKARANG</button>
+<button class="btn btn-blue" onclick="showScreen('levelScreen')">🗺️ PILIH LEVEL</button>
+<button class="btn btn-blue" onclick="showScreen('shopScreen')">🛒 TOKO SKIN</button>
+<button class="btn btn-dark" onclick="goFull()">⛶ FULL SCREEN</button>
+<div style="text-align:center;margin-top:10px;color:#6a7aaa;font-size:12px">amedenai.github.io/dompet-kodil</div>
+</div>
+</div>
+
+<div id="levelScreen" class="screen hidden">
+<h2 style="font-size:32px">PILIH LEVEL</h2>
+<div class="menu-card">
+<div class="level-grid" id="levelGrid"></div>
+<button class="btn btn-dark" style="margin-top:15px" onclick="showScreen('menu')">⬅ KEMBALI</button>
+</div>
+</div>
+
+<div id="shopScreen" class="screen hidden">
+<h2 style="font-size:32px">TOKO KODIL</h2>
+<div class="menu-card">
+<div class="shop-item"><span>🐱 Kucing Oren (Default)</span><span class="badge">FREE</span></div>
+<div class="shop-item"><span>🐶 Anjing Kodil</span><button class="badge" onclick="buySkin('🐶',100)">100💰</button></div>
+<div class="shop-item"><span>🦊 Rubah</span><button class="badge" onclick="buySkin('🦊',250)">250💰</button></div>
+<div class="shop-item"><span>🐼 Panda</span><button class="badge" onclick="buySkin('🐼',500)">500💰</button></div>
+<button class="btn btn-dark" style="margin-top:15px" onclick="showScreen('menu')">⬅ KEMBALI</button>
+</div>
+</div>
+
+<div id="gameScreen" class="screen hidden">
+<div class="topbar">
+<div>❤️ <span id="lives">3</span> | SCORE: <span id="score">0</span></div>
+<div>LEVEL <span id="lvl">1</span></div>
+<button onclick="pauseGame()" style="background:rgba(255,255,255,0.2);border:none;padding:6px 12px;border-radius:10px;color:white">⏸️</button>
+</div>
+<div id="gameArea">
 <div id="koin">🪙</div>
+<div id="bom" class="hidden">💣</div>
 <div id="kodil">🐱</div>
 </div>
 <div class="controls">
-<button onclick="geser(-60)">◀ KIRI</button>
-<button onclick="geser(60)">KANAN ▶</button>
+<button class="btn btn-blue" ontouchstart="move(-1)" ontouchend="stopMove()" onclick="geser(-70)">◀ KIRI</button>
+<button class="btn btn-blue" ontouchstart="move(1)" ontouchend="stopMove()" onclick="geser(70)">KANAN ▶</button>
 </div>
+</div>
+
+<div id="pauseScreen" class="screen hidden" style="background:rgba(10,58,158,0.9);backdrop-filter:blur(10px)">
+<h1>⏸️ PAUSE</h1>
+<div class="menu-card">
+<button class="btn btn-primary" onclick="resumeGame()">▶️ LANJUT</button>
+<button class="btn btn-dark" onclick="showScreen('menu')">🏠 MENU</button>
+</div>
+</div>
+
+<div id="overScreen" class="screen hidden" style="background:radial-gradient(circle,#ff5a7a,#c70036)">
+<h1 id="overTitle">GAME OVER!</h1>
+<div style="font-size:60px" id="overEmoji">😿</div>
+<div class="menu-card" style="text-align:center;color:#1a3a8a">
+<div style="font-size:18px">SKOR KAMU</div>
+<div style="font-size:48px;font-weight:900" id="finalScore">0</div>
+<div id="overMsg">Semangat lagi Tuan!</div>
+<button class="btn btn-primary" style="margin-top:15px" onclick="startGame()">🔄 MAIN LAGI</button>
+<button class="btn btn-dark" onclick="showScreen('menu')">🏠 MENU UTAMA</button>
+<button class="btn btn-blue" onclick="shareScore()">📤 BAGIKAN SKOR</button>
+</div>
+</div>
+
 <script>
-let skor=0,best=localStorage.getItem('kodilBest')||0,xKoin=150,yKoin=-60,xKodil=150,speed=5;
-document.getElementById('best').innerText=best;
-let gameEl=document.getElementById('game');
+let best=parseInt(localStorage.getItem('kodilBest')||0), totalCoin=parseInt(localStorage.getItem('kodilCoin')||0), curLevel=1, score=0, lives=3, xKodil=160, xKoin=100, yKoin=-80, xBom=200, yBom=-300, speed=4, skin='🐱', isPlaying=false, moveDir=0, gameLoopId;
+let levelUnlocked=parseInt(localStorage.getItem('kodilLevel')||1);
+document.getElementById('mBest').innerText=best;document.getElementById('mCoin').innerText=totalCoin;document.getElementById('mLevel').innerText=levelUnlocked;
+function showScreen(id){document.querySelectorAll('.screen').forEach(s=>s.classList.add('hidden'));document.getElementById(id).classList.remove('hidden');if(id==='levelScreen')renderLevels()}
+function renderLevels(){let g=document.getElementById('levelGrid');g.innerHTML='';for(let i=1;i<=9;i++){let d=document.createElement('div');d.className='level-btn'+(i>levelUnlocked?' locked':'');d.innerHTML=`<span style="font-size:28px">${i>levelUnlocked?'🔒':'⭐'}</span>${i}`;d.onclick=()=>{if(i<=levelUnlocked){curLevel=i;startGame()}};g.appendChild(d)}}
+function buySkin(s,price){if(totalCoin>=price){totalCoin-=price;skin=s;localStorage.setItem('kodilCoin',totalCoin);document.getElementById('kodil').innerText=skin;document.getElementById('mCoin').innerText=totalCoin;alert('Berhasil beli '+s)}else alert('Koin kurang Tuan! Main dulu!')}
 function goFull(){document.documentElement.requestFullscreen&&document.documentElement.requestFullscreen()}
-gameEl.addEventListener('click',(e)=>{if(e.target.tagName!=='BUTTON'){xKodil=Math.random()*(gameEl.clientWidth-80);updateKodil();createParticle(e.clientX,e.clientY,'💨')}})
-gameEl.addEventListener('touchstart',(e)=>{let r=gameEl.getBoundingClientRect();xKodil=e.touches[0].clientX-r.left-40;updateKodil()},{passive:true})
-function createConfetti(){for(let i=0;i<12;i++){let c=document.createElement('div');c.className='confetti';c.innerText=['🎉','✨','🎊','⭐'][Math.floor(Math.random()*4)];c.style.left=Math.random()*100+'%';c.style.top='-20px';c.style.animationDuration=(Math.random()*1+1)+'s';gameEl.appendChild(c);setTimeout(()=>c.remove(),2000)}}
-function createParticle(x,y,emoji){for(let i=0;i<5;i++){let p=document.createElement('div');p.className='particle';p.innerText=emoji;p.style.left=x+'px';p.style.top=y+'px';p.style.setProperty('--x',(Math.random()-0.5)*200+'px');p.style.setProperty('--y',(Math.random()-0.5)*200+'px');document.body.appendChild(p);setTimeout(()=>p.remove(),600)}}
-function loop(){
-  yKoin+=speed;
-  if(yKoin>gameEl.clientHeight+60){yKoin=-60;xKoin=Math.random()*(gameEl.clientWidth-60);if(skor>0){skor=Math.max(0,skor-1);document.getElementById('skor').innerText=skor}}
-  if(yKoin>gameEl.clientHeight-120 && Math.abs(xKoin-xKodil)<60){
-    skor++;speed=Math.min(12,4+skor*0.25);
-    document.getElementById('skor').innerText=skor;
-    if(skor>best){best=skor;localStorage.setItem('kodilBest',best);document.getElementById('best').innerText=best}
-    createConfetti();createParticle(xKoin+30,yKoin,'💰');
-    document.getElementById('kodil').style.transform='scale(1.4)';setTimeout(()=>document.getElementById('kodil').style.transform='scale(1)',150);
-    yKoin=-60;xKoin=Math.random()*(gameEl.clientWidth-60);
-    if(navigator.vibrate)navigator.vibrate(30);
-  }
-  document.getElementById('koin').style.top=yKoin+'px';
-  document.getElementById('koin').style.left=xKoin+'px';
-  requestAnimationFrame(loop);
+function startGame(){
+ score=0;lives=3;speed=3+curLevel;showScreen('gameScreen');
+ document.getElementById('score').innerText=0;document.getElementById('lives').innerText=lives;document.getElementById('lvl').innerText=curLevel;
+ document.getElementById('kodil').innerText=skin;
+ xKoin=Math.random()*300;yKoin=-80;xBom=Math.random()*300;yBom=-400;
+ isPlaying=true;if(gameLoopId)cancelAnimationFrame(gameLoopId);loop();
 }
-function geser(j){xKodil+=j;if(xKodil<0)xKodil=0;if(xKodil>gameEl.clientWidth-80)xKodil=gameEl.clientWidth-80;updateKodil()}
-function updateKodil(){document.getElementById('kodil').style.left=xKodil+'px'}
-loop();
-// auto fullscreen hint
-setTimeout(()=>{if(!document.fullscreenElement){let b=document.getElementById('fullscreenBtn');b.style.animation='pop 0.5s 3';b.innerText='⛶ FULL'}},2000)
+function pauseGame(){isPlaying=false;showScreen('pauseScreen')}
+function resumeGame(){showScreen('gameScreen');isPlaying=true;loop()}
+function move(d){moveDir=d}function stopMove(){moveDir=0}
+function geser(d){xKodil+=d;if(xKodil<0)xKodil=0;if(xKodil>340)xKodil=340;document.getElementById('kodil').style.left=xKodil+'px'}
+function shareScore(){let t=`Woy skor gw di GAME KODIL ${score}! Level ${curLevel}! Lu bisa berapa? 😼👉 https://amedenai.github.io/dompet-kodil/game.html`;navigator.share?navigator.share({title:'Game Kodil',text:t}):(prompt('Copy dan share ke kawan:',t))}
+function loop(){
+ if(!isPlaying)return;
+ if(moveDir!==0){xKodil+=moveDir*8;if(xKodil<0)xKodil=0;if(xKodil>340)xKodil=340;document.getElementById('kodil').style.left=xKodil+'px'}
+ yKoin+=speed;yBom+=speed*0.9;
+ if(yKoin>500){yKoin=-80;xKoin=Math.random()*320}
+ if(yBom>550){yBom=-400-Math.random()*400;xBom=Math.random()*320;if(Math.random()<0.4)document.getElementById('bom').classList.remove('hidden')}
+ if(yKoin>380 && Math.abs(xKoin-xKodil)<50){score++;totalCoin++;if(score>best){best=score;localStorage.setItem('kodilBest',best)}localStorage.setItem('kodilCoin',totalCoin);document.getElementById('score').innerText=score;document.getElementById('mBest').innerText=best;document.getElementById('mCoin').innerText=totalCoin;yKoin=-80;xKoin=Math.random()*320;speed+=0.15;if(navigator.vibrate)navigator.vibrate(20);if(score%10===0 && curLevel===levelUnlocked){levelUnlocked++;localStorage.setItem('kodilLevel',levelUnlocked)}}
+ if(yBom>380 && Math.abs(xBom-xKodil)<50){lives--;document.getElementById('lives').innerText=lives;document.getElementById('bom').classList.add('hidden');yBom=-500;if(navigator.vibrate)navigator.vibrate([50,50,50]);if(lives<=0){gameOver();return}}
+ document.getElementById('koin').style.top=yKoin+'px';document.getElementById('koin').style.left=xKoin+'px';
+ document.getElementById('bom').style.top=yBom+'px';document.getElementById('bom').style.left=xBom+'px';
+ gameLoopId=requestAnimationFrame(loop);
+}
+function gameOver(){
+ isPlaying=false;
+ document.getElementById('finalScore').innerText=score;
+ document.getElementById('overTitle').innerText=score>=10?'LUAR BIASA!':'GAME OVER!';
+ document.getElementById('overEmoji').innerText=score>=10?'🏆':'😿';
+ document.getElementById('overMsg').innerText=score>=10?'Tuan jago banget! Level baru kebuka!':'Ayo coba lagi Tuan, pasti bisa!';
+ showScreen('overScreen');
+}
 </script>
 </body>
 </html>
