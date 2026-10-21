@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+<title>BUS SIMULATOR SULTAN</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:sans-serif}
+body{background:#0f172a;height:100vh;overflow:hidden}
+#game{position:relative;width:100%;max-width:480px;margin:0 auto;height:100vh;background:linear-gradient(#87CEEB 0% 35%,#5a8f2a 35% 36%,#444 36% 100%);overflow:hidden}
+.top{position:absolute;top:0;left:0;right:0;background:rgba(0,0,0,.85);color:white;padding:10px 14px;display:flex;justify-content:space-between;z-index:100;font-weight:900;font-size:14px}
+#roadLines{position:absolute;top:36%;left:0;right:0;bottom:0;background:repeating-linear-gradient(0deg,transparent 0 40px,white 40px 50px);opacity:.3}
+#bus{position:absolute;bottom:110px;left:50%;transform:translateX(-50%);font-size:85px;z-index:50;filter:drop-shadow(0 10px 10px black);transition:left .1s}
+#shadow{position:absolute;bottom:100px;left:50%;width:90px;height:20px;background:rgba(0,0,0,.5);border-radius:50%;transform:translateX(-50%);z-index:40}
+.halte{position:absolute;top:-100px;left:0;right:0;height:90px;background:linear-gradient(#ffaa00,#ff8800);border-bottom:8px solid white;display:flex;align-items:center;justify-content:center;font-weight:900;font-size:22px;z-index:20;box-shadow:0 5px 0 black}
+.halte span{background:white;padding:6px 16px;border-radius:10px}
+.penumpang{position:absolute;font-size:36px;z-index:25;animation:bounce .6s infinite alternate}
+@keyframes bounce{to{transform:translateY(-6px)}}
+.controls{position:absolute;bottom:0;left:0;right:0;background:rgba(0,0,0,.7);display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;padding:10px;z-index:200}
+.controls button{padding:18px;border-radius:16px;border:3px solid white;font-size:24px;font-weight:900}
+.btn-gas{background:#00ff88} .btn-rem{background:#ff3b3b;color:white} .btn-belok{background:#2af;color:white}
+#notif{position:absolute;top:60px;left:50%;transform:translateX(-50%);background:gold;color:black;padding:10px 20px;border-radius:20px;font-weight:900;z-index:300;display:none}
+</style>
+</head>
+<body>
+<div id="game">
+<div class="top">
+<button onclick="location.href='jalan.html'" style="background:gold;border:none;padding:8px 14px;border-radius:10px;font-weight:900">🏠 MENU</button>
+<div>👥 <span id="angkut">0</span>/20 | 💰 <span id="duit">0</span></div>
+<div id="speed">0 KM</div>
+</div>
+<div id="roadLines"></div>
+<div id="halte" class="halte" style="top:-100px"><span>🚌 HALTE PASAR - STOP! 🛑</span></div>
+<div id="shadow"></div>
+<div id="bus">🚌</div>
+<div id="notif">🛑 BERHENTI! ANGKUT PENUMPANG!</div>
+<div class="controls">
+<button class="btn-belok" ontouchstart="belok=-1" ontouchend="belok=0" onmousedown="belok=-1" onmouseup="belok=0">◀</button>
+<button class="btn-rem" ontouchstart="ngrem()" ontouchend="gas=false" onclick="ngrem()">⏸️ REM</button>
+<button class="btn-belok" ontouchstart="belok=1" ontouchend="belok=0" onmousedown="belok=1" onmouseup="belok=0">▶</button>
+<button class="btn-gas" style="grid-column: span 3" ontouchstart="gas=true" ontouchend="gas=false" onmousedown="gas=true" onmouseup="gas=false">💨 GAS POLL</button>
+</div>
+</div>
+<script>
+let x=50, y=0, speed=0, belok=0, gas=false, halteY=-100, penumpangCount=0, duit=0, isStop=false, halteAktif=true;
+let bus=document.getElementById('bus'), shadow=document.getElementById('shadow'), halteEl=document.getElementById('halte');
+let penumpangs=[];
+
+function spawnPenumpang(){
+  if(penumpangs.length>0) return;
+  for(let i=0;i<3;i++){
+    let p=document.createElement('div'); p.className='penumpang';
+    p.innerText=['🧑‍🦱','👩‍🦰','👨‍👩‍👧','🧓','👩‍🎓'][Math.floor(Math.random()*5)];
+    p.style.left=(15+i*30)+'%'; p.style.top=(halteY+20)+'px';
+    document.getElementById('game').appendChild(p); penumpangs.push(p);
+  }
+}
+
+function loop(){
+  if(gas && !isStop) speed+=0.15; else speed-=0.25;
+  if(speed<0) speed=0; if(speed>12) speed=12;
+  
+  if(belok===-1) x-=speed*0.4; if(belok===1) x+=speed*0.4;
+  if(x<15)x=15; if(x>85)x=85;
+  bus.style.left=x+'%'; shadow.style.left=x+'%';
+  
+  document.getElementById('speed').innerText=Math.floor(speed*8)+' KM/H';
+
+  // Gerakin halte
+  if(halteAktif){
+    halteY+=speed;
+    halteEl.style.top=halteY+'px';
+    penumpangs.forEach(p=>p.style.top=(halteY+25)+'px');
+    
+    if(halteY>120 && halteY<350){
+      document.getElementById('notif').style.display='block';
+      if(speed<1){
+        isStop=true; document.getElementById('notif').innerText='✅ NAIKKAN PENUMPANG!';
+        // angkut
+        penumpangs.forEach(p=>{p.remove();});
+        penumpangCount+=penumpangs.length;
+        duit+=penumpangs.length*5000;
+        penumpangs=[];
+        document.getElementById('angkut').innerText=penumpangCount;
+        document.getElementById('duit').innerText=duit;
+        setTimeout(()=>{
+          halteAktif=false; isStop=false; halteY=-100;
+          document.getElementById('notif').style.display='none';
+          setTimeout(()=>{halteAktif=true; spawnPenumpang();},3000);
+        },1000);
+      }
+    } else if(halteY>700){
+      // kelewat halte
+      if(halteAktif && penumpangs.length>0){
+        document.getElementById('notif').innerText='❌ KELEWAT! PENUMPANG MARAH!';
+        document.getElementById('notif').style.display='block';
+        penumpangs.forEach(p=>p.remove()); penumpangs=[];
+        setTimeout(()=>{document.getElementById('notif').style.display='none'; halteY=-100; spawnPenumpang();},1500);
+      }
+    }
+  }
+
+  requestAnimationFrame(loop);
+}
+spawnPenumpang(); loop();
+
+function ngrem(){ speed-=2; if(speed<0)speed=0; if(halteY>100 && halteY<400) bus.innerText='🚌💨'; else bus.innerText='🚌'; }
+</script>
+</body>
+</html>￼Enter
