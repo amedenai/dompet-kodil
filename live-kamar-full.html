@@ -1,0 +1,93 @@
+<!DOCTYPE html><html lang="id"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>LIVE KAMAR FULL - GIRLS STREAMER</title><style>
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@700;900&display=swap');
+*{margin:0;padding:0;box-sizing:border-box;font-family:'Outfit',sans-serif}
+body{background:#000;display:flex;justify-content:center}
+#app{width:100%;max-width:500px;min-height:100vh;background:#0a0a0f;display:flex;flex-direction:column;color:white;position:relative;overflow:hidden}
+/* KAMAR FULL BACKGROUND */
+#room{flex:1;background:radial-gradient(ellipse at top,#1a1033 0%,#0f0f1a 50%,#000 100%);position:relative;padding:8px;display:flex;flex-direction:column}
+#ceiling{height:30px;background:linear-gradient(#2a2a4a,#1a1a2e);border-bottom:3px solid #fbbf24;display:flex;justify-content:space-between;align-items:center;padding:0 10px;font-size:10px}
+.led{width:60px;height:6px;background:linear-gradient(90deg,#ff1493,#fbbf24,#22c55e);border-radius:10px;box-shadow:0 0 10px #ff1493;animation:led 1s infinite alternate}
+@keyframes led{0%{opacity:.6}100%{opacity:1;box-shadow:0 0 20px #fbbf24}}
+#bed{position:absolute;bottom:80px;left:8px;width:100px;height:60px;background:linear-gradient(#4a1942,#2d0a28);border-radius:10px 10px 4px 4px;border:2px solid #ec4899;z-index:1}
+#pc{position:absolute;bottom:80px;right:8px;width:80px;height:70px;background:linear-gradient(#1f2937,#111);border-radius:8px;border:2px solid #22c55e;z-index:1;display:flex;flex-direction:column;align-items:center;justify-content:center;font-size:20px;box-shadow:0 0 15px #22c55e}
+#streamer{position:relative;z-index:5;background:rgba(0,0,0,.85);border:3px solid #fbbf24;border-radius:20px;padding:10px;margin:10px 0;box-shadow:0 0 30px rgba(251,191,36,.5)}
+#girlMain{width:110px;height:110px;border-radius:22px;border:4px solid #fbbf24;overflow:hidden;margin:0 auto;box-shadow:0 0 25px gold,0 0 50px #ec4899;position:relative}
+#girlMain img{width:100%;height:100%;object-fit:cover}
+#ring{position:absolute;top:-10px;left:-10px;right:-10px;bottom:-10px;border:4px solid rgba(255,255,255,.3);border-radius:28px;pointer-events:none;box-shadow:0 0 20px white inset}
+#top{height:50px;background:linear-gradient(90deg,#ff1493,#7c3aed);display:flex;justify-content:space-between;align-items:center;padding:0 8px;border-bottom:3px solid gold;position:relative;z-index:10}
+.liveDot{width:10px;height:10px;background:red;border-radius:50%;animation:blink 1s infinite}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.3}}
+#chatBox{flex:1;background:rgba(0,0,0,.7);border:2px solid #333;border-radius:12px;margin:6px 0;max-height:140px;overflow-y:auto;padding:6px;font-size:11px;z-index:5}
+.chat{padding:4px;border-bottom:1px solid #222;display:flex;gap:6px}
+#controls{display:grid;grid-template-columns:repeat(4,1fr);gap:4px;background:#000;padding:6px;border-top:3px solid #fbbf24;z-index:10}
+.cbtn{padding:10px;border-radius:12px;border:0;font-weight:900;font-size:9px;cursor:pointer}
+#donateBar{height:36px;background:linear-gradient(90deg,#000,#1f1600);display:flex;align-items:center;gap:6px;padding:0 6px;border-top:2px solid gold;overflow-x:auto;z-index:10}
+.dItem{background:linear-gradient(90deg,#ff1493,gold);color:white;padding:4px 8px;border-radius:20px;font-size:9px;font-weight:900;white-space:nowrap;animation:slide 10s linear infinite}
+@keyframes slide{from{transform:translateX(100%)}to{transform:translateX(-100%)}}
+</style></head><body>
+<div id="app">
+<div id="top">
+<div style="display:flex;align-items:center;gap:6px"><div class="liveDot"></div><div style="font-weight:900">🔴 LIVE</div><div style="font-size:9px;background:black;padding:2px 6px;border-radius:10px" id="timer">00:12:34</div><div style="font-size:9px">👁️ <b id="viewers">2,847</b></div></div>
+<div style="display:flex;gap:4px"><div style="background:black;padding:4px 8px;border-radius:20px;border:2px solid gold;font-size:9px">💎 <b id="money">Rp 0</b></div><div style="background:black;padding:4px 6px;border-radius:50%;font-size:14px">⚙️</div></div>
+</div>
+
+<div id="room">
+<div id="ceiling"><div>🏠 KAMAR GIRLS STREAMER FULL SETUP</div><div style="display:flex;gap:4px"><div class="led"></div><div class="led" style="background:linear-gradient(90deg,#22c55e,#06b6d4)"></div></div><div>💡 LED RGB</div></div>
+
+<div id="bed"><div style="font-size:20px;text-align:center;margin-top:5px">🛏️</div><div style="font-size:8px;text-align:center;font-weight:900">KASUR PINK GIRLS</div><div style="position:absolute;top:-12px;left:10px;font-size:16px">🧸</div><div style="position:absolute;top:-8px;right:10px;font-size:14px">💖</div></div>
+
+<div id="pc"><div>🖥️</div><div style="font-size:7px;font-weight:900;color:#22c55e">PC SULTAN<br>RTX 4090</div><div style="width:40px;height:6px;background:#22c55e;border-radius:10px;margin-top:4px;box-shadow:0 0 10px #22c55e;animation:led 0.5s infinite"></div></div>
+
+<div style="position:absolute;top:50px;left:50%;transform:translateX(-50%);background:rgba(255,255,255,.1);border:2px solid white;border-radius:50%;width:60px;height:60px;display:flex;align-items:center;justify-content:center;font-size:24px;z-index:2;box-shadow:0 0 20px white">💡<div style="position:absolute;width:100%;height:100%;border:2px solid gold;border-radius:50%;animation:led 1s infinite"></div></div>
+
+<div id="streamer">
+<div style="display:flex;justify-content:space-between;font-size:9px;font-weight:900"><div>📷 CAM 1 - GIRLS ANGLE</div><div style="color:#22c55e">● REC 4K 60FPS</div></div>
+<div id="girlMain"><div id="ring"></div><img src="https://raw.githubusercontent.com/amedenai/dompet-kodil/main/IMG-20261021-WA0461.jpg"><div style="position:absolute;bottom:0;left:0;right:0;background:linear-gradient(transparent,rgba(236,72,153,.9));color:white;font-size:8px;font-weight:900;text-align:center;padding:4px">GIRLS - FOTO ASLI TUAN 💖</div></div>
+<div style="text-align:center;margin-top:8px"><div style="font-weight:900;font-size:13px">HALO SULTAN! LAGI DI KAMAR NIH! 💖</div><div style="font-size:10px;opacity:.8">Setup full: Kasur, PC RTX, Ring Light, LED RGB</div></div>
+<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:4px;margin-top:8px">
+<div style="background:rgba(255,255,255,.1);border-radius:8px;padding:4px;text-align:center;font-size:8px"><div>🎙️</div>MIC<br><b style="color:#22c55e">ON</b></div>
+<div style="background:rgba(255,255,255,.1);border-radius:8px;padding:4px;text-align:center;font-size:8px"><div>💡</div>RING LIGHT<br><b style="color:gold">100%</b></div>
+<div style="background:rgba(255,255,255,.1);border-radius:8px;padding:4px;text-align:center;font-size:8px"><div>🖥️</div>PC STREAM<br><b style="color:#ec4899">LIVE</b></div>
+</div>
+</div>
+
+<div id="chatBox">
+<div class="chat"><b style="color:#fbbf24">Sultan_Alip:</b> Kamarnya aesthetic bgt Girls! 😍</div>
+<div class="chat"><b style="color:#ec4899">Mas_Rizky:</b> PC nya RTX 4090 sultan! 💎</div>
+<div class="chat"><b style="color:#22c55e">Bunda_Siti:</b> Kasurnya pink gemes! 🛏️💖</div>
+<div class="chat"><b style="color:gold">SULTAN 100JT:</b> Donasi buat beli AC baru ya Girls! 👑</div>
+</div>
+
+<div id="donateBar">
+<div class="dItem">👑 SULTAN ALIP DONASI 10JT!</div>
+<div class="dItem">💎 Mas Budi 1JT - Buat Girls!</div>
+<div class="dItem">💖 Nenek 50k - Cantik bgt!</div>
+</div>
+</div>
+
+<div id="controls">
+<button class="cbtn" style="background:#fbbf24;color:black" onclick="talk()">💖 TALK</button>
+<button class="cbtn" style="background:#ec4899;color:white" onclick="donate(1)">💎 1JT</button>
+<button class="cbtn" style="background:linear-gradient(90deg,#ff1493,gold);color:white" onclick="donate(10)">👑 10JT</button>
+<button class="cbtn" style="background:linear-gradient(90deg,#000,red);color:gold;border:2px solid gold" onclick="donate(100)">💥 100JT</button>
+<button class="cbtn" style="background:#7c3aed;color:white" onclick="ledParty()">💡 LED PARTY</button>
+<button class="cbtn" style="background:#22c55e;color:white" onclick="changeBg()">🏠 GANTI KAMAR</button>
+<button class="cbtn" style="background:#222;color:white;border:2px solid #333" onclick="bedJump()">🛏️ LONCAT KASUR</button>
+<button class="cbtn" style="background:gold;color:black" onclick="share()">📤 SHARE LIVE</button>
+</div>
+
+<div style="padding:4px;background:#111;text-align:center;font-size:8px;color:#666">💡 TIPS: Kasur bisa di loncatin, LED bisa party, PC bisa overclock! Full interaktif!</div>
+</div>
+
+<script>
+let money=0,viewers=2847,sec=754,bg=0;
+function talk(){let t=['Halo Tuan! Welcome to kamar Girls! Ini kamar full setup aku! Ada kasur pink, PC RTX 4090, ring light!','Tuan liat deh kasur aku empuk banget! Nanti kita rebahan bareng ya!','PC aku mahal Tuan, RTX 4090 buat streaming! Makasih donasinya!','Ring light aku terang banget! Biar muka aku glowing kayak foto asli Tuan!'];let m=t[Math.floor(Math.random()*t.length)];addChat('💖 GIRLS',m,'#ec4899');try{speechSynthesis.cancel();let u=new SpeechSynthesisUtterance(m);u.lang='id-ID';u.pitch=1.8;u.rate=1;speechSynthesis.speak(u);}catch(e){}}
+function donate(j){money+=j*1000000;document.getElementById('money').innerText='Rp '+(money/1000000)+'JT';viewers+=Math.floor(j*100);document.getElementById('viewers').innerText=viewers.toLocaleString();addChat('👑 SULTAN '+j+'JT','DONASI '+j+'JT BUAT GIRLS! GILA SULTAN!','gold');if(j==100){document.getElementById('room').style.filter='brightness(1.3)';setTimeout(()=>document.getElementById('room').style.filter='',1000);}}
+function addChat(name,msg,color){let d=document.createElement('div');d.className='chat';d.innerHTML=`<b style="color:${color}">${name}:</b> ${msg}`;document.getElementById('chatBox').appendChild(d);document.getElementById('chatBox').scrollTop=9999;}
+function ledParty(){let c=document.getElementById('ceiling');c.style.animation='led 0.2s infinite';document.getElementById('room').style.background='radial-gradient(#ff1493,#7c3aed,#000)';setTimeout(()=>{c.style.animation='';document.getElementById('room').style.background='';},2000);addChat('🎉 SYSTEM','LED PARTY MODE ON! KAMAR JADI DISKO!','#fbbf24');talk();}
+function changeBg(){let bgs=['radial-gradient(#1a1033,#000)','radial-gradient(#2d1b4e,#000)','radial-gradient(#4a1942,#000)','radial-gradient(#1a2e1a,#000)'];bg=(bg+1)%bgs.length;document.getElementById('room').style.background=bgs[bg];addChat('🏠 GIRLS','Ganti tema kamar ke tema '+(bg+1)+'! Gimana Tuan suka?','#22c55e');}
+function bedJump(){let b=document.getElementById('bed');b.style.transform='translateY(-20px)';b.style.transition='0.2s';setTimeout(()=>{b.style.transform='';},300);addChat('🛏️ GIRLS','Loncat di kasur! Empuk banget! Tuan mau ikutan?','#ec4899');}
+function share(){alert('📤 SHARE LIVE KAMAR FULL!\\nFoto Girls = Foto asli Tuan!\\nLink: https://amedenai.github.io/dompet-kodil/live-kamar-full.html');}
+setInterval(()=>{sec++;let m=Math.floor(sec/60).toString().padStart(2,'0');let s=(sec%60).toString().padStart(2,'0');document.getElementById('timer').innerText='00:'+m+':'+s;if(Math.random()<0.3){viewers+=Math.floor(Math.random()*5);document.getElementById('viewers').innerText=viewers.toLocaleString();}if(Math.random()<0.2){let msgs=[['Mas_Alip','Kamarnya wangi ya?'],['Nenek','Jaga kesehatan nak!'],['Bocil','Kak spill spek PC!'],['Sultan','Donasi lagi 5JT!']];let mm=msgs[Math.floor(Math.random()*msgs.length)];addChat(mm[0],mm[1],'#aaa');}},1000);
+talk();
+</script></body></html>
