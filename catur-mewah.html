@@ -2,46 +2,43 @@
 <html lang="id">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
-<title>Catur Mewah FIX</title>
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Catur Sultan V3 - FIX HP JADUL</title>
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@700&display=swap');
 *{margin:0;padding:0;box-sizing:border-box}
-body{background:#020617;display:flex;justify-content:center}
-#app{width:100%;max-width:440px;padding:12px}
-h1{font-family:'Cinzel',serif;text-align:center;font-size:24px;background:linear-gradient(#fef3c7,#f59e0b);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
-.frame{background:linear-gradient(45deg,#fde68a,#f59e0b,#78350f,#fde68a);padding:6px;border-radius:16px;margin-top:10px;box-shadow:0 0 25px rgba(251,191,36,.6)}
-#board{display:grid;grid-template-columns:repeat(8,1fr);aspect-ratio:1;border-radius:10px;overflow:hidden;touch-action:manipulation}
-.sq{aspect-ratio:1;display:flex;align-items:center;justify-content:center;position:relative}
-.sq.light{background:#fefce8} .sq.dark{background:#1e293b}
-.sq.sel{background:#fde68a !important;box-shadow:inset 0 0 0 4px #f59e0b}
-.sq.hint{background:#86efac !important} .sq.hint::after{content:'●';color:#16a34a;font-size:18px;position:absolute;pointer-events:none}
-.sq.cap{background:#fca5a5 !important;box-shadow:inset 0 0 0 4px #ef4444}
-.p{font-size:38px;line-height:1;pointer-events:none;filter:drop-shadow(0 2px 2px black)} 
-.p.w{color:#fbbf24;text-shadow:0 0 0 black, 0 2px 0 #78350f, 0 0 12px #fbbf24}
-.p.b{color:#e2e8f0;text-shadow:0 0 0 black, 0 0 8px #38bdf8}
-#info{background:#1e293b;border:2px solid #f59e0b;border-radius:14px;padding:10px;margin-top:12px;color:white;display:flex;justify-content:space-between;font-weight:700;font-size:14px}
-.btn{padding:12px;border-radius:12px;border:3px solid black;font-weight:800;flex:1}
+body{background:#020617;display:flex;justify-content:center;font-family:sans-serif}
+#app{width:100%;max-width:420px;padding:10px}
+h1{text-align:center;color:#fbbf24;font-size:22px;margin:6px}
+.frame{background:#f59e0b;padding:5px;border-radius:12px}
+#board{width:100%;display:block;overflow:hidden;border-radius:8px}
+.row{display:flex;width:100%}
+.sq{width:12.5%;height:0;padding-bottom:12.5%;position:relative;float:left}
+.sq.light{background:#fef3c7} .sq.dark{background:#78350f}
+.sq-inner{position:absolute;top:0;left:0;right:0;bottom:0;display:flex;align-items:center;justify-content:center;font-size:28px;font-weight:bold}
+.sq.sel{outline:4px solid yellow;outline-offset:-4px;z-index:2}
+.sq.move{background:#4ade80 !important} .sq.eat{background:#f87171 !important}
+.p{pointer-events:none} .p.w{color:#fbbf24;text-shadow:0 1px 0 black,0 0 8px gold} .p.b{color:#e2e8f0;text-shadow:0 1px 2px black}
+#info{background:#1e293b;color:white;border:2px solid #f59e0b;border-radius:10px;padding:8px;margin-top:10px;display:flex;justify-content:space-between;font-size:13px;font-weight:bold}
+button{padding:10px;border-radius:10px;border:2px solid black;font-weight:bold;flex:1;margin:2px}
 </style>
 </head>
 <body>
 <div id="app">
-<h1>♔ CATUR SULTAN ♛</h1>
-<p style="text-align:center;color:#fbbf24;font-size:10px;letter-spacing:3px">GOLD MARBLE - FIX GERAK</p>
+<h1>♔ CATUR SULTAN FIX ♛</h1>
+<div style="text-align:center;color:#fbbf24;font-size:10px">V3 ANTI BLANK - HP JADUL OK</div>
 <div class="frame"><div id="board"></div></div>
-<div id="info"><span id="turn">PUTIH JALAN</span><span id="msg">Klik bidak putih</span><span id="score">$0</span></div>
-<div style="display:flex;gap:8px;margin-top:10px">
-<button class="btn" style="background:#38bdf8" onclick="undo()">↩️ UNDO</button>
-<button class="btn" style="background:#fbbf24" onclick="showHint()">💡 HINT</button>
-<button class="btn" style="background:#a3e635" onclick="newGame()">🔄 BARU</button>
-<button class="btn" style="background:#ef4444;color:white" onclick="toggleBot()" id="botBtn">🤖 BOT:ON</button>
+<div id="info"><span id="turn">PUTIH JALAN</span><span id="msg">Klik bidak putih</span></div>
+<div style="display:flex;margin-top:8px">
+<button style="background:#38bdf8" onclick="undo()">UNDO</button>
+<button style="background:#fbbf24" onclick="hint()">HINT</button>
+<button style="background:#a3e635" onclick="newGame()">BARU</button>
+<button style="background:#ef4444;color:white" onclick="botOn=!botOn; this.innerHTML=botOn?'BOT ON':'2 PLAYER'; newGame()" id="bBtn">BOT ON</button>
 </div>
-<div style="margin-top:8px;color:#94a3b8;font-size:11px;text-align:center">Klik bidak → kotak HIJAU jalan → MERAH makan</div>
 </div>
 <script>
-let boardEl=document.getElementById('board');
-let turn='w', sel=null, moves=[], hist=[], mode='bot';
-let init=[
+var boardEl=document.getElementById('board');
+var turn='w', sel=null, moves=[], hist=[], botOn=true;
+var init=[
 ['r','n','b','q','k','b','n','r'],
 ['p','p','p','p','p','p','p','p'],
 ['','','','','','','',''],
@@ -51,44 +48,76 @@ let init=[
 ['P','P','P','P','P','P','P','P'],
 ['R','N','B','Q','K','B','N','R']
 ];
-let board=JSON.parse(JSON.stringify(init));
-const ico={K:'♔',Q:'♕',R:'♖',B:'♗',N:'♘',P:'♙',k:'♚',q:'♛',r:'♜',b:'♝',n:'♞',p:'♟'};
+var board=JSON.parse(JSON.stringify(init));
+var ico={K:'♔',Q:'♕',R:'♖',B:'♗',N:'♘',P:'♙',k:'♚',q:'♛',r:'♜',b:'♝',n:'♞',p:'♟'};
 
 function isWhite(p){return p && p===p.toUpperCase();}
 function inBoard(r,c){return r>=0&&r<8&&c>=0&&c<8;}
 
 function getMoves(r,c){
- let p=board[r][c]; if(!p) return []; let m=[], w=isWhite(p), t=p.toLowerCase();
- let add=(nr,nc)=>{
+ var p=board[r][c]; if(!p) return []; var m=[], w=isWhite(p), t=p.toLowerCase();
+ function add(nr,nc){
   if(!inBoard(nr,nc)) return false;
-  let q=board[nr][nc];
+  var q=board[nr][nc];
   if(!q){m.push({r:nr,c:nc}); return true;}
   if(isWhite(q)!==w){m.push({r:nr,c:nc}); return false;}
   return false;
- };
- if(t==='p'){
-  let dir=w?-1:1, start=w?6:1;
-  if(inBoard(r+dir,c) && !board[r+dir][c]){m.push({r:r+dir,c:c}); if(r===start && !board[r+dir*2][c]) m.push({r:r+dir*2,c:c});}
-  for(let dc of [-1,1]){let nr=r+dir,nc=c+dc; if(inBoard(nr,nc) && board[nr][nc] && isWhite(board[nr][nc])!==w) m.push({r:nr,c:nc});}
  }
- if(t==='r'||t==='q'){for(let [dr,dc] of [[1,0],[-1,0],[0,1],[0,-1]]) for(let k=1;k<8;k++) if(!add(r+dr*k,c+dc*k)) break;}
- if(t==='b'||t==='q'){for(let [dr,dc] of [[1,1],[1,-1],[-1,1],[-1,-1]]) for(let k=1;k<8;k++) if(!add(r+dr*k,c+dc*k)) break;}
- if(t==='n'){for(let [dr,dc] of [[2,1],[2,-1],[-2,1],[-2,-1],[1,2],[1,-2],[-1,2],[-1,-2]]) add(r+dr,c+dc);}
- if(t==='k'){for(let dr=-1;dr<=1;dr++) for(let dc=-1;dc<=1;dc++) if(dr||dc) add(r+dr,c+dc);}
+ if(t==='p'){
+  var dir=w?-1:1, st=w?6:1;
+  if(inBoard(r+dir,c) && !board[r+dir][c]){m.push({r:r+dir,c:c}); if(r===st && inBoard(r+dir*2,c) && !board[r+dir*2][c]) m.push({r:r+dir*2,c:c});}
+  var dcs=[-1,1]; for(var i=0;i<dcs.length;i++){var nr=r+dir,nc=c+dcs[i]; if(inBoard(nr,nc) && board[nr][nc] && isWhite(board[nr][nc])!==w) m.push({r:nr,c:nc});}
+ }
+ if(t==='r'||t==='q'){var dirs=[[1,0],[-1,0],[0,1],[0,-1]]; for(var d=0;d<dirs.length;d++){for(var k=1;k<8;k++){if(!add(r+dirs[d][0]*k,c+dirs[d][1]*k)) break;}}}
+ if(t==='b'||t==='q'){var dirs2=[[1,1],[1,-1],[-1,1],[-1,-1]]; for(var d=0;d<dirs2.length;d++){for(var k=1;k<8;k++){if(!add(r+dirs2[d][0]*k,c+dirs2[d][1]*k)) break;}}}
+ if(t==='n'){var ns=[[2,1],[2,-1],[-2,1],[-2,-1],[1,2],[1,-2],[-1,2],[-1,-2]]; for(var n=0;n<ns.length;n++) add(r+ns[n][0],c+ns[n][1]);}
+ if(t==='k'){for(var dr=-1;dr<=1;dr++) for(var dc=-1;dc<=1;dc++) if(dr||dc) add(r+dr,c+dc);}
  return m;
 }
 
 function render(){
- boardEl.innerHTML='';
- for(let r=0;r<8;r++){
-  for(let c=0;c<8;c++){
-   let d=document.createElement('div');
-   d.className='sq '+((r+c)%2?'dark':'light');
-   if(sel && sel.r===r && sel.c===c) d.classList.add('sel');
-   if(moves.some(x=>x.r===r&&x.c===c)){
-    d.classList.add(board[r][c]?'cap':'hint');
-   }
-   let p=board[r][c];
-   if(p){
-    let s=document.createElement('div');
-    s.className='p '+(isWhite(p)?'w':'b');
+ var html=''; 
+ for(var r=0;r<8;r++){
+  html+='<div class="row">';
+  for(var c=0;c<8;c++){
+   var cls='sq '+((r+c)%2?'dark':'light');
+   if(sel && sel.r===r && sel.c===c) cls+=' sel';
+   for(var k=0;k<moves.length;k++) if(moves[k].r===r&&moves[k].c===c){cls+= board[r][c]?' eat':' move';}
+   var p=board[r][c]; var icon=p?ico[p]:'';
+   var pw=p?(isWhite(p)?'w':'b'):'';
+   html+='<div class="'+cls+'" onclick="onClick('+r+','+c+')"><div class="sq-inner"><span class="p '+pw+'">'+icon+'</span></div></div>';
+  }
+  html+='</div>';
+ }
+ boardEl.innerHTML=html;
+ document.getElementById('turn').innerHTML=turn==='w'?'PUTIH JALAN':'HITAM JALAN';
+}
+
+function onClick(r,c){
+ var p=board[r][c];
+ if(sel){
+  for(var i=0;i<moves.length;i++) if(moves[i].r===r&&moves[i].c===c){doMove(sel.r,sel.c,r,c); sel=null; moves=[]; render(); return;}
+  if(p && isWhite(p)===(turn==='w')){sel={r:r,c:c}; moves=getMoves(r,c); render(); return;}
+  sel=null; moves=[]; render(); return;
+ }
+ if(p && isWhite(p)===(turn==='w')){sel={r:r,c:c}; moves=getMoves(r,c); render(); document.getElementById('msg').innerHTML=ico[p]+' '+moves.length+' langkah';}
+}
+
+function doMove(fr,fc,tr,tc){
+ hist.push(JSON.parse(JSON.stringify(board)));
+ var p=board[fr][fc], q=board[tr][tc];
+ if(q && q.toLowerCase()==='k'){document.getElementById('msg').innerHTML='MENANG!'; board[tr][tc]=p; board[fr][fc]=''; render(); setTimeout(newGame,1500); return;}
+ board[tr][tc]=p; board[fr][fc]=''; if(p==='P'&&tr===0) board[tr][tc]='Q'; if(p==='p'&&tr===7) board[tr][tc]='q';
+ turn=turn==='w'?'b':'w'; if(botOn && turn==='b') setTimeout(botMove,400);
+}
+function botMove(){
+ var all=[]; for(var r=0;r<8;r++) for(var c=0;c<8;c++) if(board[r][c] && !isWhite(board[r][c])){var ms=getMoves(r,c); for(var i=0;i<ms.length;i++) all.push({fr:r,fc:c,tr:ms[i].r,tc:ms[i].c});}
+ if(!all.length) return; var pick=all[Math.floor(Math.random()*all.length)]; doMove(pick.fr,pick.fc,pick.tr,pick.tc); render();
+}
+function undo(){if(hist.length){board=hist.pop(); turn=turn==='w'?'b':'w'; sel=null; moves=[]; render();}}
+function hint(){for(var r=0;r<8;r++) for(var c=0;c<8;c++) if(board[r][c] && isWhite(board[r][c])===(turn==='w')){var m=getMoves(r,c); if(m.length){sel={r:r,c:c}; moves=m; render(); return;}}}
+function newGame(){board=JSON.parse(JSON.stringify(init)); turn='w'; sel=null; moves=[]; hist=[]; render();}
+render();
+</script>
+</body>
+</html>
