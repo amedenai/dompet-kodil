@@ -1,0 +1,95 @@
+<!DOCTYPE html><html lang="id"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>MUKBANG FIX SUARA 100%</title><style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:sans-serif}
+body{background:#000;display:flex;justify-content:center}
+#app{width:100%;max-width:500px;min-height:100vh;background:#1a0f00;display:flex;flex-direction:column;color:white}
+#unlock{position:fixed;inset:0;background:rgba(0,0,0,.95);z-index:999;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:20px;text-align:center}
+#unlock button{margin-top:20px;padding:20px 40px;font-size:20px;font-weight:900;background:gold;color:black;border:0;border-radius:20px;animation:pulse 0.8s infinite}
+@keyframes pulse{0%,100%{transform:scale(1)}50%{transform:scale(1.1)}}
+#girl{width:100px;height:100px;border-radius:20px;border:4px solid gold;overflow:hidden;margin:10px auto}
+#girl img{width:100%;height:100%;object-fit:cover}
+.food{display:inline-block;margin:4px;padding:10px;background:#222;border:2px solid #444;border-radius:12px;font-size:24px;cursor:pointer}
+#log{flex:1;background:#000;border:2px solid #333;border-radius:10px;margin:8px;padding:8px;font-size:11px;overflow-y:auto;height:120px}
+</style></head><body>
+<div id="app">
+<div id="unlock">
+<div style="font-size:60px">🔊</div>
+<div style="font-size:22px;font-weight:900;margin:10px 0">SUARA DI KUNCI HP!</div>
+<div style="font-size:13px;opacity:.8">HP Tuan blokir suara otomatis.<br>Wajib klik tombol bawah biar suara keluar!</div>
+<button onclick="unlockSound()">🔓 KLIK UNTUK BUKA SUARA GIRLS! 🔓</button>
+<div style="font-size:10px;margin-top:10px;color:#888">Pastikan volume HP full! Jangan mode silent!</div>
+</div>
+
+<div style="padding:10px;background:linear-gradient(90deg,orange,red);text-align:center;font-weight:900">🔴 MUKBANG LIVE - SUARA FIX</div>
+<div id="girl"><img src="https://raw.githubusercontent.com/amedenai/dompet-kodil/main/IMG-20261021-WA0461.jpg"></div>
+<div style="text-align:center;font-weight:900" id="talk">KLIK MAKANAN, GIRLS NGOMONG!</div>
+
+<div style="padding:8px;text-align:center">
+<div class="food" onclick="eat('Mie Ayam','Mie ayamnya enak banget Tuan! Nyam nyam! 🍜')">🍜<br><b style="font-size:8px">Mie Ayam</b></div>
+<div class="food" onclick="eat('Ayam Geprek','Pedesnya nampol! Aduh bibir aku pedes! 🍗')">🍗<br><b style="font-size:8px">Geprek</b></div>
+<div class="food" onclick="eat('Burger','Burgernya gede! Mulut aku penuh! 🍔')">🍔<br><b style="font-size:8px">Burger</b></div>
+<div class="food" onclick="eat('Pizza','Kejunya lumer Tuan! Enak! 🍕')">🍕<br><b style="font-size:8px">Pizza</b></div>
+<div class="food" onclick="eat('Boba','Boba kenyal manis segar! 🧋')">🧋<br><b style="font-size:8px">Boba</b></div>
+<div class="food" onclick="eat('Sambel Setan','PEDES GILA TUAN! TOLONG AIR! 🌶️')">🌶️<br><b style="font-size:8px">Pedes!</b></div>
+</div>
+
+<div id="log"><div>💡 Log suara:</div></div>
+
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:4px;padding:8px">
+<button style="padding:14px;background:gold;color:black;font-weight:900;border-radius:12px;border:0" onclick="eat('Random','Halo Sultan! Enak banget! Nyam nyam!')">💖 NGOMONG</button>
+<button style="padding:14px;background:#222;color:white;font-weight:900;border-radius:12px;border:2px solid gold" onclick="testVoice()">🔊 TEST SUARA</button>
+</div>
+</div>
+
+<script>
+let unlocked=false, audioCtx;
+function log(m){let l=document.getElementById('log');l.innerHTML+=`<div>${m}</div>`;l.scrollTop=9999;}
+
+function unlockSound(){
+ unlocked=true;
+ document.getElementById('unlock').style.display='none';
+ // 1. AudioContext
+ try{audioCtx=new (window.AudioContext||window.webkitAudioContext)(); let o=audioCtx.createOscillator(); let g=audioCtx.createGain(); o.connect(g); g.connect(audioCtx.destination); o.frequency.value=440; g.gain.value=0.1; o.start(); o.stop(audioCtx.currentTime+0.2); log('✅ AudioContext OK');}catch(e){log('❌ AudioContext gagal: '+e);}
+ // 2. Speech
+ try{
+  speechSynthesis.getVoices();
+  let u=new SpeechSynthesisUtterance('Suara berhasil dibuka Tuan! Sekarang Girls bisa ngomong! Halo Sultan! Aku Girls mukbang! Nyam nyam nyam!');
+  u.lang='id-ID'; u.volume=1; u.rate=0.9; u.pitch=1.8;
+  u.onstart=()=>log('✅ Speech mulai ngomong!');
+  u.onend=()=>log('✅ Speech selesai!');
+  u.onerror=(e)=>log('❌ Speech error: '+e.error);
+  speechSynthesis.speak(u);
+  log('🔊 Mencoba ngomong...');
+ }catch(e){log('❌ Speech gagal: '+e);}
+}
+
+function eat(name,text){
+ if(!unlocked){document.getElementById('unlock').style.display='flex'; log('❌ Klik buka suara dulu!'); return;}
+ document.getElementById('talk').innerText=text;
+ log('🍜 Makan '+name);
+ // BEEP ASMR
+ try{if(audioCtx){let o=audioCtx.createOscillator(); let g=audioCtx.createGain(); o.connect(g); g.connect(audioCtx.destination); o.frequency.value=200+Math.random()*300; g.gain.value=0.3; o.start(); o.stop(audioCtx.currentTime+0.15);}}catch(e){}
+ // SPEECH
+ try{
+  speechSynthesis.cancel();
+  let u=new SpeechSynthesisUtterance(text);
+  u.lang='id-ID'; u.volume=1; u.rate=0.95; u.pitch=1.9;
+  let vs=speechSynthesis.getVoices();
+  if(vs.length>0){let id=vs.find(v=>v.lang.includes('id')); if(id) u.voice=id;}
+  speechSynthesis.speak(u);
+  log('🗣️ Girls: '+text);
+ }catch(e){log('❌ Gagal ngomong: '+e);}
+}
+
+function testVoice(){
+ if(!unlocked){unlockSound();return;}
+ log('🔊 TEST...');
+ let u=new SpeechSynthesisUtterance('Test satu dua tiga! Girls cantik! Tuan ganteng! Nyam nyam nyam! Enak banget!');
+ u.lang='id-ID'; u.volume=1; u.pitch=2; u.rate=1;
+ u.onstart=()=>log('✅ TEST mulai!');
+ u.onerror=(e)=>{log('❌ TEST error: '+e.error+' - Coba pakai Chrome!'); alert('❌ HP Tuan blokir!\\n\\nSOLUSI:\\n1. Pakai Chrome (jangan UC Browser)\\n2. Volume full, jangan silent\\n3. Settings > Site Settings > Sound > Allow\\n4. Klik lagi tombol buka suara');}
+ speechSynthesis.speak(u);
+}
+
+// auto load voices
+window.speechSynthesis.onvoiceschanged=()=>{speechSynthesis.getVoices(); log('Voices loaded: '+speechSynthesis.getVoices().length);};
+</script></body></html>￼Enter
