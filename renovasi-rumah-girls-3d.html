@@ -1,114 +1,141 @@
 <!DOCTYPE html>
-<html lang="id"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>RENOVASI RUMAH GIRLS 3D HD - PinkyCat</title>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+<title>Renovasi Rumah Girls 3D Sultan v2</title>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@600;800&display=swap" rel="stylesheet">
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@700;900&display=swap');
-*{margin:0;padding:0;box-sizing:border-box;font-family:'Outfit',sans-serif}
-body{background:#0f172a;display:flex;justify-content:center;min-height:100vh}
-#app{width:100%;max-width:500px;background:linear-gradient(#1e1b4b,#020617);display:flex;flex-direction:column;min-height:100vh;color:white}
-#top{height:48px;background:#000;display:flex;justify-content:space-between;align-items:center;padding:0 10px;border-bottom:2px solid #fbbf24}
-.coin{background:#1f2937;padding:6px 10px;border-radius:20px;font-size:11px;border:1px solid #333}
-#house3D{height:320px;background:radial-gradient(#334155,#020617);position:relative;overflow:hidden;display:flex;align-items:center;justify-content:center;perspective:1000px}
-#houseModel{width:220px;height:220px;transform-style:preserve-3d;transition:1s;position:relative;transform:rotateX(55deg) rotateZ(-45deg)}
-.wall{position:absolute;width:100%;height:100%;background:var(--c);border:2px solid rgba(0,0,0,.3);display:flex;align-items:center;justify-content:center;font-size:30px;box-shadow:inset 0 0 30px rgba(0,0,0,.4)}
-#floor{width:220px;height:220px;background:var(--floor);transform:rotateX(0) translateZ(-20px);position:absolute;bottom:0}
-#brick{position:absolute;width:100%;height:100%;opacity:var(--brickO);background:repeating-linear-gradient(0deg,#b45309 0 10px,#78350f 10px 12px),repeating-linear-gradient(90deg,#b45309 0 20px,#78350f 20px 22px)}
-#plaster{position:absolute;width:100%;height:100%;opacity:var(--plasterO);background:#e5e7eb}
-#paint{position:absolute;width:100%;height:100%;opacity:var(--paintO);background:var(--paintC)}
-#girls{position:absolute;bottom:10px;right:10px;width:76px;height:76px;border-radius:20px;border:3px solid #fbbf24;overflow:hidden;box-shadow:0 0 20px gold;z-index:10;animation:float 2s infinite alternate}
-#girls img{width:100%;height:100%;object-fit:cover}
-@keyframes float{0%{transform:translateY(0)}100%{transform:translateY(-6px)}}
-#tasks{padding:10px;display:flex;flex-direction:column;gap:8px}
-.task{background:#111827;border:2px solid #374151;border-radius:14px;padding:10px;display:flex;justify-content:space-between;align-items:center;transition:.3s}
-.task.done{border-color:#22c55e;background:#052e16;opacity:.7}
-.task.active{border-color:#fbbf24;background:#1f1600;box-shadow:0 0 15px rgba(251,191,36,.4);transform:scale(1.02)}
-.taskBtn{padding:8px 14px;border-radius:10px;border:0;font-weight:900;font-size:11px;cursor:pointer}
-#shop{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;padding:10px;background:#000;border-top:2px solid #333}
-.sItem{background:#1f2937;border:2px solid #374151;border-radius:12px;padding:8px;text-align:center;cursor:pointer;transition:.2s}
-.sItem:hover{border-color:#fbbf24;transform:scale(1.05)}
-#progressBar{height:14px;background:#111;border-radius:20px;overflow:hidden;border:1px solid #333;margin:8px 10px}
-#progress{height:100%;background:linear-gradient(90deg,#fbbf24,#f59e0b);width:0%;transition:1s}
-</style></head><body>
-<div id="app">
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Fredoka',sans-serif;background:#0f172a;color:#fff;overflow:hidden;touch-action:none;user-select:none}
+#wrap{position:fixed;inset:0;display:flex;flex-direction:column}
+#top{padding:8px 10px;display:flex;justify-content:space-between;align-items:center;background:rgba(15,23,42,.9);border-bottom:2px solid rgba(255,255,255,.1);z-index:20}
+.stat{background:#fff;color:#0f172a;border-radius:14px;padding:5px 12px;font-weight:800;font-size:12px;display:flex;gap:6px;box-shadow:0 3px 0 #cbd5e1}
+#main{flex:1;display:flex;position:relative;overflow:hidden}
+#roomView{flex:1;position:relative;background:linear-gradient(180deg,#e0f2fe 0%,#f1f5f9 20%);overflow:hidden;cursor:grab}
+#floor{position:absolute;left:50%;top:50%;width:700px;height:500px;background:repeating-linear-gradient(90deg,#f5f5f4 0 40px,#e7e5e4 40px 41px),repeating-linear-gradient(0deg,#f5f5f4 0 40px,#e7e5e4 40px 41px);transform:translate(-50%,-30%) rotateX(60deg) rotateZ(-45deg);box-shadow:0 30px 60px rgba(0,0,0,.3);border:8px solid #fff;border-radius:8px}
+.wall{position:absolute;background:#fff;border:3px solid #e7e5e4}
+#wallBack{left:50%;top:18%;width:716px;height:180px;transform:translate(-50%,0);border-bottom:6px solid #e7e5e4;display:flex;align-items:center;justify-content:center}
+.furniture{position:absolute;width:70px;height:70px;display:flex;align-items:center;justify-content:center;font-size:38px;background:rgba(255,255,255,.95);border-radius:16px;border:3px solid #fff;box-shadow:0 8px 0 rgba(0,0,0,.15),0 12px 24px rgba(0,0,0,.2);cursor:grab;z-index:5}
+.furniture:active{transform:scale(1.15);z-index:10}
+.furniture.placed{animation:pop .3s}
+@keyframes pop{0%{transform:scale(.5)}70%{transform:scale(1.2)}100%{transform:scale(1)}}
+#girlsBar{position:absolute;bottom:0;left:0;right:0;background:linear-gradient(0deg,rgba(15,23,42,.95) 0%,transparent 100%);padding:14px 10px 8px;display:flex;gap:10px;z-index:15;align-items:end}
+.girlCard{background:#fff;color:#0f172a;border-radius:18px;padding:8px 10px;min-width:110px;box-shadow:0 6px 0 #cbd5e1;border:3px solid #fff;display:flex;flex-direction:column;align-items:center;text-align:center}
+.girlCard .av{font-size:36px}
+.girlCard b{font-size:11px}
+.girlCard span{font-size:9px;color:#64748b}
+.girlCard.work{animation:work .6s infinite}
+@keyframes work{0%,100%{transform:translateY(0)}50%{transform:translateY(-3px)}}
+#toolPanel{width:300px;background:#fff;color:#0f172a;display:flex;flex-direction:column;box-shadow:-12px 0 30px rgba(0,0,0,.25);z-index:18;border-left:4px solid #facc15}
+#toolHeader{padding:10px;background:#0f172a;color:#fff;display:flex;justify-content:space-between;align-items:center}
+.tabs{display:flex;gap:4px;padding:8px;background:#f1f5f9;border-bottom:2px solid #e2e8f0}
+.tab{flex:1;padding:8px 4px;border-radius:10px;border:2px solid #e2e8f0;background:#fff;font-weight:800;font-size:10px;text-align:center;cursor:pointer}
+.tab.active{background:#0f172a;color:#fff;border-color:#0f172a}
+.shopGrid{display:grid;grid-template-columns:1fr 1fr;gap:8px;padding:10px;overflow-y:auto;flex:1}
+.shopItem{border:2px solid #e2e8f0;border-radius:14px;padding:8px;background:#fff;text-align:center;cursor:pointer;box-shadow:0 3px 0 #e2e8f0}
+.shopItem:active{transform:translateY(3px);box-shadow:0 0 0 #e2e8f0}
+.shopItem .ic{font-size:28px}
+.shopItem b{font-size:11px;display:block;margin:4px 0 2px}
+.shopItem .price{font-size:10px;color:#16a34a;font-weight:800}
+.colorRow{display:flex;gap:6px;flex-wrap:wrap;padding:10px}
+.colorBtn{width:34px;height:34px;border-radius:50%;border:3px solid #fff;box-shadow:0 3px 0 rgba(0,0,0,.15),0 0 0 2px #e2e8f0;cursor:pointer}
+.colorBtn.active{box-shadow:0 0 0 3px #0f172a}
+#actionBar{display:flex;gap:6px;padding:8px;background:#f8fafc;border-top:2px solid #e2e8f0}
+.actBtn{flex:1;padding:10px;border-radius:12px;border:none;font-weight:800;font-size:11px;box-shadow:0 4px 0 rgba(0,0,0,.2)}
+.primary{background:#facc15;color:#422006}
+.secondary{background:#0f172a;color:#fff}
+#menuStart{position:fixed;inset:0;z-index:60;background:linear-gradient(180deg,#a78bfa 0%,#7c3aed 30%,#0f172a 100%);display:flex;flex-direction:column;align-items:center;justify-content:center;padding:20px;text-align:center;overflow-y:auto}
+.bigBtn{width:100%;max-width:360px;padding:14px;border-radius:16px;border:3px solid #fff;font-weight:800;font-size:16px;margin:6px 0;box-shadow:0 6px 0 rgba(0,0,0,.3)}
+.pill{background:rgba(255,255,255,.2);padding:6px 14px;border-radius:20px;font-size:12px;margin:4px}
+#toast{position:fixed;left:50%;top:20%;transform:translateX(-50%);background:#0f172a;color:#fff;padding:10px 16px;border-radius:14px;font-weight:700;font-size:12px;z-index:80;border:2px solid #fff;display:none}
+#soundBtn{position:absolute;top:8px;right:8px;z-index:25;background:rgba(255,255,255,.9);border:2px solid #fff;border-radius:12px;padding:6px 10px;font-size:11px;font-weight:800;cursor:pointer}
+.hidden{display:none!important}
+</style>
+</head>
+<body>
+<div id="wrap">
 <div id="top">
-<div style="font-weight:900;font-size:12px">🏠 RENOVASI GIRLS 3D HD</div>
-<div style="display:flex;gap:6px">
-<div class="coin">💰 <b id="coins">2500</b></div>
-<div class="coin">⭐ <b id="progTxt">0%</b></div>
-</div></div>
-
-<div id="house3D" onclick="rotateHouse()">
-<div id="houseModel" style="--c:#444;--floor:#27272a;--brickO:0;--plasterO:0;--paintO:0;--paintC:#fbbf24">
-<div class="wall" style="transform:translateZ(20px);"><div id="brick"></div><div id="plaster"></div><div id="paint"></div><span id="icon">🏚️</span></div>
+<div class="stat">💰 Rp <b id="money">1.500.000</b></div>
+<div class="stat">⭐ Level <b id="level">1</b></div>
+<div class="stat">🏠 <b id="progress">0%</b></div>
+<div class="stat">🎯 Renovasi Kamar</div>
+</div>
+<div id="main">
+<div id="roomView">
 <div id="floor"></div>
+<div class="wall" id="wallBack"><span style="font-size:12px;color:#94a3b8;font-weight:800">🖼️ DINDING - KLIK WARNA UNTUK CAT!</span></div>
+<button id="soundBtn" onclick="toggleSound()">🔊 Suara ON</button>
+<div id="girlsBar">
+<div class="girlCard" id="g1"><div class="av">👷‍♀️</div><b>Sinta</b><span>Cat & Desain</span></div>
+<div class="girlCard" id="g2"><div class="av">🧕👷‍♀️</div><b>Aisyah</b><span>Tukang Kayu</span></div>
+<div class="girlCard" id="g3"><div class="av">👩‍🔧</div><b>Maya</b><span>Listrik & Dekor</span></div>
 </div>
-<div id="girls"><img src="IMG-20261021-WA0461.jpg"></div>
-<div style="position:absolute;top:8px;left:8px;background:rgba(0,0,0,.7);padding:4px 8px;border-radius:8px;font-size:9px">KLIK RUMAH = PUTER 360° | LVL <b id="lvl">1</b></div>
 </div>
-
-<div id="progressBar"><div id="progress"></div></div>
-
-<div id="tasks">
-<div class="task active" id="t1"><div><b>1. SEMEN PONDASI</b><br><span style="font-size:10px;opacity:.7">Butuh: Semen 5 sak - Rp 500</span></div><button class="taskBtn" style="background:#fbbf24;color:#000" onclick="doTask(1)">🔨 COR</button></div>
-<div class="task" id="t2"><div><b>2. BATA DINDING</b><br><span style="font-size:10px;opacity:.7">Bata Merah 100 biji - Rp 700</span></div><button class="taskBtn" style="background:#b45309;color:white" onclick="doTask(2)">🧱 PASANG</button></div>
-<div class="task" id="t3"><div><b>3. ATAP BAJA RINGAN</b><br><span style="font-size:10px;opacity:.7">Genteng + Rangka - Rp 800</span></div><button class="taskBtn" style="background:#475569;color:white" onclick="doTask(3)">🏠 ATAP</button></div>
-<div class="task" id="t4"><div><b>4. PLESTER ACIAN</b><br><span style="font-size:10px;opacity:.7">Semen + Pasir Halus - Rp 600</span></div><button class="taskBtn" style="background:#9ca3af;color:black" onclick="doTask(4)">🪣 PLESTER</button></div>
-<div class="task" id="t5"><div><b>5. CAT DINDING</b><br><span style="font-size:10px;opacity:.7">Pilih Warna Cantik - Rp 500</span></div><button class="taskBtn" style="background:#ec4899;color:white" onclick="doTask(5)">🎨 CAT</button></div>
-<div class="task" id="t6"><div><b>6. LANTAI KERAMIK</b><br><span style="font-size:10px;opacity:.7">Keramik Sultan Glossy - Rp 900</span></div><button class="taskBtn" style="background:#eab308;color:black" onclick="doTask(6)">✨ LANTAI</button></div>
-<div class="task" id="t7"><div><b>7. FURNITURE SULTAN</b><br><span style="font-size:10px;opacity:.7">Sofa, Pool, Lampu - Rp 1000</span></div><button class="taskBtn" style="background:linear-gradient(90deg,#ff00cc,#ffcc00);color:white" onclick="doTask(7)">👑 FINISH</button></div>
+<div id="toolPanel">
+<div id="toolHeader"><h3 style="font-size:14px">🛠️ TOKO RENOVASI</h3><span style="font-size:10px;background:rgba(255,255,255,.2);padding:4px 8px;border-radius:20px">Drag ke Lantai!</span></div>
+<div class="tabs">
+<div class="tab active" onclick="switchTab('furn')">🛋️ Furnitur</div>
+<div class="tab" onclick="switchTab('cat')">🎨 Cat</div>
+<div class="tab" onclick="switchTab('dekor')">🌿 Dekor</div>
 </div>
-
-<div id="shop">
-<div class="sItem" onclick="buyPaint('#fbbf24','Kuning Sultan')"><div style="font-size:22px">🟨</div><div style="font-size:9px"><b>Kuning</b><br>Rp 0</div></div>
-<div class="sItem" onclick="buyPaint('#f472b6','Pink Girls')"><div style="font-size:22px">🩷</div><div style="font-size:9px"><b>Pink Girls</b><br>Rp 200</div></div>
-<div class="sItem" onclick="buyPaint('#60a5fa','Biru Estetik')"><div style="font-size:22px">🟦</div><div style="font-size:9px"><b>Biru</b><br>Rp 200</div></div>
-<div class="sItem" onclick="speak('Tuan, rumahnya udah mau jadi nih! Semangat!')"><div style="font-size:22px">💖</div><div style="font-size:9px"><b>Girls Talk</b></div></div>
-<div class="sItem" onclick="addCoins(1000)"><div style="font-size:22px">💰</div><div style="font-size:9px"><b>+1000 Coin</b></div></div>
-<div class="sItem" onclick="resetGame()"><div style="font-size:22px">🔄</div><div style="font-size:9px"><b>Ulang</b></div></div>
+<div id="tabFurn" class="shopGrid"></div>
+<div id="tabCat" class="hidden" style="padding:10px;flex:1;overflow-y:auto">
+<p style="font-size:11px;color:#64748b;margin-bottom:8px">Pilih warna cat - Sinta akan cat dinding!</p>
+<div class="colorRow" id="colorRow"></div>
+<div style="margin-top:12px;background:#f8fafc;border:2px solid #e2e8f0;border-radius:12px;padding:10px">
+<div style="font-size:11px;font-weight:800">💡 Lantai Vinyl</div>
+<div class="colorRow" id="floorRow"></div>
 </div>
-
-<div style="padding:10px;font-size:10px;text-align:center;opacity:.6">💡 Klik rumah buat muter | Selesaikan 7 tahap dari semen sampai jadi villa mewah!</div>
 </div>
-
+<div id="tabDekor" class="shopGrid hidden"></div>
+<div id="actionBar">
+<button class="actBtn secondary" onclick="undo()">↩️ Undo</button>
+<button class="actBtn primary" onclick="finishRoom()">✅ SELESAI KAMAR!</button>
+</div>
+</div>
+</div>
+</div>
+<div id="menuStart">
+<div style="font-size:56px">🏠✨👷‍♀️</div>
+<h1 style="font-size:28px;line-height:1;margin:6px 0">RENOVASI RUMAH<br>GIRLS 3D SULTAN v2</h1>
+<div class="pill">🔊 Suara Tukang • 🎨 Cat Real • 🛋️ Drag & Drop 3D • 👩‍🔧 3 Girls Cantik!</div>
+<div style="background:#fff;color:#0f172a;border-radius:16px;padding:12px;width:100%;max-width:360px;text-align:left;margin:10px 0;font-size:12px;line-height:1.4">
+<b style="color:#7c3aed">✨ UPGRADE v2:</b><br>
+✅ 3D Room - Lantai bisa di-drag<br>
+✅ Sinta, Aisyah, Maya kerja beneran<br>
+✅ Suara bor, cat, palu!<br>
+✅ 40+ Furnitur - sofa, kasur, meja<br>
+✅ Cat dinding + ganti lantai<br>
+✅ Budget & Level - kayak Sultan!
+</div>
+<button class="bigBtn primary" onclick="startGame()">▶️ MULAI RENOVASI!</button>
+<button class="bigBtn" style="background:#fff;color:#0f172a" onclick="alert('Cara: Drag furnitur ke lantai! Klik warna untuk cat!')">❓ CARA MAIN</button>
+</div>
+<div id="toast"></div>
 <script>
-let coins=2500,progress=0,lvl=1,rot=0,paintColor='#fbbf24',stage=1;
-let done=[false,false,false,false,false,false,false];
-function $(id){return document.getElementById(id);}
-function speak(t){
- try{speechSynthesis.cancel(); let u=new SpeechSynthesisUtterance(t); u.lang='id-ID'; u.pitch=1.5; u.rate=1.1; speechSynthesis.speak(u);}catch(e){}
-}
-function rotateHouse(){rot+=90; $('houseModel').style.transform=`rotateX(55deg) rotateZ(${-45+rot}deg)`;}
-function updateUI(){
- $('coins').innerText=coins; $('progTxt').innerText=progress+'%'; $('progress').style.width=progress+'%'; $('lvl').innerText=stage;
-}
-function doTask(n){
- if(n!==stage){speak('Kerjain yang urut dulu ya Tuan'); alert('Selesaikan tahap '+stage+' dulu ya Tuan!'); return;}
- let costs=[500,700,800,600,500,900,1000];
- let cost=costs[n-1];
- if(coins<cost){alert('Coin kurang Tuan! Butuh Rp '+cost); return;}
- coins-=cost; done[n-1]=true; stage++; progress=Math.floor((n/7)*100);
- let el=$('t'+n); el.classList.remove('active'); el.classList.add('done'); el.querySelector('button').innerHTML='✅ DONE';
- if(n<7){$('t'+(n+1)).classList.add('active');}
- // 3D effects
- let model=$('houseModel');
- if(n==1){model.style.setProperty('--c','#3f3f46'); model.style.setProperty('--floor','#57534e'); $('icon').innerHTML='🧱'; speak('Pondasi semen selesai Tuan! Kuat banget!');}
- if(n==2){model.style.setProperty('--brickO','1'); $('icon').innerHTML='🏗️'; speak('Dinding bata udah kepasang Tuan!');}
- if(n==3){$('icon').innerHTML='🏠'; model.style.setProperty('--c','#27272a'); speak('Atap baja ringan selesai, anti bocor!');}
- if(n==4){model.style.setProperty('--plasterO','1'); $('icon').innerHTML='🪣'; speak('Plester halus mulus Tuan!');}
- if(n==5){model.style.setProperty('--paintO','0.9'); model.style.setProperty('--paintC',paintColor); $('icon').innerHTML='🎨'; speak('Warna '+paintColor+' cantik banget Tuan!');}
- if(n==6){model.style.setProperty('--floor','#fde68a'); $('icon').innerHTML='✨'; speak('Lantai keramik sultan, kinclong!');}
- if(n==7){$('icon').innerHTML='👑💎 VILLA SULTAN!'; model.style.setProperty('--paintO','1'); model.style.transform='rotateX(30deg) rotateZ(-30deg) scale(1.2)'; speak('Ya ampun Tuan! Rumahnya jadi villa mewah! Girls mau tinggal sama Tuan!'); alert('🎉 SELAMAT TUAN! RUMAH DARI SEMEN JADI VILLA SULTAN SENILAI 500 JUTA! 💎👑\n\nGirls bangga sama Tuan! Mau renovasi lagi?');}
- updateUI();
-}
-function buyPaint(c,name){
- if(coins<200 && c!='#fbbf24'){alert('Coin kurang!'); return;}
- if(c!='#fbbf24') coins-=200;
- paintColor=c; if(done[4]){ $('houseModel').style.setProperty('--paintC',c); $('icon').innerHTML='🎨 '+name;}
- speak('Warna '+name+' dipilih! Cantik!');
- updateUI();
-}
-function addCoins(a){coins+=a; updateUI(); speak('Makasih Sultan, coin nambah!');}
-function resetGame(){if(confirm('Ulang renovasi dari semen lagi?')){location.reload();}}
-speak('Halo Tuan Sultan, ayo kita renovasi rumah dari semen sampai jadi villa mewah bareng Girls!');
-updateUI();
-</script></body></html>￼Enter
+const FURN=[{id:'sofa1',icon:'🛋️',name:'Sofa Biru',price:250000,cat:'furn'},{id:'sofa2',icon:'🛋️',name:'Sofa Krem',price:300000,cat:'furn'},{id:'bed',icon:'🛏️',name:'Kasur Sultan',price:450000,cat:'furn'},{id:'bed2',icon:'🛏️',name:'Kasur Single',price:300000,cat:'furn'},{id:'table',icon:'🪑',name:'Meja Kayu',price:150000,cat:'furn'},{id:'desk',icon:'💻',name:'Meja Kerja',price:200000,cat:'furn'},{id:'chair',icon:'🪑',name:'Kursi Gaming',price:180000,cat:'furn'},{id:'wardrobe',icon:'🚪',name:'Lemari',price:350000,cat:'furn'},{id:'tv',icon:'📺',name:'TV 50 inch',price:400000,cat:'furn'},{id:'fridge',icon:'🧊',name:'Kulkas',price:500000,cat:'furn'},{id:'kitchen',icon:'🍳',name:'Kompor',price:250000,cat:'furn'}];
+const DEKOR=[{id:'plant1',icon:'🪴',name:'Monstera',price:80000,cat:'dekor'},{id:'plant2',icon:'🌿',name:'Pot Gantung',price:60000,cat:'dekor'},{id:'lamp',icon:'💡',name:'Lampu Gantung',price:120000,cat:'dekor'},{id:'lamp2',icon:'🪔',name:'Lampu Meja',price:90000,cat:'dekor'},{id:'rug',icon:'🧶',name:'Karpet',price:150000,cat:'dekor'},{id:'paint',icon:'🖼️',name:'Lukisan',price:100000,cat:'dekor'},{id:'clock',icon:'🕐',name:'Jam Dinding',price:70000,cat:'dekor'},{id:'mirror',icon:'🪞',name:'Cermin',price:110000,cat:'dekor'},{id:'curtain',icon:'🪟',name:'Gorden',price:130000,cat:'dekor'},{id:'ac',icon:'❄️',name:'AC',price:350000,cat:'dekor'}];
+const COLORS=['#ffffff','#fef3c7','#dbeafe','#dcfce7','#fce7f3','#e0e7ff','#ffedd5','#f5f5f4','#fde68a','#93c5fd'];
+const FLOORS=['#f5f5f4','#e7e5e4','#d6d3d1','#fef3c7','#dbeafe','#fde2e8'];
+let state={money:1500000,level:1,progress:0,placed:[],history:[],sound:true,wallColor:'#ffffff',floorColor:'#f5f5f4',audioCtx:null};
+function initAudio(){if(state.audioCtx)return;state.audioCtx=new(window.AudioContext||window.webkitAudioContext)();}
+function playSound(type){if(!state.sound)return;initAudio();let o=state.audioCtx.createOscillator(),g=state.audioCtx.createGain();if(type==='place'){o.frequency.value=600;g.gain.setValueAtTime(0.3,state.audioCtx.currentTime);g.gain.exponentialRampToValueAtTime(0.001,state.audioCtx.currentTime+0.15);}if(type==='paint'){o.frequency.value=300;o.type='sawtooth';g.gain.setValueAtTime(0.2,state.audioCtx.currentTime);g.gain.exponentialRampToValueAtTime(0.001,state.audioCtx.currentTime+0.4);}if(type==='cash'){o.frequency.value=800;g.gain.setValueAtTime(0.4,state.audioCtx.currentTime);o.frequency.exponentialRampToValueAtTime(1400,state.audioCtx.currentTime+0.4);g.gain.exponentialRampToValueAtTime(0.001,state.audioCtx.currentTime+0.6);}o.connect(g);g.connect(state.audioCtx.destination);o.start();o.stop(state.audioCtx.currentTime+0.6);}
+function toggleSound(){state.sound=!state.sound;document.getElementById('soundBtn').textContent=state.sound?'🔊 Suara ON':'🔇 Suara OFF';if(state.sound)playSound('place');}
+function switchTab(t){document.querySelectorAll('.tab').forEach((el,i)=>{el.classList.toggle('active',(t==='furn'&&i==0)||(t==='cat'&&i==1)||(t==='dekor'&&i==2));});document.getElementById('tabFurn').classList.toggle('hidden',t!=='furn');document.getElementById('tabCat').classList.toggle('hidden',t!=='cat');document.getElementById('tabDekor').classList.toggle('hidden',t!=='dekor');playSound('place');}
+function renderShop(){let furn=document.getElementById('tabFurn');furn.innerHTML='';FURN.forEach(f=>{let d=document.createElement('div');d.className='shopItem';d.draggable=true;d.innerHTML=`<div class="ic">${f.icon}</div><b>${f.name}</b><div class="price">Rp ${f.price.toLocaleString('id-ID')}</div>`;d.ondragstart=(e)=>{e.dataTransfer.setData('item',JSON.stringify(f));};d.onclick=()=>buyAndPlace(f);furn.appendChild(d);});let dekor=document.getElementById('tabDekor');dekor.innerHTML='';DEKOR.forEach(f=>{let d=document.createElement('div');d.className='shopItem';d.draggable=true;d.innerHTML=`<div class="ic">${f.icon}</div><b>${f.name}</b><div class="price">Rp ${f.price.toLocaleString('id-ID')}</div>`;d.ondragstart=(e)=>{e.dataTransfer.setData('item',JSON.stringify(f));};d.onclick=()=>buyAndPlace(f);dekor.appendChild(d);});let cr=document.getElementById('colorRow');cr.innerHTML='';COLORS.forEach(c=>{let b=document.createElement('div');b.className='colorBtn';b.style.background=c;b.onclick=()=>paintWall(c,b);cr.appendChild(b);});let fr=document.getElementById('floorRow');fr.innerHTML='';FLOORS.forEach(c=>{let b=document.createElement('div');b.className='colorBtn';b.style.background=c;b.onclick=()=>paintFloor(c,b);fr.appendChild(b);});}
+function buyAndPlace(item){if(state.money<item.price){toast('💸 Uang tidak cukup!');return;}state.money-=item.price;updateMoney();placeItem(item,200+Math.random()*300,180+Math.random()*200);toast(`✅ Beli ${item.name}!`);animateGirl();playSound('place');}
+function placeItem(item,x,y){let el=document.createElement('div');el.className='furniture placed';el.textContent=item.icon;el.style.left=x+'px';el.style.top=y+'px';el.dataset.id=Date.now();makeDraggable(el);document.getElementById('roomView').appendChild(el);state.placed.push({id:el.dataset.id,item:item,el:el});state.history.push({action:'place',id:el.dataset.id});updateProgress();}
+function makeDraggable(el){let isDragging=false,sx,sy,ox,oy;el.addEventListener('pointerdown',(e)=>{isDragging=true;el.setPointerCapture(e.pointerId);sx=e.clientX;sy=e.clientY;ox=parseInt(el.style.left);oy=parseInt(el.style.top);el.style.zIndex=20;});el.addEventListener('pointermove',(e)=>{if(!isDragging)return;let dx=e.clientX-sx,dy=e.clientY-sy;el.style.left=(ox+dx)+'px';el.style.top=(oy+dy)+'px';});el.addEventListener('pointerup',()=>{isDragging=false;el.style.zIndex=5;playSound('place');});}
+function paintWall(color,btn){document.querySelectorAll('#colorRow .colorBtn').forEach(b=>b.classList.remove('active'));btn.classList.add('active');document.getElementById('wallBack').style.background=color;state.wallColor=color;if(state.money<30000){toast('Uang tidak cukup!');return;}state.money-=30000;updateMoney();animateGirl(0);playSound('paint');toast('🎨 Sinta lagi ngecat!');updateProgress();}
+function paintFloor(color,btn){document.querySelectorAll('#floorRow .colorBtn').forEach(b=>b.classList.remove('active'));btn.classList.add('active');document.getElementById('floor').style.background=color;state.floorColor=color;state.money-=50000;updateMoney();animateGirl(1);playSound('place');toast('🏠 Aisyah ganti lantai!');updateProgress();}
+function animateGirl(idx=0){let girls=[document.getElementById('g1'),document.getElementById('g2'),document.getElementById('g3')];let g=girls[idx!==undefined?idx:Math.floor(Math.random()*3)];g.classList.add('work');setTimeout(()=>g.classList.remove('work'),800);}
+function updateMoney(){document.getElementById('money').textContent='Rp '+state.money.toLocaleString('id-ID');}
+function updateProgress(){let p=Math.min(100,state.placed.length*12+(state.wallColor!=='#ffffff'?15:0)+(state.floorColor!=='#f5f5f4'?15:0));state.progress=p;document.getElementById('progress').textContent=p+'%';}
+function undo(){if(state.history.length==0){toast('Tidak ada yang di-undo!');return;}let last=state.history.pop();let found=state.placed.find(p=>p.id===last.id);if(found){found.el.remove();state.placed=state.placed.filter(p=>p.id!==last.id);state.money+=found.item.price*0.7;updateMoney();toast('↩️ Undo - kembali 70%');playSound('place');updateProgress();}}
+function finishRoom(){if(state.progress<40){toast('🏠 Minimal 40% dulu! Taruh furnitur & cat!');return;}let bonus=500000+state.progress*5000;state.money+=bonus;state.level++;updateMoney();document.getElementById('level').textContent=state.level;toast(`🎉 SELESAI! Bonus Rp ${bonus.toLocaleString('id-ID')}! Level ${state.level}!`);playSound('cash');if(state.level>=3){setTimeout(()=>{alert(`🏆 LUAR BIASA! Level ${state.level}! Rumah Sultan!`);},600);}state.placed.forEach(p=>p.el.remove());state.placed=[];state.history=[];updateProgress();}
+function toast(msg){let t=document.getElementById('toast');t.textContent=msg;t.style.display='block';setTimeout(()=>t.style.display='none',2500);}
+function startGame(){document.getElementById('menuStart').classList.add('hidden');renderShop();let rv=document.getElementById('roomView');rv.addEventListener('dragover',(e)=>e.preventDefault());rv.addEventListener('drop',(e)=>{e.preventDefault();let data=e.dataTransfer.getData('item');if(!data)return;let item=JSON.parse(data);if(state.money<item.price){toast('Uang tidak cukup!');return;}state.money-=item.price;updateMoney();let rect=rv.getBoundingClientRect();placeItem(item,e.clientX-rect.left-35,e.clientY-rect.top-35);animateGirl();playSound('place');});initAudio();toast('👷‍♀️ Sinta, Aisyah, Maya siap kerja!');}
+</script>
+</body>
+ </html>
